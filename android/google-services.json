@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1051588711719",
+    "firebase_url": "https://saaty-9ba9f-default-rtdb.firebaseio.com",
+    "project_id": "saaty-9ba9f",
+    "storage_bucket": "saaty-9ba9f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051588711719:android:33ad11e80be07f4422c502",
+        "android_client_info": {
+          "package_name": "com.saaty_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1051588711719-uf87dbl72jpo2tt8hm8n3lnion7alkdi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMQy08zy6K7yKDMIENem3puVPXpSnvhKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051588711719-uf87dbl72jpo2tt8hm8n3lnion7alkdi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
