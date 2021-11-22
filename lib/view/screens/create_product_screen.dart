@@ -7,7 +7,9 @@ import 'package:get/get.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
-import 'package:image_picker_flutter/image_picker_flutter.dart';
+// import 'package:image_picker_flutter/image_picker_flutter.dart';
+import 'package:image_picker/image_picker.dart' ;
+import 'dart:io';
 
 import '../../cons.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,7 +25,9 @@ class CreateProductScreen extends StatefulWidget {
 
 class CreateProductScreenState extends State<CreateProductScreen>{
   var controller=Get.put(ProductController());
-  List<Asset> images = [];
+
+
+  List<dynamic> images = [];
 
   int _radValCat=0;
   int _radValType=0;
@@ -117,11 +121,11 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                 children: [
                 ListTile(
                   leading: Text('Attatch Product Images:',style: Cons.blackFont,),
-                  onTap:  buildMultiImagePicker,
-                  //     (){
-                  //   buildMultiImagePicker();
-                  //   print('cccccc');
-                  // },
+                  onTap:
+                      (){
+                    buildMultiImagePicker(1);
+                    print('cccccc');
+                  },
                   trailing: CircleAvatar(child: Icon(Icons.attach_file,color: Colors.white,),backgroundColor: Cons.accent_color,)
                 )
                  ,
@@ -303,13 +307,14 @@ class CreateProductScreenState extends State<CreateProductScreen>{
   }
   
   Widget buildGridImagePicker(){
-    return GridView.count(
+    return
+      GridView.count(
       crossAxisCount: 3,
       shrinkWrap: true,
       childAspectRatio: 1/0.8,
-      children: List.generate(images.length, (index) {
-        Asset asset = images[index];
-
+      children: List.generate(
+          images.length, (index) {
+      //  AssetData asset = images[index];
         return Container(
           width: 2,
           height: 2,
@@ -318,39 +323,28 @@ class CreateProductScreenState extends State<CreateProductScreen>{
             border: Border.all(color: Cons.accent_color),
             borderRadius: BorderRadius.circular(15)
           ),
-          child: AssetThumb(
-            asset: asset,
-            width: 100,
-            height: 100,
-          ),
+          child:Image.file(File(images[index].path),
+            fit: BoxFit.cover,)
+
         );
       }),
     );
   }
 
- Future buildMultiImagePicker() async{
+ Future buildMultiImagePicker(var src) async{
+    images.clear();
+   var x=await ImagePicker.platform.getMultiImage(maxWidth: 100,
+       maxHeight:100,);
+       print(x.length);
 
-    var f=await ImagePicker.mulPicker(context);
-    List<Asset> resultList = List<Asset>();
-    //List<MultipartFile> resultList = List<MultipartFile>();
-    try {
-      resultList = (await MultiImagePicker.pickImages(
-          maxImages: 300,
-          selectedAssets: images,
-          enableCamera: true,
-          materialOptions: MaterialOptions(
-            actionBarTitle: "FlutterCorner.com",
-          )));
+   if (x.isNotEmpty) {
+     setState(() {
+       images.addAll(x);
+     });
 
-      setState(() {
-        images=resultList;
-      });
+   }
 
-      print(images.length);
-    }
-    catch(err){
- print('vvvvvvvvvvvvvvvv      $err');
-    }
+
   }
 
  Widget buildProductType() {
@@ -383,25 +377,26 @@ class CreateProductScreenState extends State<CreateProductScreen>{
   }
 
   void saveProductData() async{
-    // List<String> newImages=[];
+     List<String> newImages=[];
     if(_key.currentState.validate()&& images.length>0){
       _key.currentState.save();
-    //   for (int i=0;i<images.length;i++){
-    //     newImages.add(images[i].name);
-    //   }
-      map['images']=images;
+      for (int i=0;i<images.length;i++){
+        // file = File(images[i].path);
+        newImages.add(images[i].path);
+      }
+      map['images']=newImages;
       map['id']=AuthController.userId;
       map['isFav']=0;
       map['cat']=0;
       map['status']=0;
-      print('${images[0].name}');
 
-      List<MultipartFile> multipart = List<MultipartFile>();
+     // File file = File(images[0].path);
 
-      var path2 = await FlutterAbsolutePath.getAbsolutePath(images[0].identifier);
-      print(path2);
-      await controller.createProduct(map,path2);
-     // print(images[0].name);
+
+      // var path2 = await FlutterAbsolutePath.getAbsolutePath(images[0].identifier);
+      // print(path2);
+       await controller.createProduct(map,images);
+
 
     }else if(images.length==0){
       print( 'please select at least one image');
