@@ -6,6 +6,8 @@ import 'package:saaty_app/view/widget/visitor_drawer.dart';
 import '../../cons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import 'main_page_screen.dart';
+
 class HomeScreen extends StatefulWidget{
   static String HOME_SCREEN_RIUTE='/3';
   @override
@@ -99,7 +101,9 @@ class HomeScreenState extends State<HomeScreen> {
           child: ListTile(
             trailing: Icon(Icons.arrow_forward_ios_sharp,color:Theme.of(context).accentColor),
             leading: Text(title,style: Cons.greyFont1,),
-            onTap: (){},
+            onTap: (){
+              Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
+            },
           ),
         ),
     );

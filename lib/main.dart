@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
+import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
@@ -15,6 +16,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   final controller = Get.put(AuthController());
+  final controller1 = Get.put(ProductController());
 
   // This widget is the root of your application.
   @override

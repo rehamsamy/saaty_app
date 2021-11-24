@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -236,7 +237,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
           map['name'] = value;
         }
         if (flag == 'price') {
-          map['email'] = value;
+          map['price'] = value;
         }
         if (flag == 'phone') {
           map['phone'] = value;
@@ -378,14 +379,26 @@ class CreateProductScreenState extends State<CreateProductScreen>{
   }
 
    saveProductData() async{
-     List<String> newImages=[];
+
+
+     List<dynamic> newImages=[];
     if(_key.currentState.validate()&& images.length>0){
       _key.currentState.save();
+
+ /////   upload images   -------------------
+
+      List<String> imagesResult= await uploadImagesToFirebase(images);
+      print('dddddddd');
+      print(imagesResult.length);
+      //print(imagesResult[0]);
+
+
+
       for (int i=0;i<images.length;i++){
         // file = File(images[i].path);
         newImages.add(images[i].path);
       }
-      map['images']=newImages;
+      map['images']=imagesResult;
       map['id']=AuthController.userId;
       map['isFav']=0;
       map['cat']=_radValCat;
@@ -441,6 +454,42 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
     );
 
+  }
+
+  Future<List<String> >uploadImagesToFirebase(List images) async{
+    List<String> vv=[];
+    print('step0');
+    print(AuthController.userId);
+
+    print('step1');
+    try{
+      for (int i=0;i<3;i++){
+       var ref= FirebaseStorage.instance.ref().child('user_iamge').child(AuthController.userId).child(i.toString());
+        print('step22 ');
+        File file=File(images[i].path);
+        await ref.putFile(file);
+        String url = await ref.getDownloadURL();
+        print('step21 $url ');
+        vv.add(url);
+        // String url = (await ref.getDownloadURL()).toString();
+        print('step55 ');
+        print(vv[0]);
+
+
+      }
+
+      print('step3');
+      //  print('${ref.path}   ${ref.getParent()} ');
+      // product_images.addAll(await ref.child(AuthController.userId) as List<File>);
+      //String url= await ref.child(AuthController.userId);
+      //  print('uuuuu ${product_images[0].toString()}');
+    }catch(err){
+      print(err);
+      print('step4');
+    }
+
+
+  return vv;
   }
 
 }

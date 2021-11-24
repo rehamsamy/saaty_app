@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/model/store_model.dart';
+import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
+import 'package:saaty_app/view/widget/product_item_widget.dart';
 
 import '../../cons.dart';
 
@@ -17,6 +20,7 @@ class _MainPageScreenState extends State<MainPageScreen> with SingleTickerProvid
   TabController _controller;
   double width,height;
   List<Product> allProducts=[];
+  ProductController _productController=Get.find();
 
 List<StoreModel> stmores=[
   StoreModel('Store1', 'assets/images/store1.png'),
@@ -101,8 +105,9 @@ List<StoreModel> stmores=[
           controller: _controller,
           children: [
            buildGrid(0),
-            buildGrid(1),
-            buildGrid(2)
+           Center(child: Text('empty'),),
+            Center(child: Text('empty'),),
+
 
           ],
         ),
@@ -112,23 +117,39 @@ List<StoreModel> stmores=[
   }
 
 Widget  buildGrid(int i) {
-    return
-      GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          mainAxisSpacing: 0,
-          crossAxisSpacing: 0,
-          childAspectRatio:8/9,
-          crossAxisCount: 2
-        ),
-          itemCount: stores.length,
-          itemBuilder: (ctx,inx){
-          return storeGridItem(stores,inx);
-          }
-    );
+    return FutureBuilder(
+      future: _productController.fetchProducts(),
+        builder: (ctx,snap){
+      if(snap.connectionState==ConnectionState.waiting){
+        return Center(child: CircularProgressIndicator(),);
+      }else {
+        return GetBuilder<ProductController>(
+          init: _productController,
+            builder: (_){
+            return
+                GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 0,
+                    crossAxisSpacing: 0,
+                    childAspectRatio:8/9,
+                    crossAxisCount: 2
+                  ),
+                    itemCount: _productController.allProducts.length,
+                    itemBuilder: (ctx,inx){
+                   // return storeGridItem(_productController.allProducts,inx);
+                      return ProductItemWidget(_productController.allProducts, inx);
+                    }
+              );
+        });
+      }
+    });
+
   }
 
 
-  Widget storeGridItem(List<StoreModel> stores,int indx){
+  Widget storeGridItem(List<Product> stores,int indx){
+    print('111111111');
+    print(stores[indx].images.length);
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child:
@@ -142,7 +163,8 @@ Widget  buildGrid(int i) {
              child: Column(
                mainAxisAlignment: MainAxisAlignment.center,
                children: [
-                 Image.asset(stores[indx].image,fit: BoxFit.contain,),
+                 Image.network(stores[indx].images[0],fit: BoxFit.contain,),
+                 //Image.asset(stores[indx].images.,fit: BoxFit.contain,),
                  SizedBox(height: 10,),
                  Center(child: Text(stores[indx].name,))
                ],
@@ -151,4 +173,8 @@ Widget  buildGrid(int i) {
          ),
     );
   }
+
+
+
+
 }

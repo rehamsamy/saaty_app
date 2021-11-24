@@ -11,15 +11,15 @@ class Product{
   int status;
   int isFav;
   int connType;
-  List<String> images;
+  List<dynamic> images;
 
   Product({@required this.id,@ required this.name,@ required this.price,@ required this.desc, @ required this.email, @ required this.phone, @ required this.cat,
   @ required this.status,@ required  this.isFav, @ required this.images,@required this.connType});
 
 
-  factory Product.fromJson(Map<String,dynamic> map){
+  factory Product.fromJson(String prodId,Map<String,dynamic> map){
     return Product(
-        id:map['id'],
+        id:prodId,
         name:map['name']
         ,price:map ['price']
         ,desc: map['desc']

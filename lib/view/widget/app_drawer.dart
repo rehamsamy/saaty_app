@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
+import 'package:saaty_app/view/screens/main_page_screen.dart';
 
 import '../../cons.dart';
 
@@ -48,6 +49,7 @@ class MyDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('Main Page'),
+                onTap: ()=>Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE),
               ),
               ListTile(
                 leading: Icon(
