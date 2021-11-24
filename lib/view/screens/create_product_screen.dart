@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 // import 'package:image_picker_flutter/image_picker_flutter.dart';
 import 'package:image_picker/image_picker.dart' ;
+import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'dart:io';
 
 import '../../cons.dart';
@@ -26,7 +27,7 @@ class CreateProductScreen extends StatefulWidget {
 class CreateProductScreenState extends State<CreateProductScreen>{
   var controller=Get.put(ProductController());
 
-
+  bool _isLoading=false;
   List<dynamic> images = [];
 
   int _radValCat=0;
@@ -376,7 +377,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
     );
   }
 
-  void saveProductData() async{
+   saveProductData() async{
      List<String> newImages=[];
     if(_key.currentState.validate()&& images.length>0){
       _key.currentState.save();
@@ -387,25 +388,60 @@ class CreateProductScreenState extends State<CreateProductScreen>{
       map['images']=newImages;
       map['id']=AuthController.userId;
       map['isFav']=0;
-      map['cat']=0;
-      map['status']=0;
-
-     // File file = File(images[0].path);
-
-
-      // var path2 = await FlutterAbsolutePath.getAbsolutePath(images[0].identifier);
-      // print(path2);
-       await controller.createProduct(map,images);
-
+      map['cat']=_radValCat;
+      map['status']=_radValType;
+      map['connType']=_radValContact;
+      print('xx  $_radValCat cc    $_radValType vv    $_radValCat');
+      try{
+        await controller.createProduct(map,images).catchError(()=>buildLoading(context))
+            .then((value) {
+          setState(() {
+            _isLoading=false;
+          });
+        });
+      }
+      catch (err){
+     buildLoading(context);
+      }
 
     }else if(images.length==0){
       print( 'please select at least one image');
-
       Fluttertoast.showToast(
           msg: "please select at least one image",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
       );
     }
+     Fluttertoast.showToast(
+         msg: "product uploaded suseccfully",
+         toastLength: Toast.LENGTH_SHORT,
+         gravity: ToastGravity.CENTER,
+         timeInSecForIosWeb: 1,
+         backgroundColor: Colors.red,
+         textColor: Colors.white,
+         fontSize: 16.0
+     );
+     Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
+     setState(() {
+       _isLoading=false;
+     });
+   }
+
+  void buildLoading(BuildContext ctx) {
+    showDialog(context: ctx, builder: (ctx)=>
+        AlertDialog(
+          content: Text('errror occured'),
+          title: Text('error'),
+          actions: [
+            FlatButton(onPressed: (){
+              Navigator.of(ctx).pop();
+            }, child: Text('Ok'))
+          ],
+        )
+
+    );
+
   }
+
 }
+

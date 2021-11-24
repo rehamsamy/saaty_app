@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/model/store_model.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 
 import '../../cons.dart';
 
 class MainPageScreen extends StatefulWidget {
-
+  static String MAIN_PRAGE_ROUTE = '/5';
   @override
   _MainPageScreenState createState() => _MainPageScreenState();
 }
@@ -15,8 +16,9 @@ class MainPageScreen extends StatefulWidget {
 class _MainPageScreenState extends State<MainPageScreen> with SingleTickerProviderStateMixin {
   TabController _controller;
   double width,height;
+  List<Product> allProducts=[];
 
-List<StoreModel> stores=[
+List<StoreModel> stmores=[
   StoreModel('Store1', 'assets/images/store1.png'),
   StoreModel('Store2', 'assets/images/store2.png'),
   StoreModel('Store3', 'assets/images/store3.png'),

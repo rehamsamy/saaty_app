@@ -10,10 +10,11 @@ class Product{
   int cat;
   int status;
   int isFav;
+  int connType;
   List<String> images;
 
   Product({@required this.id,@ required this.name,@ required this.price,@ required this.desc, @ required this.email, @ required this.phone, @ required this.cat,
-  @ required this.status,@ required  this.isFav, @ required this.images});
+  @ required this.status,@ required  this.isFav, @ required this.images,@required this.connType});
 
 
   factory Product.fromJson(Map<String,dynamic> map){
@@ -27,6 +28,7 @@ class Product{
         cat:map['cat'],
         status:map['status'],
         isFav: map['isFav'],
-        images:map['images']);
+        images:map['images'],
+        connType:map['connType']);
   }
 }

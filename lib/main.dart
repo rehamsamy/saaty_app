@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
          LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>LoginScreen(),
         RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),
         HomeScreen.HOME_SCREEN_RIUTE:(_)=>HomeScreen(),
-        CreateProductScreen.CREATE_PRODUCT_ROUTE:(_)=>CreateProductScreen()
+        CreateProductScreen.CREATE_PRODUCT_ROUTE:(_)=>CreateProductScreen(),
+        MainPageScreen.MAIN_PRAGE_ROUTE:(_)=>MainPageScreen()
       },
     );
   }
