@@ -82,7 +82,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                   Row(
                     children: [
                       Flexible(child: buildTextFormProductData('price', 'Enter Price', Icons.monetization_on_rounded, TextInputType.number)),
-                      Text('EGYPT',style: TextStyle(color: Colors.lightGreen),)
+                      Text('EGYPT',style: Cons.greenFont,)
                     ],
                   ),
                 ],

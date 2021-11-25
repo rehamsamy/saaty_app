@@ -20,6 +20,11 @@ import 'dart:io';
 class ProductController extends GetxController{
   List<String> vv=[];
 List<Product> allProducts=[];
+
+  String token=AuthController.token;
+  String userId=AuthController.userId;
+
+
   Future createProduct(Map<String,dynamic> map,List<dynamic> images)async{
     String url='https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=${AuthController.token}';
     try{
@@ -80,7 +85,7 @@ var ref= FirebaseStorage.instance.ref();
 
 
   Future fetchProducts()async{
- allProducts.clear();
+    allProducts.clear();
     String token=AuthController.token;
     print(token);
     String url='https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
@@ -98,7 +103,7 @@ var ref= FirebaseStorage.instance.ref();
         }
         );
       }
-      print(allProducts.length);
+      print('ddd ${allProducts.length} ');
     }catch(err){
       print(err);
     }
@@ -113,6 +118,24 @@ var ref= FirebaseStorage.instance.ref();
 
 
 
-
-
+  Future toggleFav(String id,Map<String,dynamic> map)async{
+    String token=AuthController.token;
+   // String url='https://shop-93ba9-default-rtdb.firebaseio.com/products/$id.json?auth=${AuthProvider.token}';
+    print(id);
+    int index=allProducts.indexWhere((element) => element.id==id);
+    String url='https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
+    var response=await http.patch(Uri.parse(url),body:json.encode(map));
+    print(response.statusCode);
+    try {
+      if (response.statusCode==200){
+          print('yesss');
+      }else{
+        print('noooooo');
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    allProducts[index]=Product.fromJson(id, map) as Product;
+  update();
+  }
 }

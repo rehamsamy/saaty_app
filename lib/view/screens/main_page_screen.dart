@@ -16,10 +16,13 @@ class MainPageScreen extends StatefulWidget {
   _MainPageScreenState createState() => _MainPageScreenState();
 }
 
-class _MainPageScreenState extends State<MainPageScreen> with SingleTickerProviderStateMixin {
+class _MainPageScreenState extends State<MainPageScreen> with SingleTickerProviderStateMixin ,AutomaticKeepAliveClientMixin  {
   TabController _controller;
   double width,height;
+  bool _isLoading=false;
   List<Product> allProducts=[];
+  List<Product> watchProducts=[];
+  List<Product> bracletesProducts=[];
   ProductController _productController=Get.find();
 
 List<StoreModel> stmores=[
@@ -33,6 +36,7 @@ List<StoreModel> stmores=[
   void initState() {
     super.initState();
     _controller=TabController(length: 3, vsync: this);
+   fetchData();
   }
   @override
   Widget build(BuildContext context) {
@@ -104,9 +108,12 @@ List<StoreModel> stmores=[
         child: TabBarView(
           controller: _controller,
           children: [
-           buildGrid(0),
-           Center(child: Text('empty'),),
-            Center(child: Text('empty'),),
+           buildGrid(2),
+            buildGrid(0),
+          buildGrid(1),
+          //  Center(child: Text('empty'),),
+          //   buildGrid(0),
+          //   Center(child: Text('empty'),),
 
 
           ],
@@ -117,15 +124,21 @@ List<StoreModel> stmores=[
   }
 
 Widget  buildGrid(int i) {
-    return FutureBuilder(
-      future: _productController.fetchProducts(),
-        builder: (ctx,snap){
-      if(snap.connectionState==ConnectionState.waiting){
-        return Center(child: CircularProgressIndicator(),);
-      }else {
-        return GetBuilder<ProductController>(
+  return  _isLoading==true? Center(child: CircularProgressIndicator(),):
+         GetBuilder<ProductController>(
           init: _productController,
             builder: (_){
+              watchProducts.clear();
+              bracletesProducts.clear();
+              print('ddd ${ _productController.allProducts.length}  $i');
+              _productController.allProducts.forEach((element) {
+                if(element.cat==0 && i==0){
+                  watchProducts.add(element);
+                  print(element.name);
+                }else if (element.cat==1 && i==1){
+                  bracletesProducts.add(element);
+                }
+              });
             return
                 GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -134,15 +147,16 @@ Widget  buildGrid(int i) {
                     childAspectRatio:8/9,
                     crossAxisCount: 2
                   ),
-                    itemCount: _productController.allProducts.length,
+                    itemCount:i==0? watchProducts.length:bracletesProducts.length,
                     itemBuilder: (ctx,inx){
+
                    // return storeGridItem(_productController.allProducts,inx);
-                      return ProductItemWidget(_productController.allProducts, inx);
+                      return ProductItemWidget(i==0? watchProducts:bracletesProducts,inx);
                     }
               );
         });
-      }
-    });
+    //   }
+    // });
 
   }
 
@@ -174,7 +188,20 @@ Widget  buildGrid(int i) {
     );
   }
 
+  // @override
+  // // TODO: implement wantKeepAlive
+  // bool get wantKeepAlive => throw UnimplementedError();
 
+  @override
+  bool get wantKeepAlive => true;
+
+  Future fetchData() async {
+    setState(() {
+      _isLoading=true;
+    });
+    await _productController.fetchProducts().then((value) => setState(()=>_isLoading=false));
+
+  }
 
 
 }

@@ -31,4 +31,21 @@ class Product{
         images:map['images'],
         connType:map['connType']);
   }
+
+  Map<String, dynamic> toMap(Product p) {
+    return {
+      'id' :p.id,
+      'name':p. name,
+      'price':p. price,
+      'desc' :p. desc,
+      'email': p. email,
+       'phone':p. phone,
+        'cat':p. cat,
+        'status':p. status,
+        'isFav': p. isFav,
+        'images':p. images,
+        'connType':p. connType
+    };
+  }
+
 }
