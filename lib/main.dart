@@ -7,6 +7,7 @@ import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
+import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 
 import 'view/screens/register_screen.dart';
 
@@ -49,7 +50,8 @@ class MyApp extends StatelessWidget {
         RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),
         HomeScreen.HOME_SCREEN_RIUTE:(_)=>HomeScreen(),
         CreateProductScreen.CREATE_PRODUCT_ROUTE:(_)=>CreateProductScreen(),
-        MainPageScreen.MAIN_PRAGE_ROUTE:(_)=>MainPageScreen()
+        MainPageScreen.MAIN_PRAGE_ROUTE:(_)=>MainPageScreen(),
+        ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE:(_)=>ProductItemDetailScreen()
       },
     );
   }
