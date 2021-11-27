@@ -21,13 +21,15 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
               title: Text(product.name),
+              centerTitle: true,
               background: Hero(
-                tag: product.id,
-                child: FadeInImage(image: NetworkImage(product.images[0],scale: 1),
-                  placeholder: AssetImage('watch_item1.png'),
-                fit: BoxFit.cover,),
-              ),
+              tag: product.id,
+              child: FadeInImage(image: NetworkImage(product.images[0],scale: 1),
+                placeholder: AssetImage('watch_item1.png'),
+              fit: BoxFit.cover,),
+                ),
             ),
+      
           ),
           SliverList(delegate: SliverChildListDelegate(
             [
