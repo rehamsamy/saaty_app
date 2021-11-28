@@ -63,7 +63,7 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                   SizedBox(height: 20,),
                   Container(
                     margin: EdgeInsets.all(10),
-                    height: 80,
+                    height: 70,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -83,15 +83,15 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                           height: 80,
-                            width: 100,
+                           height: 70,
+                            width: 80,
                             color: Cons.accent_color,
                             child:Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text(product.images.length.toString(),style: TextStyle(color: Colors.white),),
+                                Text(product.images.length.toString(),style: TextStyle(color: Colors.white,fontSize: 20),),
                                 Icon(Icons.photo_camera,color: Colors.white,),
-                                Icon(Icons.forward,color: Colors.white,)
+                                Icon(Icons.arrow_forward_ios,color: Colors.white,)
                               ],
                             ) ,
                           ),
@@ -100,7 +100,9 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                       ],
                     )
 
-                    )
+                    ),
+                  SizedBox(height: 10,),
+                  Divider(color: Cons.primary_color,)
                 ],
               ),
             ]
