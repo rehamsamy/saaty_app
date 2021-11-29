@@ -1,6 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:saaty_app/model/product_model.dart';
+import 'package:saaty_app/view/screens/send_message_screen.dart';
 
 import '../../cons.dart';
 
@@ -13,6 +16,9 @@ class ProductItemDetailScreen extends StatefulWidget {
 }
 
 class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
+  var _index;
+  CarouselController _carouselController = CarouselController();
+
   @override
   Widget build(BuildContext context) {
     Product product = ModalRoute.of(context).settings.arguments as Product;
@@ -36,33 +42,49 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                   Stack(
                     children: [
                      Container(
-                       width: 300,
-                       height: 300,
+                       margin: EdgeInsets.only(bottom: 25),
+                       width: double.infinity,
+                       height: 180,
+                       decoration: BoxDecoration(
+                         gradient: LinearGradient(
+                           begin: Alignment.topCenter,
+                           end: Alignment.bottomCenter,
+                           colors: [
+                             Colors.white,
+                             Colors.yellow.shade50,
+                           ],)
+                       ),
                        child: Hero(
                         tag: product.id,
                         child: FadeInImage(image: NetworkImage(product.images[0],scale: 1),
-                          placeholder: AssetImage('watch_item1.png'),
-                          fit: BoxFit.cover,),
+                          placeholder: AssetImage('assets/images/watch_item1.png'),
+                          fit: BoxFit.contain,
+                       ),
                     ),
                      ),
                       Positioned(
                         left: 10,
                           bottom: 10,
-                          child: Icon(product.isFav==0?Icons.favorite:Icons.favorite_border,color: Colors.red,))
+                          child: Icon(product.isFav==0?Icons.favorite:Icons.favorite_border,color: Colors.red,
+                          size: 30,)
+                        )
                     ],
                   ),
                   SizedBox(height: 20,),
+                  Padding(padding: EdgeInsets.symmetric(horizontal: 15),child: Column(
+                    children: [
+
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(product.cat==0?'Watch':'Braclet',style: Cons.accentFont,),
-                      Text(product.price,style: Cons.greenFont,)
+                      Text('${product.price} PSD',style: Cons.greenFont,)
                     ],
-                  ),SizedBox(height: 20,),
-                  Text(product.desc,),
-                  SizedBox(height: 20,),
+                  ),
+                      //SizedBox(height: 20,),
+                  ListTile(title: Text(product.desc),contentPadding: EdgeInsets.all(0)),
+                 // SizedBox(height: 20,),
                   Container(
-                    margin: EdgeInsets.all(10),
                     height: 70,
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -86,13 +108,18 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                            height: 70,
                             width: 80,
                             color: Cons.accent_color,
-                            child:Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(product.images.length.toString(),style: TextStyle(color: Colors.white,fontSize: 20),),
-                                Icon(Icons.photo_camera,color: Colors.white,),
-                                Icon(Icons.arrow_forward_ios,color: Colors.white,)
-                              ],
+                            child:InkWell(
+                              onTap: (){
+                                showImageDialog(context,product);
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(product.images.length.toString(),style: TextStyle(color: Colors.white,fontSize: 20),),
+                                  Icon(Icons.photo_camera,color: Colors.white,),
+                                  Icon(Icons.arrow_forward_ios,color: Colors.white,)
+                                ],
+                              ),
                             ) ,
                           ),
                         ),
@@ -102,13 +129,103 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
 
                     ),
                   SizedBox(height: 10,),
-                  Divider(color: Cons.primary_color,)
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Divider(color: Cons.primary_color,thickness: 1.2,),
+                  ),
+
+                  ListTile(title: Text('User Name:'),contentPadding: EdgeInsets.all(0)),
+                  ListTile(title: Text('Status:${product.status==0?'Old Product':'New Product'}'),contentPadding: EdgeInsets.all(0)),
+                  ListTile(leading: Icon(Icons.phone_android_sharp,color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
+                  ListTile(leading: Icon(Icons.email,color: Cons.primary_color,),title: Text(product.email),contentPadding: EdgeInsets.all(0))
+                    ],
+                  ),)
+
                 ],
               ),
             ]
           ))
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.email_rounded,color: Colors.white,),
+        onPressed: ()=>Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE),
+      )
+    );
+  }
+
+  void showImageDialog(BuildContext context, Product product) {
+
+    showDialog(context: context, builder: (ctx){
+      return AlertDialog(
+        content: Container(
+          height: MediaQuery.of(ctx).size.height*0.6,
+          margin: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
+          width: double.infinity,
+          child:
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                  buildCarouselSlider(product)  ,
+               SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (int i =0;i<product.images.length;i++)
+                      buildCircleSlider(i)
+                  ],
+                )
+
+              ],
+            ),
+
+        ),
+      );
+    });
+
+  }
+
+  Widget buildCircleSlider(int i){
+    return Padding(
+      padding: const EdgeInsets.all(2.0),
+      child: Container(
+        height: 13,
+        width: 13,
+        decoration: BoxDecoration(
+            border:i==_index? Border.all(width:2,color:Cons.accent_color ):Border.all(width:1,color:Cons.accent_color ),
+            shape: BoxShape.circle,
+            color:_index==i?Colors.white:Cons.primary_color
+        ),
+      ),
+    );
+  }
+
+
+  Widget buildCarouselSlider(Product product) {
+    return
+      Container(
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height *.4,
+        child:
+        CarouselSlider(
+          carouselController:_carouselController,
+          items: product.images.map((e) =>
+            Image.network(e,fit: BoxFit.fill,)
+             ).toList(),
+           options: CarouselOptions(
+            onPageChanged: (ind,x){
+              setState(() {
+                _index=ind;
+              });
+            },
+            initialPage: 1,
+            autoPlayAnimationDuration:Duration(milliseconds: 400),
+            autoPlay: true,
+            enlargeCenterPage: true,
+            aspectRatio: 9/6,
+            viewportFraction: 0.97
+        ),),
+
     );
   }
 }

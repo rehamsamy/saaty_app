@@ -50,7 +50,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                       child: Hero(
                         tag: prodList[index].id,
                         child: FadeInImage(image: NetworkImage(widget.allProducts[widget.indx].images[0],scale: 1),
-                        placeholder: AssetImage('watch_item1.png'),),
+                        placeholder: AssetImage('assets/images/watch_item1.png'),),
                       )),
                   SizedBox(height: 10,),
                   Positioned(
