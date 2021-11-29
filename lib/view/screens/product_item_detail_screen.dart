@@ -63,10 +63,13 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                     ),
                      ),
                       Positioned(
-                        left: 10,
-                          bottom: 10,
-                          child: Icon(product.isFav==0?Icons.favorite:Icons.favorite_border,color: Colors.red,
-                          size: 30,)
+                        left: 0,
+                          bottom: 0,
+                          child: IconButton(onPressed: (){}, icon: Icon(product.isFav==0?
+                          Icons.favorite_border:Icons.favorite,color: Colors.red,
+                              size: 30,))
+                          //Icon(product.isFav==0?Icons.favorite_border:Icons.favorite,color: Colors.red,
+                        //  size: 30,)
                         )
                     ],
                   ),
@@ -227,5 +230,9 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
         ),),
 
     );
+  }
+
+  toogleFav() {
+
   }
 }
