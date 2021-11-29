@@ -2,7 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
+import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
 
 import '../../cons.dart';
@@ -18,10 +20,13 @@ class ProductItemDetailScreen extends StatefulWidget {
 class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
   var _index;
   CarouselController _carouselController = CarouselController();
+  ProductController _productController=Get.find();
+  IconData _icon;
 
   @override
   Widget build(BuildContext context) {
     Product product = ModalRoute.of(context).settings.arguments as Product;
+    _icon=product.isFav==0?Icons.favorite_border:Icons.favorite;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -65,8 +70,15 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                       Positioned(
                         left: 0,
                           bottom: 0,
-                          child: IconButton(onPressed: (){}, icon: Icon(product.isFav==0?
-                          Icons.favorite_border:Icons.favorite,color: Colors.red,
+                          child: IconButton(onPressed: ()async{
+                            Map<String,dynamic> map=Product().toMap(product);
+                            product.isFav==0?
+                                await toogleFav(1,Icons.favorite_border,map):
+                                await toogleFav(0,Icons.favorite,map);
+                          }, icon: Icon(_icon
+                          //   product.isFav==0?
+                          // Icons.favorite_border:Icons.favorite
+                            ,color: Colors.red,
                               size: 30,))
                           //Icon(product.isFav==0?Icons.favorite_border:Icons.favorite,color: Colors.red,
                         //  size: 30,)
@@ -232,7 +244,10 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
     );
   }
 
-  toogleFav() {
-
+  toogleFav(int fav ,IconData iconData,Map<String,dynamic> map) async{
+    map['isFav']=fav;
+    await _productController.toggleFav(map['id'], map).then((value) =>
+        setState(()=>_icon=iconData)
+    );
   }
 }

@@ -73,10 +73,10 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                      Map<String,dynamic>  map= Product().toMap(prodList[index]);
                         if(prodList[index].isFav==1){
                           print('case1');
-                         await toogleFav(0, Icons.favorite,map);
+                         await toogleFav(0, Icons.favorite_border,map);
                         }else{
                           print('case2');
-                        await  toogleFav(1, Icons.favorite_border,map);
+                        await  toogleFav(1, Icons.favorite,map);
                         }
 
                       },
