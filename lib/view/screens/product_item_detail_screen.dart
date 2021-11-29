@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
@@ -23,8 +24,20 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
   ProductController _productController=Get.find();
   IconData _icon;
 
+
+  @override
+  void initState() {
+    setState(() {
+      WidgetsFlutterBinding.ensureInitialized();
+      Product product = ModalRoute.of(context).settings.arguments as Product;
+      _icon=product.isFav==0?Icons.favorite_border:Icons.favorite;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    WidgetsFlutterBinding.ensureInitialized();
     Product product = ModalRoute.of(context).settings.arguments as Product;
     _icon=product.isFav==0?Icons.favorite_border:Icons.favorite;
     return Scaffold(
@@ -71,13 +84,16 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                         left: 0,
                           bottom: 0,
                           child: IconButton(onPressed: ()async{
-                            Map<String,dynamic> map=Product().toMap(product);
-                            product.isFav==0?
-                                await toogleFav(1,Icons.favorite_border,map):
-                                await toogleFav(0,Icons.favorite,map);
-                          }, icon: Icon(_icon
-                          //   product.isFav==0?
-                          // Icons.favorite_border:Icons.favorite
+                                Map<String, dynamic> map = Product().toMap(product);
+                                if (product.isFav == 1) {
+                                  print('case1');
+                                  await toogleFav(
+                                      0, Icons.favorite_border, map);
+                                } else {
+                                  print('case2');
+                                  await toogleFav(1, Icons.favorite, map);
+                                }
+                              }, icon: Icon(_icon
                             ,color: Colors.red,
                               size: 30,))
                           //Icon(product.isFav==0?Icons.favorite_border:Icons.favorite,color: Colors.red,
@@ -246,8 +262,15 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
 
   toogleFav(int fav ,IconData iconData,Map<String,dynamic> map) async{
     map['isFav']=fav;
-    await _productController.toggleFav(map['id'], map).then((value) =>
-        setState(()=>_icon=iconData)
+    await _productController.toggleFav(map['id'], map).then((value) {
+
+     setState(() {
+       print('vvvvvvvvvvvv---------  $fav');
+       _icon=iconData;
+     });
+      print(iconData.toString());
+    }
+
     );
   }
 }
