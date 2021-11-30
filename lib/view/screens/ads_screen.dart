@@ -38,7 +38,7 @@ class _AdsScreenState extends State<AdsScreen> {
         .height;
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(150),
+        preferredSize: Size.fromHeight(120),
         child: Container(
           //height: 250,
           child: Column(
@@ -81,7 +81,7 @@ class _AdsScreenState extends State<AdsScreen> {
         ),
       ),
       body: Container(
-        height: height * 0.7,
+        height: height * 0.8,
         child: buildGrid(),),
       drawer: MyDrawer(),
     );
@@ -99,7 +99,7 @@ class _AdsScreenState extends State<AdsScreen> {
               print(element.name);
             }
           });
-          return
+          return allProducts.length==0?Center(child: Text('Empty Data'),):
             GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisSpacing: 0,

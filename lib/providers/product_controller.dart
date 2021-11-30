@@ -32,8 +32,15 @@ List<Product> favProducts=[];
       map['id']=AuthController.userId;
       print('step1');
   var response=  await http.post(Uri.parse(url),body: json.encode(map));
+  Map<String, dynamic> result = json.decode(response.body) as Map<String,dynamic>;
+ String idd;
+ result.forEach((key, value) { idd=value;});
+
+  print('iddddddddd  => $idd');
+  print(response.body.toString());
   print(response.statusCode);
   if(response.statusCode==200){
+    uploadImagesToFirebase(images, idd);
    // uploadImageRequest(images);
 print('yes');
   }else{
@@ -46,42 +53,7 @@ catch(err){
 }
   }
 
-  void uploadImageRequest(List<dynamic> images) async {
-    List<String> vv=[];
-    print('step0');
-    print(AuthController.userId);
 
-  print('step1');
-var ref= FirebaseStorage.instance.ref();
-  try{
-    for (int i=0;i<images.length;i++){
-       ref= ref.child('user_iamge').child(AuthController.userId).child(i.toString());
-      print('step22 ');
-      File file=File(images[i].path);
-         await ref.putFile(file);
-       String url = await ref.getDownloadURL();
-       print('step21 $url ');
-        vv.add(url);
-      // String url = (await ref.getDownloadURL()).toString();
-        print('step55 ');
-      print(vv[0]);
-
-
-    }
-
-    print('step3');
-  //  print('${ref.path}   ${ref.getParent()} ');
-   // product_images.addAll(await ref.child(AuthController.userId) as List<File>);
-    //String url= await ref.child(AuthController.userId);
-  //  print('uuuuu ${product_images[0].toString()}');
-  }catch(err){
-    print(err);
-    print('step4');
-  }
-
-
-
-  }
 
 
   Future fetchProducts(int flag)async{
@@ -110,7 +82,6 @@ var ref= FirebaseStorage.instance.ref();
           }
           );
         }else if(flag==2){
-          print(result.toString());
           result.
           forEach((key, value) async {
             if(key==AuthController.userId){
@@ -118,7 +89,7 @@ var ref= FirebaseStorage.instance.ref();
                 Product product = Product.fromJson(key, val1);
                 allProducts.add(product);
                 favProducts.add(product);
-                print(allProducts.length);
+                print('fav  vvvv  => ${favProducts[0].id}');
               });
             }
 
@@ -146,6 +117,7 @@ var ref= FirebaseStorage.instance.ref();
     print(AuthController.userId);
     print(id);
     String url='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';;
+    String url1='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}/$id.json?auth=$token';
     int flag=0;
     var response;
     int index=allProducts.indexWhere((element) => element.id==id);
@@ -155,10 +127,11 @@ var ref= FirebaseStorage.instance.ref();
     }
 
   print('flagggggg  = $flag');
+
     if(flag==0){
        response=await http.post(Uri.parse(url),body:json.encode(map));
     }else{
-       response=await http.put(Uri.parse(url),body:json.encode(map));
+       response=await http.patch(Uri.parse(url1),body:json.encode(map));
     }
 
     print(response.statusCode);
@@ -176,4 +149,65 @@ var ref= FirebaseStorage.instance.ref();
   }
 
 
+
+  Future<List<String> >uploadImagesToFirebase(List images,String id) async{
+    List<String> vv=[];
+    print('idddddddd         eeeeeeee    $id');
+    print('step1');
+
+    var imageUrls = await Future.wait(images.map((_image) {
+      int i=0;
+      uploadFile(File(_image.path), id);
+      i++;
+    }
+    ));
+    print(imageUrls);
+    return imageUrls;
+
+
+  //   try{
+  //     for (int i=0;i<images.length;i++){
+  //       var ref= FirebaseStorage.instance.ref().child('user_image') .child(id).child(i.toString());
+  //       print('step22 ');
+  //       File file=File(images[i].path);
+  //       await ref.putFile(file);
+  //       String url = await ref.getDownloadURL();
+  //       print('step21 $url ');
+  //       vv.add(url);
+  //       // String url = (await ref.getDownloadURL()).toString();
+  //       print('step55 ');
+  //       print(vv[0]);
+  //
+  //
+  //     }
+  //
+  //     print('step3');
+  //     //  print('${ref.path}   ${ref.getParent()} ');
+  //     // product_images.addAll(await ref.child(AuthController.userId) as List<File>);
+  //     //String url= await ref.child(AuthController.userId);
+  //     //  print('uuuuu ${product_images[0].toString()}');
+  //   }catch(err){
+  //     print(err);
+  //     print('step4');
+  //   }
+  //
+  //
+  //   return vv;
+  }
+
+  Future<String> uploadFile(File _image,String id) async {
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('images/$id/${_image.path}');
+    print('.333');
+    StorageUploadTask uploadTask = storageReference.putFile(_image);
+    await uploadTask.onComplete;
+    print('.4444');
+ print(storageReference.getDownloadURL.toString());
+    return await storageReference.getDownloadURL();
+  }
+
 }
+
+
+

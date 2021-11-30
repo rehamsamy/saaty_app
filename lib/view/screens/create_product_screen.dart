@@ -387,9 +387,9 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
  /////   upload images   -------------------
 
-      List<String> imagesResult= await uploadImagesToFirebase(images);
-      print('dddddddd');
-      print(imagesResult.length);
+      // List<String> imagesResult= await uploadImagesToFirebase(images);
+      // print('dddddddd');
+      // print(imagesResult.length);
       //print(imagesResult[0]);
 
 
@@ -398,7 +398,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
         // file = File(images[i].path);
         newImages.add(images[i].path);
       }
-      map['images']=imagesResult;
+      map['images']=newImages;
       map['id']=AuthController.userId;
       map['isFav']=0;
       map['cat']=_radValCat;
@@ -464,7 +464,8 @@ class CreateProductScreenState extends State<CreateProductScreen>{
     print('step1');
     try{
       for (int i=0;i<3;i++){
-       var ref= FirebaseStorage.instance.ref().child('user_iamge').child(AuthController.userId).child(i.toString());
+       var ref= FirebaseStorage.instance.ref().child('user_image').
+       child(AuthController.userId).child(i.toString());
         print('step22 ');
         File file=File(images[i].path);
         await ref.putFile(file);
