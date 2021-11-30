@@ -7,10 +7,8 @@ import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 import '../../cons.dart';
 
 class ProductItemWidget extends StatefulWidget {
-  List<Product> allProducts=[];
-  int indx=0;
-
-  ProductItemWidget(this.allProducts,this.indx);
+  Product product;
+  ProductItemWidget(this.product);
 
   @override
   _ProductItemWidgetState createState() => _ProductItemWidgetState();
@@ -21,13 +19,12 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
   IconData _icon=Icons.favorite_border;
   @override
   Widget build(BuildContext context) {
-    int index=widget.indx;
-    List<Product> prodList=widget.allProducts;
+    Product product=widget.product;
       return GestureDetector(
         onTap: (){
           Navigator.of(context).
           pushNamed(ProductItemDetailScreen.
-          PRODUCT_DETAIL_ROUTE,arguments: prodList[index]);},
+          PRODUCT_DETAIL_ROUTE,arguments: product);},
         child: Padding(
           padding: const EdgeInsets.all(1.0),
           child:
@@ -48,8 +45,8 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                       top: 30,
                       bottom: 25,
                       child: Hero(
-                        tag: prodList[index].id,
-                        child: FadeInImage(image: NetworkImage(widget.allProducts[widget.indx].images[0],scale: 1),
+                        tag: product.id,
+                        child: FadeInImage(image: NetworkImage( product.images[0],scale: 1),
                         placeholder: AssetImage('assets/images/watch_item1.png'),),
                       )),
                   SizedBox(height: 10,),
@@ -57,12 +54,12 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                       bottom: 1,
                     right: 1,
                     child:
-                  Text(widget.allProducts[widget.indx].name,style: Cons.greyFont1,)),
+                  Text( product.name,style: Cons.greyFont1,)),
                   Positioned(
                     bottom: 1,
                     left: 1,
                     child:  Text(
-                      '${widget.allProducts[widget.indx].price}  PSD',style:TextStyle(color: Colors.green.shade600,fontSize: 15),),
+                      '${ product.price}  PSD',style:TextStyle(color: Colors.green.shade600,fontSize: 15),),
 
                   ),
                   Positioned(
@@ -70,8 +67,8 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                     right: 1,
                     child: IconButton(
                       onPressed: () async{
-                     Map<String,dynamic>  map= Product().toMap(prodList[index]);
-                        if(prodList[index].isFav==1){
+                     Map<String,dynamic>  map= Product().toMap(product);
+                        if( product.isFav==1){
                           print('case1');
                          await toogleFav(0, Icons.favorite_border,map);
                         }else{
@@ -80,7 +77,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                         }
 
                       },
-                      icon:Icon(prodList[index].isFav==0?_icon:Icons.favorite,color: Colors.red,)
+                      icon:Icon( product.isFav==0?_icon:Icons.favorite,color: Colors.red,)
                       //Icon(prodList[index].isFav==0?icon:Icons.favorite)),color:Colors.red),
                   )
                   ) ],
@@ -98,6 +95,4 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
     );
 
   }
-
-
 }

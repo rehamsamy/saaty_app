@@ -24,25 +24,19 @@ class _MainPageScreenState extends State<MainPageScreen> with SingleTickerProvid
   List<Product> watchProducts=[];
   List<Product> bracletesProducts=[];
   ProductController _productController=Get.find();
+  String productsType;
 
-List<StoreModel> stmores=[
-  StoreModel('Store1', 'assets/images/store1.png'),
-  StoreModel('Store2', 'assets/images/store2.png'),
-  StoreModel('Store3', 'assets/images/store3.png'),
-  StoreModel('Store14', 'assets/images/store4.png')
-];
 
   @override
   void initState() {
     super.initState();
     _controller=TabController(length: 3, vsync: this);
-   fetchData();
+    //productsType=ModalRoute.of(context).settings.arguments ;
+    fetchData();
+
   }
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //   statusBarColor: Colors.transparent,
-    // ));
 
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 
@@ -151,7 +145,7 @@ Widget  buildGrid(int i) {
                     itemBuilder: (ctx,inx){
 
                    // return storeGridItem(_productController.allProducts,inx);
-                      return ProductItemWidget(i==0? watchProducts:bracletesProducts,inx);
+                      return ProductItemWidget(i==0? watchProducts[inx]:bracletesProducts[inx]);
                     }
               );
         });
@@ -199,7 +193,7 @@ Widget  buildGrid(int i) {
     setState(() {
       _isLoading=true;
     });
-    await _productController.fetchProducts().then((value) => setState(()=>_isLoading=false));
+    await _productController.fetchProducts(1).then((value) => setState(()=>_isLoading=false));
 
   }
 

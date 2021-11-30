@@ -20,6 +20,7 @@ import 'dart:io';
 class ProductController extends GetxController{
   List<String> vv=[];
 List<Product> allProducts=[];
+List<Product> favProducts=[];
 
   String token=AuthController.token;
   String userId=AuthController.userId;
@@ -29,7 +30,6 @@ List<Product> allProducts=[];
     String url='https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=${AuthController.token}';
     try{
       map['id']=AuthController.userId;
-
       print('step1');
   var response=  await http.post(Uri.parse(url),body: json.encode(map));
   print(response.statusCode);
@@ -84,11 +84,17 @@ var ref= FirebaseStorage.instance.ref();
   }
 
 
-  Future fetchProducts()async{
+  Future fetchProducts(int flag)async{
     allProducts.clear();
     String token=AuthController.token;
+    String url;
     print(token);
-    String url='https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
+    if (flag==1){
+    url='https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
+    }else if(flag==2){
+      url='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites.json?auth=$token';
+    }
+
     try{
       var response=await http.get(Uri.parse(url));
       print('step0');
@@ -96,12 +102,29 @@ var ref= FirebaseStorage.instance.ref();
         print('step1');
         Map<String, dynamic> result = json.decode(response.body) as Map<String,dynamic>;
         print(result);
-        result.
-        forEach((key, value) async {
-          Product product=Product.fromJson(key,value);
-          allProducts.add(product);
+        if(flag==1) {
+          result.
+          forEach((key, value) async {
+            Product product = Product.fromJson(key, value);
+            allProducts.add(product);
+          }
+          );
+        }else if(flag==2){
+          print(result.toString());
+          result.
+          forEach((key, value) async {
+            if(key==AuthController.userId){
+              value.forEach((key,val1)async {
+                Product product = Product.fromJson(key, val1);
+                allProducts.add(product);
+                favProducts.add(product);
+                print(allProducts.length);
+              });
+            }
+
+          }
+          );
         }
-        );
       }
       print('ddd ${allProducts.length} ');
     }catch(err){
@@ -120,11 +143,24 @@ var ref= FirebaseStorage.instance.ref();
 
   Future toggleFav(String id,Map<String,dynamic> map)async{
     String token=AuthController.token;
-   // String url='https://shop-93ba9-default-rtdb.firebaseio.com/products/$id.json?auth=${AuthProvider.token}';
+    print(AuthController.userId);
     print(id);
+    String url='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';;
+    int flag=0;
+    var response;
     int index=allProducts.indexWhere((element) => element.id==id);
-    String url='https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
-    var response=await http.patch(Uri.parse(url),body:json.encode(map));
+   // map['id']=index;
+    if(favProducts.length !=0){
+      favProducts.firstWhere((element) => (element.id==id)) == null?flag=0:flag=1;
+    }
+
+  print('flagggggg  = $flag');
+    if(flag==0){
+       response=await http.post(Uri.parse(url),body:json.encode(map));
+    }else{
+       response=await http.put(Uri.parse(url),body:json.encode(map));
+    }
+
     print(response.statusCode);
     try {
       if (response.statusCode==200){
@@ -138,4 +174,6 @@ var ref= FirebaseStorage.instance.ref();
     allProducts[index]=Product.fromJson(id, map) as Product;
   update();
   }
+
+
 }

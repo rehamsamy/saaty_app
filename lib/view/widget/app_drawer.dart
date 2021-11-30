@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:saaty_app/view/screens/ads_screen.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 
@@ -64,6 +65,10 @@ class MyDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('Favorites'),
+                onTap: (){
+                  String flag='fav';
+                  Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE,arguments:flag );
+                },
               ),
               ListTile(
                 leading: Icon(

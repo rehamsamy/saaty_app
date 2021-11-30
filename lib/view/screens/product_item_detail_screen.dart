@@ -25,21 +25,15 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
   IconData _icon;
 
 
-  @override
-  void initState() {
-    setState(() {
-      WidgetsFlutterBinding.ensureInitialized();
-      Product product = ModalRoute.of(context).settings.arguments as Product;
-      _icon=product.isFav==0?Icons.favorite_border:Icons.favorite;
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     WidgetsFlutterBinding.ensureInitialized();
     Product product = ModalRoute.of(context).settings.arguments as Product;
-    _icon=product.isFav==0?Icons.favorite_border:Icons.favorite;
+    _icon=Icons.favorite_border;
+    //product.isFav==0?Icons.favorite_border:Icons.favorite;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -87,15 +81,12 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                                 Map<String, dynamic> map = Product().toMap(product);
                                 if (product.isFav == 1) {
                                   print('case1');
-                                  await toogleFav(
-                                      0, Icons.favorite_border, map);
+                                  await toogleFav(0,Icons.favorite_border,map);
                                 } else {
                                   print('case2');
-                                  await toogleFav(1, Icons.favorite, map);
+                                  await toogleFav(1,Icons.favorite,map);
                                 }
-                              }, icon: Icon(_icon
-                            ,color: Colors.red,
-                              size: 30,))
+                              }, icon: Icon(product.isFav==0?_icon:Icons.favorite,color: Colors.red, size: 30,))
                           //Icon(product.isFav==0?Icons.favorite_border:Icons.favorite,color: Colors.red,
                         //  size: 30,)
                         )
@@ -263,14 +254,20 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
   toogleFav(int fav ,IconData iconData,Map<String,dynamic> map) async{
     map['isFav']=fav;
     await _productController.toggleFav(map['id'], map).then((value) {
+      if (mounted) {
 
-     setState(() {
-       print('vvvvvvvvvvvv---------  $fav');
-       _icon=iconData;
-     });
+      }
       print(iconData.toString());
     }
 
     );
+
+    setState(() {
+      print('vvvvvvvvvvvv---------  $fav');
+      _icon=Icons.add_alert;
+    });
+
+
+
   }
 }
