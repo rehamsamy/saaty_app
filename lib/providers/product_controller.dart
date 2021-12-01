@@ -1,11 +1,9 @@
 import 'dart:io';
-
+import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
-import 'package:saaty_app/model/http_exception.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'dart:convert';
 
@@ -22,6 +20,8 @@ class ProductController extends GetxController{
 List<Product> allProducts=[];
 List<Product> favProducts=[];
 
+  List<String> imagesResult=[];
+
   String token=AuthController.token;
   String userId=AuthController.userId;
 
@@ -36,12 +36,13 @@ List<Product> favProducts=[];
  String idd;
  result.forEach((key, value) { idd=value;});
 
-  print('iddddddddd  => $idd');
-  print(response.body.toString());
-  print(response.statusCode);
   if(response.statusCode==200){
-    uploadImagesToFirebase(images, idd);
-   // uploadImageRequest(images);
+    imagesResult=await uploadFile(images, idd);
+    print( '**************   ${imagesResult.length}');
+  //  setImagesToProduct(imagesResult,idd, map);
+   // uploadImagesToFirebase(images, idd);
+
+      // uploadImageRequest(images);
 print('yes');
   }else{
     print('no');
@@ -77,6 +78,8 @@ catch(err){
         if(flag==1) {
           result.
           forEach((key, value) async {
+           String prodId= value['id'];
+           List<String> imgs;
             Product product = Product.fromJson(key, value);
             allProducts.add(product);
           }
@@ -156,9 +159,7 @@ catch(err){
     print('step1');
 
     var imageUrls = await Future.wait(images.map((_image) {
-      int i=0;
-      uploadFile(File(_image.path), id);
-      i++;
+      //uploadFile(images, id);
     }
     ));
     print(imageUrls);
@@ -195,17 +196,63 @@ catch(err){
   //   return vv;
   }
 
-  Future<String> uploadFile(File _image,String id) async {
-    StorageReference storageReference = FirebaseStorage.instance
-        .ref()
-        .child('images/$id/${_image.path}');
-    print('.333');
-    StorageUploadTask uploadTask = storageReference.putFile(_image);
-    await uploadTask.onComplete;
-    print('.4444');
- print(storageReference.getDownloadURL.toString());
-    return await storageReference.getDownloadURL();
+  Future<List<String>> uploadFile(List<dynamic> images,String id) async {
+    print('uploadddd');
+    List<String>imagesUrls=[];
+
+      images.forEach((_image) async {
+      String imageName = basename(_image.path);
+      StorageReference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('posts/$id/$imageName');
+      try{
+        StorageUploadTask uploadTask =   await storageReference.putFile(
+            File(_image.path));
+      }catch(err){
+        print(err);
+      }
+
+
+
+      // if(uploadTask.isSuccessful){
+      //   print('aaaaaaaaaaaaaaaaaaa');
+      //   imagesUrls.add(await (await uploadTask.onComplete).ref.getDownloadURL());
+      // }else{
+      //   print('bbbbbbbbbb');
+      // }
+
+      //     onComplete.then((value)async {
+      //       print('!!!!!!!!!!!!!!   ') ;
+      //       String v=await  value.ref.getDownloadURL();
+      //       print(v);
+      // });
+
+
+    //  imagesResult.add(await (await uploadTask.onComplete).ref.getDownloadURL());
+    // await  uploadTask.onComplete;
+    //   print('zzz       ${storageReference.getDownloadURL().toString()}');
+    //   imagesUrls.add(await (await uploadTask.onComplete).ref.getDownloadURL());
+
+      print (imagesUrls[0]);
+    }
+    );
+    print('##########  ${imagesUrls.length}');
+    return imagesUrls;
   }
+
+  Future setImagesToProduct(List<String> imageString,String id,Map<String,dynamic> map)async{
+
+    String url1='https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=${AuthController.token}';
+    map['images']=imageString;
+    var  response=await http.patch(Uri.parse(url1),body:json.encode(map));
+    print(response.statusCode);
+    if(response.statusCode==200){
+      print('fpppppppppppp');
+    }else{
+      print('npppppppp');
+    }
+  }
+
 
 }
 
