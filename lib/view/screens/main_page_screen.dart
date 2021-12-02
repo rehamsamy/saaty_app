@@ -193,7 +193,7 @@ Widget  buildGrid(int i) {
     setState(() {
       _isLoading=true;
     });
-    await _productController.fetchProducts(1).then((value) => setState(()=>_isLoading=false));
+    await _productController.fetchProducts('all').then((value) => setState(()=>_isLoading=false));
 
   }
 

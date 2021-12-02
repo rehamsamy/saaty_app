@@ -8,7 +8,8 @@ import '../../cons.dart';
 
 class ProductItemWidget extends StatefulWidget {
   Product product;
-  ProductItemWidget(this.product);
+  String flag;
+  ProductItemWidget( this.product,[this.flag]);
 
   @override
   _ProductItemWidgetState createState() => _ProductItemWidgetState();
@@ -20,11 +21,13 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
   @override
   Widget build(BuildContext context) {
     Product product=widget.product;
+    String flag=widget.flag;
       return GestureDetector(
         onTap: (){
+
           Navigator.of(context).
           pushNamed(ProductItemDetailScreen.
-          PRODUCT_DETAIL_ROUTE,arguments: product);},
+          PRODUCT_DETAIL_ROUTE,arguments: {'prod':product,'flag':flag});},
         child: Padding(
           padding: const EdgeInsets.all(1.0),
           child:

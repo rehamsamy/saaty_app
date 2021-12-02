@@ -9,6 +9,7 @@ import '../../cons.dart';
 class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    String flag='all';
     return Drawer(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -66,8 +67,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 title: Text('Favorites'),
                 onTap: (){
-                  String flag='fav';
-                  Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE,arguments:flag );
+                  Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE,arguments:flag='fav' );
                 },
               ),
               ListTile(
@@ -76,6 +76,9 @@ class MyDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('My Ads'),
+                onTap: (){
+                  Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE,arguments:flag='ads' );
+                },
               ),
               ListTile(
                 leading: Icon(

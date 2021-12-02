@@ -19,6 +19,7 @@ class ProductController extends GetxController{
   List<String> vv=[];
 List<Product> allProducts=[];
 List<Product> favProducts=[];
+List<Product> adsProducts=[];
 
   List<String> imagesResult=[];
 
@@ -36,38 +37,33 @@ List<Product> favProducts=[];
  String idd;
  result.forEach((key, value) { idd=value;});
 
-  if(response.statusCode==200){
-    imagesResult=await uploadFile(images, idd);
-    print( '**************   ${imagesResult.length}');
-  //  setImagesToProduct(imagesResult,idd, map);
-   // uploadImagesToFirebase(images, idd);
+      if (response.statusCode == 200) {
+        imagesResult = await uploadFile(images, idd);
+        print('**************   ${imagesResult.length}');
+        setImagesToProduct(imagesResult, idd, map);
 
-      // uploadImageRequest(images);
-print('yes');
-  }else{
-    print('no');
-print(response.body.toString());
-  }
-update(); }
-catch(err){
-      print(err) ;
-}
+        print('yes');
+      } else {
+        print('no');
+        print(response.body.toString());
+      }
+      update();
+    } catch (err) {
+      print(err);
+    }
   }
 
-
-
-
-  Future fetchProducts(int flag)async{
+  Future fetchProducts(String flag)async{
     allProducts.clear();
+    favProducts.clear();
     String token=AuthController.token;
     String url;
     print(token);
-    if (flag==1){
-    url='https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
-    }else if(flag==2){
+    if (flag=='fav'){
       url='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites.json?auth=$token';
+    }else if(flag=='all'||flag=='ads'){
+      url='https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
     }
-
     try{
       var response=await http.get(Uri.parse(url));
       print('step0');
@@ -75,7 +71,7 @@ catch(err){
         print('step1');
         Map<String, dynamic> result = json.decode(response.body) as Map<String,dynamic>;
         print(result);
-        if(flag==1) {
+        if(flag=='all') {
           result.
           forEach((key, value) async {
            String prodId= value['id'];
@@ -84,7 +80,21 @@ catch(err){
             allProducts.add(product);
           }
           );
-        }else if(flag==2){
+        }else if(flag=='ads'){
+          adsProducts.clear();
+          result.forEach((key, value) async {
+            if(value['id']==AuthController.userId) {
+              List<String> imgs;
+              String prodId = value['id'];
+              Product product = Product.fromJson(key, value);
+              adsProducts.add(product);
+              print('!!!!!!!!!!!   ${adsProducts.length}');
+              print(adsProducts);
+            }
+          }
+          );
+        }
+        else if(flag=='fav'){
           result.
           forEach((key, value) async {
             if(key==AuthController.userId){
@@ -153,101 +163,45 @@ catch(err){
 
 
 
-  Future<List<String> >uploadImagesToFirebase(List images,String id) async{
-    List<String> vv=[];
-    print('idddddddd         eeeeeeee    $id');
-    print('step1');
-
-    var imageUrls = await Future.wait(images.map((_image) {
-      //uploadFile(images, id);
-    }
-    ));
-    print(imageUrls);
-    return imageUrls;
-
-
-  //   try{
-  //     for (int i=0;i<images.length;i++){
-  //       var ref= FirebaseStorage.instance.ref().child('user_image') .child(id).child(i.toString());
-  //       print('step22 ');
-  //       File file=File(images[i].path);
-  //       await ref.putFile(file);
-  //       String url = await ref.getDownloadURL();
-  //       print('step21 $url ');
-  //       vv.add(url);
-  //       // String url = (await ref.getDownloadURL()).toString();
-  //       print('step55 ');
-  //       print(vv[0]);
-  //
-  //
-  //     }
-  //
-  //     print('step3');
-  //     //  print('${ref.path}   ${ref.getParent()} ');
-  //     // product_images.addAll(await ref.child(AuthController.userId) as List<File>);
-  //     //String url= await ref.child(AuthController.userId);
-  //     //  print('uuuuu ${product_images[0].toString()}');
-  //   }catch(err){
-  //     print(err);
-  //     print('step4');
-  //   }
-  //
-  //
-  //   return vv;
-  }
-
   Future<List<String>> uploadFile(List<dynamic> images,String id) async {
     print('uploadddd');
-    List<String>imagesUrls=[];
-
-      images.forEach((_image) async {
-      String imageName = basename(_image.path);
-      StorageReference storageReference = FirebaseStorage.instance
-          .ref()
-          .child('posts/$id/$imageName');
-      try{
-        StorageUploadTask uploadTask =   await storageReference.putFile(
-            File(_image.path));
-      }catch(err){
-        print(err);
-      }
-
-
-
-      // if(uploadTask.isSuccessful){
-      //   print('aaaaaaaaaaaaaaaaaaa');
-      //   imagesUrls.add(await (await uploadTask.onComplete).ref.getDownloadURL());
-      // }else{
-      //   print('bbbbbbbbbb');
-      // }
-
-      //     onComplete.then((value)async {
-      //       print('!!!!!!!!!!!!!!   ') ;
-      //       String v=await  value.ref.getDownloadURL();
-      //       print(v);
-      // });
-
-
-    //  imagesResult.add(await (await uploadTask.onComplete).ref.getDownloadURL());
-    // await  uploadTask.onComplete;
-    //   print('zzz       ${storageReference.getDownloadURL().toString()}');
-    //   imagesUrls.add(await (await uploadTask.onComplete).ref.getDownloadURL());
-
-      print (imagesUrls[0]);
+    List<String> imagesUrls = [];
+    try {
+      imagesUrls =
+          await Future.wait(images.map((_image) => uploadFileNew(_image, id)));
+      print(imagesUrls);
+      print('#############   ${imagesUrls.length}');
+      return imagesUrls;
+    } catch (err) {
+      print(err);
     }
-    );
-    print('##########  ${imagesUrls.length}');
-    return imagesUrls;
   }
+
+  Future<String> uploadFileNew(var _image,String id) async {
+    List<String> newImg=[];
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('posts/$id/${basename(_image.path)}');
+    StorageUploadTask uploadTask = storageReference.putFile( File(_image.path));
+    await uploadTask.onComplete;
+
+   // newImg.add(await storageReference.getDownloadURL());
+    //  print('#############   ${newImg.length}');
+    return  await storageReference.getDownloadURL();;
+  }
+
 
   Future setImagesToProduct(List<String> imageString,String id,Map<String,dynamic> map)async{
 
     String url1='https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=${AuthController.token}';
+
     map['images']=imageString;
+    print(map['images'][0]);
     var  response=await http.patch(Uri.parse(url1),body:json.encode(map));
     print(response.statusCode);
     if(response.statusCode==200){
       print('fpppppppppppp');
+      print(response.body);
     }else{
       print('npppppppp');
     }

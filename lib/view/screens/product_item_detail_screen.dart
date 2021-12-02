@@ -31,87 +31,84 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     WidgetsFlutterBinding.ensureInitialized();
-    Product product = ModalRoute.of(context).settings.arguments as Product;
+
+
+    Map<String,dynamic> map = ModalRoute.of(context).settings.arguments as  Map<String,dynamic> ;
+    Product product=map['prod'];
+    String flag=map['flag'];
     _icon=Icons.favorite_border;
     //product.isFav==0?Icons.favorite_border:Icons.favorite;
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 10,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(product.name),
-              centerTitle: true,
-              background:null
-            ),
-      
-          ),
-          SliverList(delegate: SliverChildListDelegate(
-            [
-              Column(
-                children: [
-                  Stack(
-                    children: [
-                     Container(
-                       margin: EdgeInsets.only(bottom: 25),
-                       width: double.infinity,
-                       height: 180,
-                       decoration: BoxDecoration(
-                         gradient: LinearGradient(
-                           begin: Alignment.topCenter,
-                           end: Alignment.bottomCenter,
-                           colors: [
-                             Colors.white,
-                             Colors.yellow.shade50,
-                           ],)
-                       ),
-                       child: Hero(
-                        tag: product.id,
-                        child: FadeInImage(image: NetworkImage(product.images[0],scale: 1),
-                          placeholder: AssetImage('assets/images/watch_item1.png'),
-                          fit: BoxFit.contain,
-                       ),
+      appBar: AppBar(title: Text('My Ads', style: Cons.greyFont),
+                elevation: 8,
+                actions: [
+                  IconButton(icon: Icon(
+                    Icons.home, color: Cons.accent_color, size: 25,)),
+                ],),
+      body:SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 25),
+                  width: double.infinity,
+                  height: 180,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.white,
+                          Colors.yellow.shade50,
+                        ],)
+                  ),
+                  child: Hero(
+                    tag: product.id,
+                    child: FadeInImage(image: NetworkImage(product.images[0],scale: 1),
+                      placeholder: AssetImage('assets/images/watch_item1.png'),
+                      fit: BoxFit.contain,
                     ),
-                     ),
-                      Positioned(
-                        left: 0,
-                          bottom: 0,
-                          child: IconButton(onPressed: ()async{
-                                Map<String, dynamic> map = Product().toMap(product);
-                                if (product.isFav == 1) {
-                                  print('case1');
-                                  await toogleFav(0,Icons.favorite_border,map);
-                                } else {
-                                  print('case2');
-                                  await toogleFav(1,Icons.favorite,map);
-                                }
-                              }, icon: Icon(product.isFav==0?_icon:Icons.favorite,color: Colors.red, size: 30,))
-                          //Icon(product.isFav==0?Icons.favorite_border:Icons.favorite,color: Colors.red,
-                        //  size: 30,)
-                        )
-                    ],
                   ),
-                  SizedBox(height: 20,),
-                  Padding(padding: EdgeInsets.symmetric(horizontal: 15),child: Column(
-                    children: [
+                ),
+                Positioned(
+                    left: 0,
+                    bottom: 0,
+                    child: IconButton(onPressed: ()async{
+                      Map<String, dynamic> map = Product().toMap(product);
+                      if (product.isFav == 1) {
+                        print('case1');
+                        await toogleFav(0,Icons.favorite_border,map);
+                      } else {
+                        print('case2');
+                        await toogleFav(1,Icons.favorite,map);
+                      }
+                    }, icon: Icon(product.isFav==0?_icon:Icons.favorite,color: Colors.red, size: 30,))
+                  //Icon(product.isFav==0?Icons.favorite_border:Icons.favorite,color: Colors.red,
+                  //  size: 30,)
+                )
+              ],
+            ),
+            SizedBox(height: 20,),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 15),child: Column(
+              children: [
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(product.cat==0?'Watch':'Braclet',style: Cons.accentFont,),
-                      Text('${product.price} PSD',style: Cons.greenFont,)
-                    ],
-                  ),
-                      //SizedBox(height: 20,),
-                  ListTile(title: Text(product.desc),contentPadding: EdgeInsets.all(0)),
-                 // SizedBox(height: 20,),
-                  Container(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(product.cat==0?'Watch':'Braclet',style: Cons.accentFont,),
+                    Text('${product.price} PSD',style: Cons.greenFont,)
+                  ],
+                ),
+                //SizedBox(height: 20,),
+                ListTile(title: Text(product.desc),contentPadding: EdgeInsets.all(0)),
+                // SizedBox(height: 20,),
+                Container(
                     height: 70,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Cons.primary_color)
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Cons.primary_color)
                     ),
                     child: Stack(
                       children: [
@@ -127,7 +124,7 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: Container(
-                           height: 70,
+                            height: 70,
                             width: 80,
                             color: Cons.accent_color,
                             child:InkWell(
@@ -149,26 +146,24 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                       ],
                     )
 
-                    ),
-                  SizedBox(height: 10,),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Divider(color: Cons.primary_color,thickness: 1.2,),
-                  ),
+                ),
+                SizedBox(height: 10,),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Divider(color: Cons.primary_color,thickness: 1.2,),
+                ),
 
-                  ListTile(title: Text('User Name:'),contentPadding: EdgeInsets.all(0)),
-                  ListTile(title: Text('Status:${product.status==0?'Old Product':'New Product'}'),contentPadding: EdgeInsets.all(0)),
-                  ListTile(leading: Icon(Icons.phone_android_sharp,color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
-                  ListTile(leading: Icon(Icons.email,color: Cons.primary_color,),title: Text(product.email),contentPadding: EdgeInsets.all(0))
-                    ],
-                  ),)
+                ListTile(title: Text('User Name:'),contentPadding: EdgeInsets.all(0)),
+                ListTile(title: Text('Status:${product.status==0?'Old Product':'New Product'}'),contentPadding: EdgeInsets.all(0)),
+                ListTile(leading: Icon(Icons.phone_android_sharp,color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
+                ListTile(leading: Icon(Icons.email,color: Cons.primary_color,),title: Text(product.email),contentPadding: EdgeInsets.all(0))
+              ],
+            ),)
 
-                ],
-              ),
-            ]
-          ))
-        ],
+          ],
+        ),
       ),
+
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.email_rounded,color: Colors.white,),
         onPressed: ()=>Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE),
