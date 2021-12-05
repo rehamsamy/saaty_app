@@ -36,12 +36,10 @@ List<Product> adsProducts=[];
   Map<String, dynamic> result = json.decode(response.body) as Map<String,dynamic>;
  String idd;
  result.forEach((key, value) { idd=value;});
-
       if (response.statusCode == 200) {
         imagesResult = await uploadFile(images, idd);
         print('**************   ${imagesResult.length}');
         setImagesToProduct(imagesResult, idd, map);
-
         print('yes');
       } else {
         print('no');
@@ -52,6 +50,29 @@ List<Product> adsProducts=[];
       print(err);
     }
   }
+
+
+  Future editProduct(String id,Map<String ,Object> map)async{
+ print('step 1');
+    int index= adsProducts.indexWhere((element) => id==element.id);
+
+    String url='https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=${AuthController.token}';
+    try {
+      var response = await http.patch(Uri.parse(url), body: json.encode(map));
+      print(response.statusCode);
+      print('step 2');
+      allProducts[index] = Product.fromJson(id, map) as Product;
+      print(response.body);
+      update();
+    }
+    catch(err){
+      print('step 3');
+      print(err);
+    }
+  }
+
+
+
 
   Future fetchProducts(String flag)async{
     allProducts.clear();

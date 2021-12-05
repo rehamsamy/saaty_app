@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
+import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/providers/product_controller.dart';
@@ -18,7 +19,7 @@ import 'package:path_provider/path_provider.dart';
 
 
 class CreateProductScreen extends StatefulWidget {
-  static String CREATE_PRODUCT_ROUTE = '/4';
+ static String CREATE_PRODUCT_ROUTE = '/4';
   @override
   State<StatefulWidget> createState() {
     return CreateProductScreenState();
@@ -27,13 +28,17 @@ class CreateProductScreen extends StatefulWidget {
 
 class CreateProductScreenState extends State<CreateProductScreen>{
   var controller=Get.put(ProductController());
+  var _nameController,_priceController,_phoneController,
+      _emailController,_descController;
+  var catId, statusId,connType;
 
   bool _isLoading=false;
   List<dynamic> images = [];
-
+  List<dynamic> prodImages=[];
   int _radValCat=0;
   int _radValType=0;
   int _radValContact=0;
+  Product product;
   var _key=GlobalKey<FormState>();
   var _style=TextStyle(
     color: Colors.black,
@@ -52,6 +57,12 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
   @override
   Widget build(BuildContext context) {
+     product =ModalRoute.of(context).settings.arguments as Product;
+
+    if(product !=null){
+      inialializeValuesFromProduct(product);
+      print(';;;;;;;;;;;;;;;;;;;;;;;;   ${product.id}');
+    }
     Cons.buildColors(context);
     return Scaffold(
       appBar: AppBar(
@@ -121,14 +132,17 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               ),
               Column(
                 children: [
-                ListTile(
-                  leading: Text('Attatch Product Images:',style: Cons.blackFont,),
-                  onTap:
-                      (){
-                    buildMultiImagePicker(1);
-                    print('cccccc');
-                  },
-                  trailing: CircleAvatar(child: Icon(Icons.attach_file,color: Colors.white,),backgroundColor: Cons.accent_color,)
+                Visibility(
+                  visible: product==null?true:false,
+                  child: ListTile(
+                    leading: Text('Attatch Product Images:',style: Cons.blackFont,),
+                    onTap:
+                        (){
+                      buildMultiImagePicker(1);
+                      print('cccccc');
+                    },
+                    trailing: CircleAvatar(child: Icon(Icons.attach_file,color: Colors.white,),backgroundColor: Cons.accent_color,)
+                  ),
                 )
                  ,
                   SizedBox(
@@ -167,34 +181,38 @@ class CreateProductScreenState extends State<CreateProductScreen>{
   }
 
  Widget buildCategoryName() {
-    return Row(
-    // mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('Category:'),
-        SizedBox(width: 30,),
-        Radio(value: 0, groupValue: _radValCat, onChanged: (value){
-          setState(() {
-            print(value);
-            _radValCat=value;
-          });
-        },
-            hoverColor: Cons.primary_color,
-            materialTapTargetSize: MaterialTapTargetSize.padded, activeColor:Cons.primary_color ,),
-        Text('Watch'),
-        Radio(value: 1, groupValue: _radValCat, onChanged: (value){
-          setState(() {
-            _radValCat=value;
-          });
-        },
-        materialTapTargetSize: MaterialTapTargetSize.padded, activeColor:Cons.primary_color ,),
-        Text('Braclet'),
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState)=>
+       Row(
+      // mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Category:'),
+          SizedBox(width: 30,),
+          Radio(value: 0, groupValue: _radValCat, onChanged: (value){
+            setState(() {
+              print(value);
+              _radValCat=value;
+            });
+          },
+              hoverColor: Cons.primary_color,
+              materialTapTargetSize: MaterialTapTargetSize.padded, activeColor:Cons.primary_color ,),
+          Text('Watch'),
+          Radio(value: 1, groupValue: _radValCat, onChanged: (value){
+            setState(() {
+              _radValCat=value;
+            });
+          },
+          materialTapTargetSize: MaterialTapTargetSize.padded, activeColor:Cons.primary_color ,),
+          Text('Braclet'),
 
-      ],
+        ],
+      ),
     );
   }
 
   Widget buildTextFormProductData(String flag, String hint, IconData icon, TextInputType inputType){
     return TextFormField(
+      controller: buildControllerValues(flag),
       textAlign: TextAlign.start,
       maxLines: flag=='desc'?5:1,
       decoration: InputDecoration(
@@ -254,56 +272,60 @@ class CreateProductScreenState extends State<CreateProductScreen>{
   }
 
   Widget buildConnectionTypeRadio() {
-    return Column(
-      children: [
-        Row(
-         // mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Radio(value: 0, groupValue: _radValContact, onChanged: (value){
-              setState(() {
-                _radValContact=value;
-              });
-            },
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              activeColor:Cons.primary_color ,),
-            Text('phone'),
-           // SizedBox(width: 10,),
-            Radio(value: 1, groupValue: _radValContact, onChanged: (value){
-              setState(() {
-                _radValContact=value;
-              });
-            },
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              activeColor:Cons.primary_color ,),
-            Text('email'),
-            //SizedBox(width: 10,),
-            Radio(value: 2, groupValue: _radValContact, onChanged: (value){
-              setState(() {
-                _radValContact=value;
-              });
-            },
-                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              activeColor:Cons.primary_color ,),
-            Text('meessage'),
-           // SizedBox(width: 10,),
-          ],
-        ),
-        Row(
-          children: [
-            Radio(value: 3, groupValue: _radValContact, onChanged: (value){
-              setState(() {
-                _radValContact=value;
-              });
-            },
-                materialTapTargetSize: MaterialTapTargetSize.padded,
-            activeColor:Cons.primary_color ,
-            ),
-            Text('All'),
-          ],
-        ),
+    return StatefulBuilder(
+      builder: (BuildContext context, StateSetter setState)=>
+       Column(
+        children: [
+          Row(
+           // mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Radio(value: 0, groupValue: _radValContact, onChanged: (value){
+                setState(() {print('nnnnnnnnnnnn');}) ;
+                setState(() {
+                  _radValContact=value;
+                });
+              },
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor:Cons.primary_color ,),
+              Text('phone'),
+             // SizedBox(width: 10,),
+              Radio(value: 1, groupValue: _radValContact, onChanged: (value){
+                setState(() {
+                  _radValContact=value;
+                });
+              },
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor:Cons.primary_color ,),
+              Text('email'),
+              //SizedBox(width: 10,),
+              Radio(value: 2, groupValue: _radValContact, onChanged: (value){
+                setState(() {
+                  _radValContact=value;
+                });
+              },
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                activeColor:Cons.primary_color ,),
+              Text('meessage'),
+             // SizedBox(width: 10,),
+            ],
+          ),
+          Row(
+            children: [
+              Radio(value: 3, groupValue: _radValContact, onChanged: (value){
+                setState(() {
+                  _radValContact=value;
+                });
+              },
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+              activeColor:Cons.primary_color ,
+              ),
+              Text('All'),
+            ],
+          ),
 
 
-      ],
+        ],
+      ),
     );
 
   }
@@ -315,7 +337,8 @@ class CreateProductScreenState extends State<CreateProductScreen>{
       shrinkWrap: true,
       childAspectRatio: 1/0.8,
       children: List.generate(
-          images.length, (index) {
+          prodImages.length==0?images.length:
+          prodImages.length, (index) {
       //  AssetData asset = images[index];
         return Container(
           width: 2,
@@ -325,8 +348,8 @@ class CreateProductScreenState extends State<CreateProductScreen>{
             border: Border.all(color: Cons.accent_color),
             borderRadius: BorderRadius.circular(15)
           ),
-          child:Image.file(File(images[index].path),
-            fit: BoxFit.cover,)
+          child:prodImages.length==0?Image.file(File(images[index].path),
+            fit: BoxFit.contain,):Image.network(prodImages[index])
 
         );
       }),
@@ -350,15 +373,18 @@ class CreateProductScreenState extends State<CreateProductScreen>{
   }
 
  Widget buildProductType() {
-    return Row(
+    return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState)=>
+     Row(
      // mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text('Type:'),
         SizedBox(width: 30,),
         Radio(value: 0, groupValue: _radValType, onChanged: (value){
           setState(() {
-            print(value);
+            print('vvvvvvvvvvvvvvvv 1  $value');
             _radValType=value;
+            print('vvvvvvvvvvvvvvvv 1 $_radValType');
           });
         },
             materialTapTargetSize: MaterialTapTargetSize.padded,
@@ -375,6 +401,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
         Text('New Products'),
 
       ],
+    )
     );
   }
 
@@ -382,23 +409,12 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
 
      List<dynamic> newImages=[];
-    if(_key.currentState.validate()&& images.length>0){
+    if(_key.currentState.validate()&& (images.length>0||prodImages.length>0)){
+      print('////////////////');
       _key.currentState.save();
 
- /////   upload images   -------------------
-
-      // List<String> imagesResult= await uploadImagesToFirebase(images);
-      // print('dddddddd');
-      // print(imagesResult.length);
-      //print(imagesResult[0]);
 
 
-
-      for (int i=0;i<images.length;i++){
-        // file = File(images[i].path);
-        newImages.add(images[i].path);
-      }
-      map['images']=newImages;
       map['id']=AuthController.userId;
       map['isFav']=0;
       map['cat']=_radValCat;
@@ -406,12 +422,38 @@ class CreateProductScreenState extends State<CreateProductScreen>{
       map['connType']=_radValContact;
       print('xx  $_radValCat cc    $_radValType vv    $_radValCat');
       try{
-        await controller.createProduct(map,images).catchError(()=>buildLoading(context))
-            .then((value) {
-          setState(() {
-            _isLoading=false;
+
+        if(prodImages.length==0){
+          print('nnnnnnnnnnnnnn');
+          for (int i=0;i<images.length;i++){
+            // file = File(images[i].path);
+            newImages.add(images[i].path);
+
+          }
+          map['images']=newImages;
+          map['id']=AuthController.userId;
+
+          await controller.createProduct(map,images).catchError(()=>buildLoading(context))
+              .then((value) {
+            setState(() {
+              _isLoading=false;
+            });
           });
-        });
+
+        }else if(prodImages.length >0){
+          print('mmmmmm');
+          map['images']=prodImages;
+
+          await controller.editProduct(product.id,map).catchError(()=>buildLoading(context))
+              .then((value) {
+            setState(() {
+              _isLoading=false;
+            });
+          });
+
+        }
+
+
       }
       catch (err){
      buildLoading(context);
@@ -427,7 +469,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
     }
      Fluttertoast.showToast(
          msg: "product uploaded suseccfully",
-         toastLength: Toast.LENGTH_SHORT,
+         toastLength: Toast.LENGTH_LONG,
          gravity: ToastGravity.CENTER,
          timeInSecForIosWeb: 1,
          backgroundColor: Colors.red,
@@ -492,6 +534,44 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
   return vv;
   }
+
+  void inialializeValuesFromProduct(Product product) {
+     _nameController=  TextEditingController(text:product.name);
+     _priceController= TextEditingController(text:product.price);
+     _phoneController= TextEditingController(text:product.phone);
+     _emailController= TextEditingController(text:product.email);
+     _descController=  TextEditingController(text:product.desc);
+     setState(() {
+       _radValCat=product.cat;
+       _radValType=product.status;
+       _radValContact=product.connType;
+       prodImages=product.images;
+     });
+
+     print('**************');
+     print(prodImages.length);
+     print('  $_radValCat    $_radValType    $_radValContact');
+  }
+
+
+  TextEditingController buildControllerValues(String flag){
+    if(flag=='name'){
+      return _nameController;
+    }  if(flag=='price'){
+      return _priceController;
+    }  if(flag=='email'){
+      return _emailController;
+    }  if(flag=='desc'){
+      return _descController;
+    }  if(flag=='phone'){
+      return _phoneController;
+    } else
+      {
+        return null;
+      }
+  }
+
+
 
 }
 

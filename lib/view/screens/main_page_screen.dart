@@ -23,8 +23,11 @@ class _MainPageScreenState extends State<MainPageScreen> with SingleTickerProvid
   List<Product> allProducts=[];
   List<Product> watchProducts=[];
   List<Product> bracletesProducts=[];
+  List<Product> searcList=[];
   ProductController _productController=Get.find();
   String productsType;
+  var _searcController=TextEditingController();
+  int index;
 
 
   @override
@@ -39,7 +42,7 @@ class _MainPageScreenState extends State<MainPageScreen> with SingleTickerProvid
   Widget build(BuildContext context) {
 
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-
+   //  print(_searcController.text);
      width=MediaQuery.of(context).size.width;
      height=MediaQuery.of(context).size.height;
    // FocusManager.instance.primaryFocus.unfocus();
@@ -55,7 +58,8 @@ class _MainPageScreenState extends State<MainPageScreen> with SingleTickerProvid
                   child: AppBar( title: Text('Stores',style: Cons.greyFont),
                   elevation:8,
                   actions: [
-                    IconButton(icon:Icon(Icons.home,color: Cons.accent_color,size: 25,)),
+                    IconButton(icon:Icon(Icons.home,color: Cons.accent_color,size: 25,),
+                    onPressed: (){Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);},),
                   ],),),
               SizedBox(height: 2,),
               Expanded(
@@ -66,9 +70,47 @@ class _MainPageScreenState extends State<MainPageScreen> with SingleTickerProvid
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: TextFormField(
+                      controller: _searcController,
+                      onChanged: (val){
+                        if(index==0){
+                          print('watch $val');
+                          for(Product x in watchProducts){
+                            if(x.name.contains(val)){
+                              print('yes');
+                              setState(() {
+                                watchProducts.add(x);
+                              });
+                            }
+                          }
+                        }else if(index==1){
+                          print(bracletesProducts.length);
+                          print('braclet');
+                          for(Product x in bracletesProducts){
+                            print('braclet e $val');
+                            if(x.name.contains(val)){
+                              print('yes $val');
+                              setState(() {
+                                searcList.add(x);
+                               // bracletesProducts.add(x);
+                              });
+                            }
+                          }
+                           print(searcList.length);
+                          bracletesProducts.clear();
+                          setState(() {
+                            bracletesProducts=searcList;
+                          });
+
+                        }
+
+                      },
                       decoration: InputDecoration(
                         labelText: 'search',
                         prefixIcon: Icon(Icons.search,color: Cons.accent_color,size: 25,),
+                       suffixIcon: Icon(Icons.filter_list_alt,color: Cons.accent_color,size: 25,),
+                       // SizedBox(
+                       //     width:10,
+                       //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
                        enabledBorder: UnderlineInputBorder(
                          borderSide: BorderSide(
                            color: Cons.accent_color,
@@ -118,6 +160,9 @@ class _MainPageScreenState extends State<MainPageScreen> with SingleTickerProvid
   }
 
 Widget  buildGrid(int i) {
+    setState(() {
+      index=i;
+    });
   return  _isLoading==true? Center(child: CircularProgressIndicator(),):
          GetBuilder<ProductController>(
           init: _productController,
@@ -133,7 +178,8 @@ Widget  buildGrid(int i) {
                   bracletesProducts.add(element);
                 }
               });
-            return
+            return (i==0 && watchProducts.length ==0)||(i==1 && bracletesProducts.length ==0)?
+                Center(child: Text('Empty Data'),):
                 GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisSpacing: 0,

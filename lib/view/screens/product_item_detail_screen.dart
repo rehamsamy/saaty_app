@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
+import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
 
 import '../../cons.dart';
@@ -25,8 +26,6 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
   IconData _icon;
 
 
-
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
@@ -39,11 +38,24 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
     _icon=Icons.favorite_border;
     //product.isFav==0?Icons.favorite_border:Icons.favorite;
     return Scaffold(
-      appBar: AppBar(title: Text('My Ads', style: Cons.greyFont),
-                elevation: 8,
-                actions: [
+      appBar: AppBar(title: Text(product.name, style: Cons.greyFont),
+                actions: flag==null? null:[
+                  flag=='ads'?
+                  Row(
+                    children: [
+                      IconButton(icon: Icon(
+                        Icons.edit, color: Cons.accent_color, size: 25,),
+                      onPressed: (){
+                        Navigator.of(context).
+                        pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE,arguments: product);
+                      },),
+                      IconButton(icon: Icon(
+                        Icons.delete, color: Cons.accent_color, size: 25,)),
+                    ],
+                  ):
+
                   IconButton(icon: Icon(
-                    Icons.home, color: Cons.accent_color, size: 25,)),
+                    Icons.delete, color: Cons.accent_color, size: 25,)),
                 ],),
       body:SingleChildScrollView(
         child: Column(
@@ -51,7 +63,7 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
             Stack(
               children: [
                 Container(
-                  margin: EdgeInsets.only(bottom: 25),
+                  margin: EdgeInsets.symmetric(horizontal: 5,vertical: 25),
                   width: double.infinity,
                   height: 180,
                   decoration: BoxDecoration(
@@ -118,7 +130,10 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
                             itemBuilder: (_,indx){
                               return Container(
                                   margin:EdgeInsets.all(5)
-                                  ,child: Image.network(product.images[0],scale: 1,fit: BoxFit.cover,));
+                                  ,child: SizedBox(
+                                  height: 65,
+                                  width: 60,
+                                  child: Image.network(product.images[indx],scale: 1,fit: BoxFit.cover,)));
                             }
                         ),
                         Align(
@@ -176,7 +191,7 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
     showDialog(context: context, builder: (ctx){
       return AlertDialog(
         content: Container(
-          height: MediaQuery.of(ctx).size.height*0.6,
+          height: MediaQuery.of(ctx).size.height*0.7,
           margin: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
           width: double.infinity,
           child:
@@ -236,7 +251,7 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
               });
             },
             initialPage: 1,
-            autoPlayAnimationDuration:Duration(milliseconds: 400),
+            autoPlayAnimationDuration:Duration(milliseconds: 100),
             autoPlay: true,
             enlargeCenterPage: true,
             aspectRatio: 9/6,
