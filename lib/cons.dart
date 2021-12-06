@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'model/product_model.dart';
+
 class Cons {
   static Color primary_color=Colors.white;
   static Color accent_color=Colors.white;
@@ -21,5 +23,52 @@ class Cons {
    accent_color=Theme.of(ctx).accentColor;
  }
 //static Widget getAppbar(String title);
+
+
+ static List<Product> selectionAsecSortFilter(List<Product> prodss) {
+   List<Product> prods=prodss ;
+   print('&&&&&&&&&&&');
+   print(prods.length);
+   for (var i = 0; i < prods.length - 1; i++) {
+     var index_min = i;
+     for (var j = i + 1; j < prods.length; j++) {
+       if (double.parse(prods[j].price) <
+           double.parse(prods[index_min].price)) {
+         index_min = j;
+       }
+     }
+     if (index_min != i) {
+       var temp = prods[i];
+       prods[i] = prods[index_min];
+       prods[index_min] = temp;
+     }
+   }
+   print(prods.length);
+   return prods;
+ }
+
+
+    static List<Product> selectionDescSortFilter(List<Product> prods) {
+      List<Product> newWishlist=[];
+      for (var i = 0; i < prods.length - 1; i++) {
+        var index_min = i;
+        for (var j = i + 1; j < prods.length; j++) {
+          if (double.parse(prods[j].price) > double.parse(prods[index_min].price)) {
+            index_min = j;
+          }
+        }
+        if (index_min != i) {
+          var temp = prods[i];
+          prods[i] = prods[index_min];
+          prods[index_min] = temp;
+        }
+      }
+
+   return prods;
+
+  }
+
+
+
 
 }
