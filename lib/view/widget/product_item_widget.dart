@@ -24,7 +24,6 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
     String flag=widget.flag;
       return GestureDetector(
         onTap: (){
-
           Navigator.of(context).
           pushNamed(ProductItemDetailScreen.
           PRODUCT_DETAIL_ROUTE,arguments: {'prod':product,'flag':flag});},

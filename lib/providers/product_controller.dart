@@ -10,9 +10,6 @@ import 'dart:convert';
 
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:flutter/services.dart' show rootBundle;
-// import "package:path_provider/path_provider.dart";
-
-import 'package:path_provider/path_provider.dart';
 import 'dart:async';
 import 'dart:io';
 
@@ -78,90 +75,6 @@ class ProductController extends GetxController {
     }
   }
 
-  Future fetchProducts(String flag) async {
-    allProducts.clear();
-    favProducts.clear();
-    String token = AuthController.token;
-    String url;
-    print(token);
-    if (flag == 'fav') {
-      url =
-          'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites.json?auth=$token';
-    } else if (flag == 'all' || flag == 'ads') {
-      url =
-          'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
-    }
-    try {
-      var response = await http.get(Uri.parse(url));
-      print('step0');
-      if (response.statusCode == 200) {
-        print('step1');
-        Map<String, dynamic> result =
-            json.decode(response.body) as Map<String, dynamic>;
-        print(result);
-        if (flag == 'all') {
-          result.forEach((key, value) async {
-            String prodId = value['id'];
-            List<String> imgs;
-            Product product = Product.fromJson(key, value);
-            allProducts.add(product);
-          });
-        } else if (flag == 'ads') {
-          adsProducts.clear();
-          result.forEach((key, value) async {
-            if (value['id'] == AuthController.userId) {
-              List<String> imgs;
-              String prodId = value['id'];
-              Product product = Product.fromJson(key, value);
-              adsProducts.add(product);
-              print('!!!!!!!!!!!   ${adsProducts.length}');
-              print(adsProducts);
-            }
-          });
-        } else if (flag == 'fav') {
-          result.forEach((key, value) async {
-            if (key == AuthController.userId) {
-              value.forEach((key, val1) async {
-                Product product = Product.fromJson(key, val1);
-                allProducts.add(product);
-                favProducts.add(product);
-                print('fav  vvvv  => ${favProducts[0].id}');
-              });
-            }
-          });
-        }
-      }
-      print('ddd ${allProducts.length} ');
-    } catch (err) {
-      print(err);
-    }
-    update();
-  }
-
-  changeSelectedTab(int index) {
-    selectedTabIndex = index;
-    update();
-  }
-
-  orderProducts(int selectedTabIndex) {
-    this.selectedTabIndex = selectedTabIndex;
-    watchProducts.clear();
-    bracletesProducts.clear();
-    print('ddd ${allProducts.length}  $selectedTabIndex');
-    allProducts.forEach((element) {
-      if (element.cat == 0 && selectedTabIndex == 0) {
-        watchProducts.add(element);
-        print(element.name);
-      } else if (element.cat == 1 && selectedTabIndex == 1) {
-        bracletesProducts.add(element);
-      }
-    });
-    update();
-  }
-
-  List<Product> getWatchProductsList() {
-    watchProducts = allProducts.where((element) => element.cat == 0).toList();
-  }
 
   Future<String> getImageUrl(String userId) async {
     var ref = FirebaseStorage.instance

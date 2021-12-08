@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
+import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 
@@ -15,7 +16,7 @@ class AdsScreen extends StatefulWidget {
 }
 
 class _AdsScreenState extends State<AdsScreen> {
-  ProductController _productController=Get.find();
+  ProductsController _productController=Get.find();
   double width, height;
   bool _isLoading = false;
   List<Product> allProducts = [];
@@ -102,7 +103,7 @@ class _AdsScreenState extends State<AdsScreen> {
 
   Widget buildGrid(String flag) {
     return _isLoading == true ? Center(child: CircularProgressIndicator(),) :
-    GetBuilder<ProductController>(
+    GetBuilder<ProductsController>(
         init: _productController,
         builder: (_) {
           flag=='ads'?

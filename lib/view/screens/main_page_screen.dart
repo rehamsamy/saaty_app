@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/model/store_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
+import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 
@@ -23,12 +24,14 @@ class _MainPageScreenState extends State<MainPageScreen>
   double width, height;
   bool _isLoading = false;
   List<Product> allProducts = [];
-  ProductController _productController = Get.find();
+  List<Product> filteredProducts = [];
+  ProductsController _productController = Get.find();
   String productsType;
   var _searcController = TextEditingController();
   FocusNode _textFocus = new FocusNode();
   var hintText;
   int filterRad = 0;
+  bool flag=false;
   bool statusOldChecked = false;
   bool statusNewChecked = false;
 
@@ -42,16 +45,11 @@ class _MainPageScreenState extends State<MainPageScreen>
 
   @override
   Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
     //  print(_searcController.text);
-    width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
     // FocusManager.instance.primaryFocus.unfocus();
     return Scaffold(
       appBar: PreferredSize(
@@ -120,8 +118,8 @@ class _MainPageScreenState extends State<MainPageScreen>
                               width: 1.0,
                             ),
                           )
-                        //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
-                      ),
+                          //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
+                          ),
                     ),
                   ),
                 ),
@@ -165,62 +163,69 @@ class _MainPageScreenState extends State<MainPageScreen>
   }
 
   Widget buildGrid(int index) {
-    _productController.orderProducts(index);
+    print('index = $index');
+    print('allll    => ${_productController.allProducts.length}');
+    List<Product> list=[];
+    if(_searcController.text.isEmpty){
+      if(index==2){
+        list=_productController.allProducts;
+      }else if(index==0){
+        list=_productController.watchProductsList;
+      }else if(index==1){
+        list=_productController.bracletesProductsList;
+      }
+    }else {
+      _productController.searchTextFormProducts.clear();
+      _productController.txt=_searcController.text;
+      list=_productController.searchTextFormProducts;
+    }
+
+    // if(flag==true){
+    //   print('**********');
+    //   list=_productController.filteredCheckRadioProducts;
+    // }
+
+
     return _isLoading == true
         ? Center(
-      child: CircularProgressIndicator(),
-    )
-        : GetBuilder<ProductController>(
-      init: _productController,
-      builder: (_) =>
-          buildSearchAndProducts(
-              _productController.watchProducts,
-              _productController.bracletesProducts),
-    );
+            child: CircularProgressIndicator(),
+          )
+        : GetBuilder<ProductsController>(
+            init: _productController,
+            initState: (_){
+              print('allll    => ${list.length}');
+              if(flag==true){
+                // if (filterRad == 0 && statusOldChecked == true &&
+                //     statusNewChecked == true) {
+                //   list=_productController.filteredCheckRadioProducts;
+                //   //list= Cons.selectionDescSortFilter(list);
+                // }
+
+             //  print('allll    => ${list.length}');
+                //list=_productController.filteredCheckRadioProducts;
+              }
+             //  fetchData();
+
+            },
+            builder: (_) => _productController.allProducts.length==0?
+            Center(child: Text('Empty Data'),):
+            GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 0,
+                    crossAxisSpacing: 0,
+                    childAspectRatio: 8 / 9,
+                    crossAxisCount: 2),
+                itemCount: list.length,
+                itemBuilder: (ctx, inx) {
+
+                  return ProductItemWidget(
+                     list[inx]);
+                })
+            // buildSearchAndProducts(
+            // ),
+            );
   }
 
-  Widget buildSearchAndProducts(List<Product> prods1, List<Product> prods2) {
-    if (_productController.searchList.length != 0 ||
-        _searcController.text.isNotEmpty) {
-      return GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 0,
-              childAspectRatio: 8 / 9,
-              crossAxisCount: 2),
-          itemCount: _productController.searchList.length,
-          itemBuilder: (ctx, inx) {
-            // return storeGridItem(_productController.allProducts,inx);
-            return ProductItemWidget(_productController.searchList[inx]);
-          });
-    } else if ((_productController.selectedTabIndex == 0 &&
-        prods1.length == 0) ||
-        (_productController.selectedTabIndex == 1 && prods2.length == 0)) {
-      _productController.searchList.clear();
-      return Center(
-        child: Text('Empty Data'),
-      );
-    } else if ((_productController.selectedTabIndex == 0 &&
-        prods1.length > 0) ||
-        (_productController.selectedTabIndex == 1 && prods2.length > 0)) {
-      _productController.searchList.clear();
-      return GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 0,
-              childAspectRatio: 8 / 9,
-              crossAxisCount: 2),
-          itemCount: _productController.selectedTabIndex == 0
-              ? prods1.length
-              : prods2.length,
-          itemBuilder: (ctx, inx) {
-            // return storeGridItem(_productController.allProducts,inx);
-            return ProductItemWidget(_productController.selectedTabIndex == 0
-                ? prods1[inx]
-                : prods2[inx]);
-          });
-    }
-  }
 
   Widget storeGridItem(List<Product> stores, int indx) {
     print('111111111');
@@ -245,8 +250,8 @@ class _MainPageScreenState extends State<MainPageScreen>
               ),
               Center(
                   child: Text(
-                    stores[indx].name,
-                  ))
+                stores[indx].name,
+              ))
             ],
           ),
         ),
@@ -267,162 +272,128 @@ class _MainPageScreenState extends State<MainPageScreen>
     });
     await _productController
         .fetchProducts('all')
-        .then((value) => setState(() => _isLoading = false));
+        .then((value) => setState(() => _isLoading = false)).catchError((err)=>print('=>>>>>  $err'));
+
+    print('length 44444444  => ${_productController.allProducts.length}');
   }
 
   onTextChange(String text) {
     String text = _searcController.text;
     print('rrrr  $text');
-    _productController.search(text);
+    // _productController.search(text);
   }
 
-
-void buildFilterDialogWidget(BuildContext context) {
-  showDialog(
-      context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) =>
-                Container(
-                  padding: EdgeInsets.all(15),
-                  // height: MediaQuery.of(context).size.height * 0.7,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.95,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Arrange Where:'),
-                        RadioListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          title: Text(
-                            'From High Price To Low',
-                            textAlign: TextAlign.start,
-                          ),
-                          value: 0,
-                          groupValue: filterRad,
-                          onChanged: (value) {
-                            setState(() {
-                              filterRad = value;
-                            });
-                          },
-                          activeColor: Cons.primary_color,
-                        ),
-                        //SizedBox(width: 10,)
-                        RadioListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          value: 1,
-                          groupValue: filterRad,
-                          onChanged: (value) {
-                            setState(() {
-                              filterRad = value;
-                            });
-                          },
-                          title: Text('From Low Price To High'),
-                          activeColor: Cons.primary_color,
-                        ),
-                        //SizedBox(width: 30,),
-
-                        Divider(
-                          color: Cons.primary_color,
-                          thickness: 1.5,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Filter Where:',
+  void buildFilterDialogWidget(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) =>
+                  Container(
+                padding: EdgeInsets.all(15),
+                // height: MediaQuery.of(context).size.height * 0.7,
+                width: MediaQuery.of(context).size.width * 0.95,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Arrange Where:'),
+                      RadioListTile(
+                        contentPadding: EdgeInsets.all(0),
+                        title: Text(
+                          'From High Price To Low',
                           textAlign: TextAlign.start,
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CheckboxListTile(
-                          value: statusNewChecked,
-                          onChanged: (val) {
-                            setState(() {
-                              statusNewChecked = val;
-                            });
-                          },
-                          title: Text('New Products'),
-                          activeColor: Cons.primary_color,
-                        ),
-                        //  SizedBox(height: 20,),
-                        CheckboxListTile(
-                          value: statusOldChecked,
-                          onChanged: (val) {
-                            setState(() {
-                              statusOldChecked = val;
-                            });
-                          },
-                          title: Text('Old Products'),
-                          activeColor: Cons.primary_color,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            onPressed: () {
-                              if (filterRad == 0 &&
-                                  statusOldChecked == true &&
-                                  statusNewChecked == true &&
-                                  _productController.selectedTabIndex ==
-                                      0) {} else if (filterRad == 0 &&
-                                  statusOldChecked == true &&
-                                  statusNewChecked == true &&
-                                  _productController.selectedTabIndex == 1) {
-                                List<Product> newProds =
-                                Cons.selectionAsecSortFilter(
-                                    _productController.bracletesProducts);
-                                print('CCCCCCCCCCCC');
-                                print(newProds.length);
-                                setState(() {
-                                  _productController.bracletesProducts =
-                                      newProds;
-                                  print('vvvvvvvvvvvvvvvvvvv');
-                                  print(_productController
-                                      .bracletesProducts.length);
-                                });
-                              } else if (filterRad == 1 &&
-                                  statusOldChecked == true &&
-                                  statusNewChecked == true &&
-                                  _productController.selectedTabIndex == 1) {
-                                List<Product> newProds =
-                                Cons.selectionDescSortFilter(
-                                    _productController.bracletesProducts);
-                                print('DDDDDDDDDDD');
-                                print(
-                                    'new list size' +
-                                        newProds.length.toString());
-                                // setState((){
-                                _productController.allProducts = newProds;
-                                _productController.update();
-                                print(_productController.allProducts.length);
-                                // });
+                        value: 0,
+                        groupValue: filterRad,
+                        onChanged: (value) {
+                          setState(() {
+                            filterRad = value;
+                          });
+                        },
+                        activeColor: Cons.primary_color,
+                      ),
+                      //SizedBox(width: 10,)
+                      RadioListTile(
+                        contentPadding: EdgeInsets.all(0),
+                        value: 1,
+                        groupValue: filterRad,
+                        onChanged: (value) {
+                          setState(() {
+                            filterRad = value;
+                          });
+                        },
+                        title: Text('From Low Price To High'),
+                        activeColor: Cons.primary_color,
+                      ),
+                      //SizedBox(width: 30,),
 
-                              }
-                              Navigator.of(context).pop();
-                            },
-                            child: Text(
-                              'Do Filter',
-                              style: Cons.whiteFont,
-                            ),
-                            color: Cons.accent_color,
+                      Divider(
+                        color: Cons.primary_color,
+                        thickness: 1.5,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Filter Where:',
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      CheckboxListTile(
+                        value: statusNewChecked,
+                        onChanged: (val) {
+                          setState(() {
+                            statusNewChecked = val;
+                          });
+                        },
+                        title: Text('New Products'),
+                        activeColor: Cons.primary_color,
+                      ),
+                      //  SizedBox(height: 20,),
+                      CheckboxListTile(
+                        value: statusOldChecked,
+                        onChanged: (val) {
+                          setState(() {
+                            statusOldChecked = val;
+                          });
+                        },
+                        title: Text('Old Products'),
+                        activeColor: Cons.primary_color,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        )
-                      ],
-                    ),
+                          onPressed: () {
+                            setState(()=>flag=true);
+                            // filterRad=_productController.filterRad;
+                            // statusOldChecked=_productController.statusOldChecked;
+                            // statusNewChecked=_productController.statusNewChecked;
+                            // filteredProducts=   _productController.filteredCheckRadioProducts;
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Do Filter',
+                            style: Cons.whiteFont,
+                          ),
+                          color: Cons.accent_color,
+                        ),
+                      )
+                    ],
                   ),
                 ),
-          ),
-        );
-      });
-}}
+              ),
+            ),
+          );
+        });
+  }
+}

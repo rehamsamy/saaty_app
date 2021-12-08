@@ -11,6 +11,7 @@ import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
 
+import 'providers/products_controller.dart';
 import 'view/screens/register_screen.dart';
 
 void main() {
@@ -20,7 +21,7 @@ void main() {
 class MyApp extends StatelessWidget {
   final controller = Get.put(AuthController());
   final controller1 = Get.put(ProductController());
-
+  final controller2 = Get.put(ProductsController());
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
