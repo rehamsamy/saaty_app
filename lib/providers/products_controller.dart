@@ -22,8 +22,9 @@ class ProductsController extends GetxController {
   bool statusOldChecked = false;
   bool statusNewChecked = false;
   String txt;
+  bool flag;
 
-  int selectedTabIndex = 0;
+  int selectedTabIndex ;
 
   String token = AuthController.token;
   String userId = AuthController.userId;
@@ -99,6 +100,13 @@ class ProductsController extends GetxController {
     update();
   }
 
+  changeFilterFlag( bool flag1) {
+    flag=flag1;
+    update();
+  }
+
+
+
   List<Product> get watchProductsList {
     return _allProds.where((element) => element.cat == 0).toList();
   }
@@ -109,29 +117,41 @@ class ProductsController extends GetxController {
 
   List<Product> get searchTextFormProducts {
     String text = this.txt;
-    return allProducts.where((element) => element.name.contains(text)).toList();
-  }
-
-  List<Product> get filteredCheckRadioProducts {
-    int filterRad = this.filterRad;
-    bool statusOldChecked = this.statusOldChecked;
-    bool statusNewChecked = this.statusNewChecked;
-    List<Product>_filterProducts = [];
-    if (selectedTabIndex == 0) {
-      _filterProducts = watchProductsList;
-    } else if (selectedTabIndex == 1) {
-      _filterProducts = bracletesProductsList;
-    } else {
-      _filterProducts = _allProds;
+    print('-----------  '+text);
+    if(selectedTabIndex==0){
+      return allProducts.where((element) => element.name.contains(text)).toList();
+    }else if(selectedTabIndex==1){
+      return watchProductsList.where((element) => element.name.contains(text)).toList();
+    }else if(selectedTabIndex==2){
+      return bracletesProductsList.where((element) => element.name.contains(text)).toList();
     }
 
+  }
+
+  List<Product> getfilteredCheckRadioProducts (int filterRad, bool statusOldChecked,bool statusNewChecked) {
+    print('select  tabbbb ' + selectedTabIndex.toString());
+    List<Product>_filterProducts = [];
+    // if (selectedTabIndex == 1) {
+    //   _filterProducts = watchProductsList;
+    // } else if (selectedTabIndex == 2) {
+    //   _filterProducts = bracletesProductsList;
+    // } else {
+    //   _filterProducts = _allProds;
+    // }
+
+    //_filterProducts=newList;
     if (filterRad == 0 && statusOldChecked == true &&
         statusNewChecked == true) {
-      print('filter 111');
+      print('filter 111' + _filterProducts.length.toString());
+      _allProds = Cons.selectionAsecSortFilter(_filterProducts);
+      print('after filter   ' + _allProds.length.toString());
+    } else if (filterRad == 1 && statusOldChecked == true &&
+        statusNewChecked == true) {
       _allProds = Cons.selectionDescSortFilter(_filterProducts);
-      return _allProds;
-
-
+    }
+    update();
+    return _allProds;
+  }
       // List<Product> get filteredCheckRadioProducts{
       //   int filterRad = this.filterRad;
       //   bool statusOldChecked = this.statusOldChecked;
@@ -163,6 +183,7 @@ class ProductsController extends GetxController {
       //
       // }
 
-    }
-  }
+  //   }
+  // }
+
 }

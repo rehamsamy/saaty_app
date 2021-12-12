@@ -34,12 +34,12 @@ class _MainPageScreenState extends State<MainPageScreen>
   bool flag=false;
   bool statusOldChecked = false;
   bool statusNewChecked = false;
+  int _index=0;
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 3, vsync: this);
-    //productsType=ModalRoute.of(context).settings.arguments ;
     fetchData();
   }
 
@@ -129,6 +129,11 @@ class _MainPageScreenState extends State<MainPageScreen>
                   child: Card(
                     elevation: 4,
                     child: TabBar(
+                      onTap: (indx){
+                          _productController.changeSelectedTab(indx);
+
+                      print('!!!!!!!!!!! '+_productController.selectedTabIndex.toString());
+                      },
                       tabs: [
                         Tab(
                           text: 'Stores',
@@ -152,9 +157,9 @@ class _MainPageScreenState extends State<MainPageScreen>
         child: TabBarView(
           controller: _controller,
           children: [
-            buildGrid(2),
             buildGrid(0),
             buildGrid(1),
+            buildGrid(2),
           ],
         ),
       ),
@@ -163,28 +168,50 @@ class _MainPageScreenState extends State<MainPageScreen>
   }
 
   Widget buildGrid(int index) {
-    print('index = $index');
-    print('allll    => ${_productController.allProducts.length}');
     List<Product> list=[];
     if(_searcController.text.isEmpty){
-      if(index==2){
-        list=_productController.allProducts;
-      }else if(index==0){
-        list=_productController.watchProductsList;
-      }else if(index==1){
-        list=_productController.bracletesProductsList;
+      if(_productController.flag==false) {
+        print('flag equal => '+flag.toString());
+        if (index == 0) {
+          list = _productController.allProducts;
+        } else if (index == 1) {
+          list = _productController.watchProductsList;
+        } else if (index == 2) {
+          list = _productController.bracletesProductsList;
+        }
+      }else {
+        print('flag equal => '+flag.toString());
+        if(index==0 && filterRad == 0 && statusOldChecked == true &&
+            statusNewChecked == true){
+          print('status =>  1');
+          List<Product> newList=[];
+          newList = _productController.allProducts;
+          setState(() {
+            list=Cons.selectionDescSortFilter(newList);
+          });
+
+
+        }  else  if(index==1 && filterRad == 0 && statusOldChecked == true &&
+            statusNewChecked == true){
+          print('status =>  1');
+          List<Product> newList=[];
+          newList = _productController.allProducts;
+          setState(() {
+            list=Cons.selectionAsecSortFilter(newList);
+          });
+
+
+        }
       }
     }else {
-      _productController.searchTextFormProducts.clear();
+     // _productController.searchTextFormProducts.clear();
       _productController.txt=_searcController.text;
+      print('-----------  '+_productController.txt);
       list=_productController.searchTextFormProducts;
+      if(_searcController.text.isEmpty){
+        list.clear();
+      }
     }
-
-    // if(flag==true){
-    //   print('**********');
-    //   list=_productController.filteredCheckRadioProducts;
-    // }
-
 
     return _isLoading == true
         ? Center(
@@ -193,21 +220,8 @@ class _MainPageScreenState extends State<MainPageScreen>
         : GetBuilder<ProductsController>(
             init: _productController,
             initState: (_){
-              print('allll    => ${list.length}');
-              if(flag==true){
-                // if (filterRad == 0 && statusOldChecked == true &&
-                //     statusNewChecked == true) {
-                //   list=_productController.filteredCheckRadioProducts;
-                //   //list= Cons.selectionDescSortFilter(list);
-                // }
-
-             //  print('allll    => ${list.length}');
-                //list=_productController.filteredCheckRadioProducts;
-              }
-             //  fetchData();
-
             },
-            builder: (_) => _productController.allProducts.length==0?
+            builder: (_) => list.length==0?
             Center(child: Text('Empty Data'),):
             GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -374,11 +388,8 @@ class _MainPageScreenState extends State<MainPageScreen>
                             borderRadius: BorderRadius.circular(10),
                           ),
                           onPressed: () {
-                            setState(()=>flag=true);
-                            // filterRad=_productController.filterRad;
-                            // statusOldChecked=_productController.statusOldChecked;
-                            // statusNewChecked=_productController.statusNewChecked;
-                            // filteredProducts=   _productController.filteredCheckRadioProducts;
+                          _productController.changeFilterFlag(true);
+                           // filteredProducts= _productController.getfilteredCheckRadioProducts(filterRad, statusOldChecked, statusNewChecked);
                             Navigator.of(context).pop();
                           },
                           child: Text(
