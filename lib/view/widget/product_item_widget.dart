@@ -18,6 +18,7 @@ class ProductItemWidget extends StatefulWidget {
 class _ProductItemWidgetState extends State<ProductItemWidget> {
   ProductController _productController=Get.find();
   IconData _icon=Icons.favorite_border;
+  List<Product> favs=[];
   @override
   Widget build(BuildContext context) {
     Product product=widget.product;
@@ -69,6 +70,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                     right: 1,
                     child: IconButton(
                       onPressed: () async{
+                     int fav= await fetchFavByProdId(product.id);
                      Map<String,dynamic>  map= Product().toMap(product);
                         if( product.isFav==1){
                           print('case1');

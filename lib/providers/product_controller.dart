@@ -120,6 +120,18 @@ class ProductController extends GetxController {
 
   }
 
+  ===============================================================
+
+  Future<int> fetchFavByProdId(String id) async{
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}/$favKey.json?auth=$token';
+    try {
+      var response = await http.get(Uri.parse(url));
+    }catch(err){
+
+    }
+
+  }
+
 
   Future toggleFav(String id, Map<String, dynamic> map) async {
     String token = AuthController.token;
