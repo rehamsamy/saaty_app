@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
-import 'package:saaty_app/model/store_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
+import 'package:saaty_app/providers/tab_controller.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 
@@ -13,19 +13,21 @@ import '../../cons.dart';
 
 class MainPageScreen extends StatefulWidget {
   static String MAIN_PRAGE_ROUTE = '/5';
-
   @override
   _MainPageScreenState createState() => _MainPageScreenState();
 }
 
 class _MainPageScreenState extends State<MainPageScreen>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  final MyTabController _tabx = Get.put(MyTabController());
+
   TabController _controller;
   double width, height;
   bool _isLoading = false;
   List<Product> allProducts = [];
   List<Product> filteredProducts = [];
   ProductsController _productController = Get.find();
+  ProductController _prod = Get.find();
   String productsType;
   var _searcController = TextEditingController();
   FocusNode _textFocus = new FocusNode();
@@ -34,7 +36,6 @@ class _MainPageScreenState extends State<MainPageScreen>
   bool flag=false;
   bool statusOldChecked = false;
   bool statusNewChecked = false;
-  int _index=0;
 
   @override
   void initState() {
@@ -131,20 +132,9 @@ class _MainPageScreenState extends State<MainPageScreen>
                     child: TabBar(
                       onTap: (indx){
                           _productController.changeSelectedTab(indx);
-
                       print('!!!!!!!!!!! '+_productController.selectedTabIndex.toString());
                       },
-                      tabs: [
-                        Tab(
-                          text: 'Stores',
-                        ),
-                        Tab(
-                          text: 'Watches',
-                        ),
-                        Tab(
-                          text: 'Bracletes',
-                        )
-                      ],
+                      tabs: _tabx.myTabs,
                       controller: _controller,
                     ),
                   )),
@@ -156,11 +146,14 @@ class _MainPageScreenState extends State<MainPageScreen>
         height: height * 0.7,
         child: TabBarView(
           controller: _controller,
-          children: [
-            buildGrid(0),
-            buildGrid(1),
-            buildGrid(2),
-          ],
+          children:[
+              buildGrid(0),
+              buildGrid(1),
+              buildGrid(2),
+                   ]
+
+          //_tabx.myTabs.map((tab) => buildGrid(_productController.selectedTabIndex)).toList()
+          ,
         ),
       ),
       drawer: MyDrawer(),
@@ -169,18 +162,30 @@ class _MainPageScreenState extends State<MainPageScreen>
 
   Widget buildGrid(int index) {
     List<Product> list=[];
+    //int index=_productController.selectedTabIndex;
+    //list=_productController.allProducts;
+
+    print(',,,,,,,,,,,,,,,  '+index.toString());
     if(_searcController.text.isEmpty){
-      if(_productController.flag==false) {
+      print('++++++++++  '+index.toString());
+      if(flag==false) {
+        print('************ '+index.toString());
         print('flag equal => '+flag.toString());
         if (index == 0) {
           list = _productController.allProducts;
+          print('!!!!!!!!!!!!!!!  '+list.length.toString()+index.toString());
         } else if (index == 1) {
           list = _productController.watchProductsList;
         } else if (index == 2) {
           list = _productController.bracletesProductsList;
         }
       }else {
-        print('flag equal => '+flag.toString());
+
+
+          // list=_productController.filteredCheckRadioProducts;
+          // list.forEach((element) {print(element.price);});
+
+
         if(index==0 && filterRad == 0 && statusOldChecked == true &&
             statusNewChecked == true){
           print('status =>  1');
@@ -191,12 +196,14 @@ class _MainPageScreenState extends State<MainPageScreen>
           });
 
 
-        }  else  if(index==1 && filterRad == 0 && statusOldChecked == true &&
+        }
+        else  if(index==0 && filterRad == 1 && statusOldChecked == true &&
             statusNewChecked == true){
           print('status =>  1');
           List<Product> newList=[];
           newList = _productController.allProducts;
           setState(() {
+            print('bbbbbbbb');
             list=Cons.selectionAsecSortFilter(newList);
           });
 
@@ -287,7 +294,6 @@ class _MainPageScreenState extends State<MainPageScreen>
     await _productController
         .fetchProducts('all')
         .then((value) => setState(() => _isLoading = false)).catchError((err)=>print('=>>>>>  $err'));
-
     print('length 44444444  => ${_productController.allProducts.length}');
   }
 
@@ -388,6 +394,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                             borderRadius: BorderRadius.circular(10),
                           ),
                           onPressed: () {
+                            setState(()=>flag=true);
                           _productController.changeFilterFlag(true);
                            // filteredProducts= _productController.getfilteredCheckRadioProducts(filterRad, statusOldChecked, statusNewChecked);
                             Navigator.of(context).pop();

@@ -15,16 +15,16 @@ import '../cons.dart';
 
 class ProductsController extends GetxController {
   List<Product> _allProds = [];
-  List<Product> favProducts = [];
+ List<Product> favProducts =[];
   List<Product> adsProducts = [];
 
   int filterRad = 0;
   bool statusOldChecked = false;
   bool statusNewChecked = false;
   String txt;
-  bool flag;
+  bool flag=false;
 
-  int selectedTabIndex ;
+  int selectedTabIndex =0;
 
   String token = AuthController.token;
   String userId = AuthController.userId;
@@ -78,7 +78,7 @@ class ProductsController extends GetxController {
           result.forEach((key, value) async {
             if (key == AuthController.userId) {
               value.forEach((key, val1) async {
-                Product product = Product.fromJson(key, val1);
+                Product product = Product.fromJson(val1['id'], val1);
                 _allProds.add(product);
                 favProducts.add(product);
                 print('fav  vvvv  => ${favProducts[0].id}');
@@ -128,16 +128,16 @@ class ProductsController extends GetxController {
 
   }
 
-  List<Product> getfilteredCheckRadioProducts (int filterRad, bool statusOldChecked,bool statusNewChecked) {
+  List<Product> get filteredCheckRadioProducts  {
     print('select  tabbbb ' + selectedTabIndex.toString());
     List<Product>_filterProducts = [];
-    // if (selectedTabIndex == 1) {
-    //   _filterProducts = watchProductsList;
-    // } else if (selectedTabIndex == 2) {
-    //   _filterProducts = bracletesProductsList;
-    // } else {
-    //   _filterProducts = _allProds;
-    // }
+    if (selectedTabIndex == 0) {
+      _filterProducts = allProducts;
+    } else if (selectedTabIndex == 1) {
+      _filterProducts = watchProductsList;
+    } else {
+      _filterProducts = bracletesProductsList;
+    }
 
     //_filterProducts=newList;
     if (filterRad == 0 && statusOldChecked == true &&
@@ -185,5 +185,62 @@ class ProductsController extends GetxController {
 
   //   }
   // }
+
+
+
+  Future toggleFav(String id, Map<String, dynamic> map) async {
+    String token = AuthController.token;
+    print(AuthController.userId);
+    // print('favvvvvvvv  '+favProducts.length.toString());
+    print(id);
+    String url =
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
+    ;
+    String url1 =
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}/$id.json?auth=$token';
+    int flag = 0;
+    var response;
+    int index = allProducts.indexWhere((element) => element.id == id);
+    // map['id']=index;
+    if (favProducts.length != 0) {
+      print('1111111111111111');
+      favProducts.firstWhere((element)
+      {
+        if( element.id==id){
+          print('exist');
+          flag = 1;
+        }else {
+          flag = 0;
+          print('not exist');
+        }
+
+      });
+      // favProducts.firstWhere((element) => (element.id == id)) == null
+      //     ? flag = 0
+      //     : flag = 1;
+    }
+
+    print('flagggggg  = $flag');
+
+    if (flag == 0) {
+      response = await http.post(Uri.parse(url), body: json.encode(map));
+    } else {
+      response = await http.patch(Uri.parse(url1), body: json.encode(map));
+    }
+
+    print(response.statusCode);
+    try {
+      if (response.statusCode == 200) {
+        print('yesss');
+      } else {
+        print('noooooo');
+      }
+    } on Exception catch (e) {
+      print(e);
+    }
+    // allProducts[index] = Product.fromJson(id, map) as Product;
+    // update();
+  }
+
 
 }

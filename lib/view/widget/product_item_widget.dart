@@ -92,6 +92,8 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
 
   Future toogleFav(int fav,IconData iconData, Map<String,dynamic>  map)async{
     map['isFav']=fav;
+    print('favxxxxx'+fav.toString());
+    await _productController.fetchFavorite();
     await _productController.toggleFav(map['id'], map).then((value) =>
         setState(()=>_icon=iconData)
     );

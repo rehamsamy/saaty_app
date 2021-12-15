@@ -13,6 +13,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'dart:async';
 import 'dart:io';
 
+import 'package:saaty_app/providers/products_controller.dart';
+
 class ProductController extends GetxController {
   List<String> vv = [];
   List<Product> allProducts = [];
@@ -21,6 +23,7 @@ class ProductController extends GetxController {
   List<Product> watchProducts = [];
   List<Product> bracletesProducts = [];
   List<Product> searchList = [];
+  String favKey;
 
   List<String> imagesResult = [];
   int selectedTabIndex = 0;
@@ -85,15 +88,49 @@ class ProductController extends GetxController {
     return await ref.getDownloadURL();
   }
 
+
+  Future fetchFavorite() async {
+    allProducts.clear();
+    favProducts.clear();
+    String token = AuthController.token;
+  String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites.json?auth=$token';
+    try {
+      var response = await http.get(Uri.parse(url));
+      print('step0');
+      if (response.statusCode == 200) {
+        Map<String, dynamic> result =
+        json.decode(response.body) as Map<String, dynamic>;
+        result.forEach((key, value) async {
+          if (key == AuthController.userId) {
+            value.forEach((key, val1) async {
+             favKey=key;
+
+              Product product = Product.fromJson(val1['id'], val1);
+              favProducts.add(product);
+             print('key   => '+favKey);
+              print('fav  vvvv ${val1['id']}');
+            });
+          }
+        });
+        update();
+      }
+      }catch(err){
+
+    }
+
+  }
+
+
   Future toggleFav(String id, Map<String, dynamic> map) async {
     String token = AuthController.token;
     print(AuthController.userId);
+   // print('favvvvvvvv  '+favProducts.length.toString());
     print(id);
     String url =
         'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
     ;
     String url1 =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}/$id.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}/$favKey.json?auth=$token';
     int flag = 0;
     var response;
     int index = allProducts.indexWhere((element) => element.id == id);
@@ -103,13 +140,12 @@ class ProductController extends GetxController {
           ? flag = 0
           : flag = 1;
     }
-
-    print('flagggggg  = $flag');
-
     if (flag == 0) {
       response = await http.post(Uri.parse(url), body: json.encode(map));
-    } else {
+      print('yesss');
+    } else if(flag==1) {
       response = await http.patch(Uri.parse(url1), body: json.encode(map));
+      print('noooooo');
     }
 
     print(response.statusCode);
@@ -122,8 +158,8 @@ class ProductController extends GetxController {
     } on Exception catch (e) {
       print(e);
     }
-    allProducts[index] = Product.fromJson(id, map) as Product;
-    update();
+    // allProducts[index] = Product.fromJson(id, map) as Product;
+    // update();
   }
 
   Future<List<String>> uploadFile(List<dynamic> images, String id) async {
