@@ -18,7 +18,7 @@ import 'package:saaty_app/providers/products_controller.dart';
 class ProductController extends GetxController {
   List<String> vv = [];
   List<Product> allProducts = [];
-  List<Product> favProducts = [];
+  List<Product> _favProducts = [];
   List<Product> adsProducts = [];
   List<Product> watchProducts = [];
   List<Product> bracletesProducts = [];
@@ -30,6 +30,10 @@ class ProductController extends GetxController {
 
   String token = AuthController.token;
   String userId = AuthController.userId;
+
+  List<Product> get favProducts {
+    return _favProducts;
+  }
 
   Future createProduct(Map<String, dynamic> map, List<dynamic> images) async {
     String url =
@@ -91,7 +95,8 @@ class ProductController extends GetxController {
 
   Future fetchFavorite() async {
     allProducts.clear();
-    favProducts.clear();
+    _favProducts.clear();
+    List<Product> newList=[];
     String token = AuthController.token;
   String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites.json?auth=$token';
     try {
@@ -106,12 +111,15 @@ class ProductController extends GetxController {
              favKey=key;
 
               Product product = Product.fromJson(val1['id'], val1);
-              favProducts.add(product);
-             print('key   => '+favKey);
+              newList.add(product);
+            // _favProducts.add(product);
+             print('key   => '+_favProducts.length.toString());
               print('fav  vvvv ${val1['id']}');
             });
           }
         });
+        _favProducts.clear();
+        _favProducts=newList;
         update();
       }
       }catch(err){
@@ -120,7 +128,6 @@ class ProductController extends GetxController {
 
   }
 
-  ===============================================================
 
   Future<int> fetchFavByProdId(String id) async{
     String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}/$favKey.json?auth=$token';
@@ -147,8 +154,8 @@ class ProductController extends GetxController {
     var response;
     int index = allProducts.indexWhere((element) => element.id == id);
     // map['id']=index;
-    if (favProducts.length != 0) {
-      favProducts.firstWhere((element) => (element.id == id)) == null
+    if (_favProducts.length != 0) {
+      _favProducts.firstWhere((element) => (element.id == id)) == null
           ? flag = 0
           : flag = 1;
     }
@@ -171,7 +178,7 @@ class ProductController extends GetxController {
       print(e);
     }
     // allProducts[index] = Product.fromJson(id, map) as Product;
-    // update();
+     update();
   }
 
   Future<List<String>> uploadFile(List<dynamic> images, String id) async {

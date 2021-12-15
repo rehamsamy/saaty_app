@@ -18,9 +18,13 @@ class ProductItemWidget extends StatefulWidget {
 class _ProductItemWidgetState extends State<ProductItemWidget> {
   ProductController _productController=Get.find();
   IconData _icon=Icons.favorite_border;
+  int fav=0;
   List<Product> favs=[];
   @override
   Widget build(BuildContext context) {
+   fetchFav();
+
+
     Product product=widget.product;
     String flag=widget.flag;
       return GestureDetector(
@@ -70,9 +74,10 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                     right: 1,
                     child: IconButton(
                       onPressed: () async{
-                     int fav= await fetchFavByProdId(product.id);
+
+
                      Map<String,dynamic>  map= Product().toMap(product);
-                        if( product.isFav==1){
+                        if( fav==1){
                           print('case1');
                          await toogleFav(0, Icons.favorite_border,map);
                         }else{
@@ -81,7 +86,7 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
                         }
 
                       },
-                      icon:Icon( product.isFav==0?_icon:Icons.favorite,color: Colors.red,)
+                      icon:Icon( fav==0?_icon:Icons.favorite,color: Colors.red,)
                       //Icon(prodList[index].isFav==0?icon:Icons.favorite)),color:Colors.red),
                   )
                   ) ],
@@ -95,10 +100,40 @@ class _ProductItemWidgetState extends State<ProductItemWidget> {
   Future toogleFav(int fav,IconData iconData, Map<String,dynamic>  map)async{
     map['isFav']=fav;
     print('favxxxxx'+fav.toString());
-    await _productController.fetchFavorite();
     await _productController.toggleFav(map['id'], map).then((value) =>
         setState(()=>_icon=iconData)
     );
+
+  }
+
+  Future fetchFav()async{
+    _productController.favProducts.clear();
+    await _productController.fetchFavorite().then((value) {
+      print('bbbb  111 '+_productController.favProducts.length.toString());
+      if(_productController.favProducts.length>0){
+        print('888888888888');
+        Product prod= _productController.favProducts.firstWhere((element) =>
+        (element.id == widget.product.id));
+        if(prod==null){
+          setState(() {
+            fav=0;
+          });
+
+        }else{
+          setState(() {
+            fav=prod.isFav;
+          });
+
+        }
+
+        print('bbbbbbbbbbbb       ' +fav.toString());
+      }else{
+        fav=0;
+      }
+
+
+    });
+
 
   }
 }

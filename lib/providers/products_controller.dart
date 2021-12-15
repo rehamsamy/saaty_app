@@ -102,6 +102,7 @@ class ProductsController extends GetxController {
 
   changeFilterFlag( bool flag1) {
     flag=flag1;
+    print('tttttttttttttt $flag');
     update();
   }
 
@@ -140,17 +141,19 @@ class ProductsController extends GetxController {
     }
 
     //_filterProducts=newList;
-    if (filterRad == 0 && statusOldChecked == true &&
+    if (selectedTabIndex==0 &&filterRad == 0 && statusOldChecked == true &&
         statusNewChecked == true) {
       print('filter 111' + _filterProducts.length.toString());
-      _allProds = Cons.selectionAsecSortFilter(_filterProducts);
+      _allProds = Cons.selectionAsecSortFilter(allProducts);
       print('after filter   ' + _allProds.length.toString());
-    } else if (filterRad == 1 && statusOldChecked == true &&
+    } else if (selectedTabIndex==0&&filterRad == 1 && statusOldChecked == true &&
         statusNewChecked == true) {
       _allProds = Cons.selectionDescSortFilter(_filterProducts);
     }
-    update();
-    return _allProds;
+    //update();
+    allProducts.clear();
+    allProducts.addAll(_allProds);
+    return allProducts;
   }
       // List<Product> get filteredCheckRadioProducts{
       //   int filterRad = this.filterRad;

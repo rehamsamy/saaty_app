@@ -295,6 +295,8 @@ class _MainPageScreenState extends State<MainPageScreen>
         .fetchProducts('all')
         .then((value) => setState(() => _isLoading = false)).catchError((err)=>print('=>>>>>  $err'));
     print('length 44444444  => ${_productController.allProducts.length}');
+
+
   }
 
   onTextChange(String text) {
