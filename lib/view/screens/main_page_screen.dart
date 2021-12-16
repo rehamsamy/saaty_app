@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
-import 'package:saaty_app/providers/tab_controller.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 
@@ -13,15 +12,13 @@ import '../../cons.dart';
 
 class MainPageScreen extends StatefulWidget {
   static String MAIN_PRAGE_ROUTE = '/5';
+
   @override
   _MainPageScreenState createState() => _MainPageScreenState();
 }
 
 class _MainPageScreenState extends State<MainPageScreen>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  final MyTabController _tabx = Get.put(MyTabController());
-
-  TabController _controller;
   double width, height;
   bool _isLoading = false;
   List<Product> allProducts = [];
@@ -33,14 +30,11 @@ class _MainPageScreenState extends State<MainPageScreen>
   FocusNode _textFocus = new FocusNode();
   var hintText;
   int filterRad = 0;
-  bool flag=false;
-  bool statusOldChecked = false;
-  bool statusNewChecked = false;
+  bool flag = false;
 
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 3, vsync: this);
     fetchData();
   }
 
@@ -82,171 +76,104 @@ class _MainPageScreenState extends State<MainPageScreen>
               SizedBox(
                 height: 2,
               ),
-              Expanded(
-                flex: 1,
-                child: Card(
-                  margin: EdgeInsets.all(2),
-                  elevation: 6,
-                  child: Padding(
-                    padding: EdgeInsets.all(5),
-                    child: TextFormField(
-                      controller: _searcController,
-                      focusNode: _textFocus,
-                      onChanged: onTextChange,
-                      decoration: InputDecoration(
-                          hintText: 'search',
-                          prefixIcon: Icon(
-                            Icons.search,
+              Card(
+                margin: EdgeInsets.all(2),
+                elevation: 6,
+                child: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: TextFormField(
+                    controller: _searcController,
+                    focusNode: _textFocus,
+                    onChanged: onTextChange,
+                    decoration: InputDecoration(
+                        hintText: 'search',
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: Cons.accent_color,
+                          size: 25,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.filter_list_alt,
                             color: Cons.accent_color,
                             size: 25,
                           ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              Icons.filter_list_alt,
-                              color: Cons.accent_color,
-                              size: 25,
-                            ),
-                            onPressed: () {
-                              buildFilterDialogWidget(context);
-                            },
+                          onPressed: () {
+                            buildFilterDialogWidget(context);
+                          },
+                        ),
+                        // SizedBox(
+                        //     width:10,
+                        //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Cons.accent_color,
+                            width: 1.0,
                           ),
-                          // SizedBox(
-                          //     width:10,
-                          //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Cons.accent_color,
-                              width: 1.0,
-                            ),
-                          )
-                          //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
-                          ),
-                    ),
+                        )
+                        //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
+                        ),
                   ),
                 ),
               ),
-              Expanded(
-                  flex: 1,
-                  child: Card(
-                    elevation: 4,
-                    child: TabBar(
-                      onTap: (indx){
-                          _productController.changeSelectedTab(indx);
-                      print('!!!!!!!!!!! '+_productController.selectedTabIndex.toString());
-                      },
-                      tabs: _tabx.myTabs,
-                      controller: _controller,
-                    ),
-                  )),
+              GetBuilder<ProductController>(builder: (_) {
+                int index = _productController.selectedTabIndex;
+                return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InkWell(
+                        child: Icon(Icons.home),
+                        onTap: () {
+                          _productController.changeSelectedTab(0);
+                        },
+                      ),
+                      InkWell(
+                        child: Icon(Icons.add_alert),
+                        onTap: () {
+                          _productController.changeSelectedTab(1);
+                          print('index   ?   '+_productController.selectedTabIndex.toString());
+                        },
+                      ),
+                      InkWell(
+                        child: Icon(Icons.flag),
+                        onTap: () => _productController.changeSelectedTab(2),
+                      ),
+                    ]);
+              }),
             ],
           ),
         ),
       ),
-      body: Container(
-        height: height * 0.7,
-        child: TabBarView(
-          controller: _controller,
-          children:[
-              buildGrid(0),
-              buildGrid(1),
-              buildGrid(2),
-                   ]
-
-          //_tabx.myTabs.map((tab) => buildGrid(_productController.selectedTabIndex)).toList()
-          ,
-        ),
-      ),
+      body: GetBuilder<ProductsController> (builder: (productController) {
+        print('index'+productController.selectedTabIndex.toString());
+        return  buildGrid();
+        // buildGrid(productController.selectedTabIndex ?? 0)
+      }),
       drawer: MyDrawer(),
     );
   }
 
-  Widget buildGrid(int index) {
-    List<Product> list=[];
-    //int index=_productController.selectedTabIndex;
-    //list=_productController.allProducts;
-
-    print(',,,,,,,,,,,,,,,  '+index.toString());
-    if(_searcController.text.isEmpty){
-      print('++++++++++  '+index.toString());
-      if(flag==false) {
-        print('************ '+index.toString());
-        print('flag equal => '+flag.toString());
-        if (index == 0) {
-          list = _productController.allProducts;
-          print('!!!!!!!!!!!!!!!  '+list.length.toString()+index.toString());
-        } else if (index == 1) {
-          list = _productController.watchProductsList;
-        } else if (index == 2) {
-          list = _productController.bracletesProductsList;
-        }
-      }else {
-
-
-          // list=_productController.filteredCheckRadioProducts;
-          // list.forEach((element) {print(element.price);});
-
-
-        if(index==0 && filterRad == 0 && statusOldChecked == true &&
-            statusNewChecked == true){
-          print('status =>  1');
-          List<Product> newList=[];
-          newList = _productController.allProducts;
-          setState(() {
-            list=Cons.selectionDescSortFilter(newList);
-          });
-
-
-        }
-        else  if(index==0 && filterRad == 1 && statusOldChecked == true &&
-            statusNewChecked == true){
-          print('status =>  1');
-          List<Product> newList=[];
-          newList = _productController.allProducts;
-          setState(() {
-            print('bbbbbbbb');
-            list=Cons.selectionAsecSortFilter(newList);
-          });
-
-
-        }
-      }
-    }else {
-     // _productController.searchTextFormProducts.clear();
-      _productController.txt=_searcController.text;
-      print('-----------  '+_productController.txt);
-      list=_productController.searchTextFormProducts;
-      if(_searcController.text.isEmpty){
-        list.clear();
-      }
-    }
-
+  Widget buildGrid() {
+    _productController.txt=_searcController.text;
     return _isLoading == true
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : GetBuilder<ProductsController>(
-            init: _productController,
-            initState: (_){
-            },
-            builder: (_) => list.length==0?
-            Center(child: Text('Empty Data'),):
-            GridView.builder(
+        : _productController.filteredList.isEmpty
+            ? Center(
+                child: Text('Empty Data'),
+              )
+            : GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisSpacing: 0,
                     crossAxisSpacing: 0,
                     childAspectRatio: 8 / 9,
                     crossAxisCount: 2),
-                itemCount: list.length,
+                itemCount: _productController.filteredList.length,
                 itemBuilder: (ctx, inx) {
-
-                  return ProductItemWidget(
-                     list[inx]);
-                })
-            // buildSearchAndProducts(
-            // ),
-            );
+                  return ProductItemWidget(_productController.filteredList[inx]);
+                });
   }
-
 
   Widget storeGridItem(List<Product> stores, int indx) {
     print('111111111');
@@ -288,21 +215,23 @@ class _MainPageScreenState extends State<MainPageScreen>
   bool get wantKeepAlive => true;
 
   Future fetchData() async {
+    await Future.delayed(Duration(milliseconds: 200));
     setState(() {
       _isLoading = true;
     });
-    await _productController
+
+    await Future.delayed(Duration(milliseconds: 200));
+     _productController
         .fetchProducts('all')
-        .then((value) => setState(() => _isLoading = false)).catchError((err)=>print('=>>>>>  $err'));
+        .then((value) => setState(() => _isLoading = false))
+        .catchError((err) => print('=>>>>>  $err'));
     print('length 44444444  => ${_productController.allProducts.length}');
-
-
   }
 
   onTextChange(String text) {
     String text = _searcController.text;
     print('rrrr  $text');
-    // _productController.search(text);
+     _productController.search(text);
   }
 
   void buildFilterDialogWidget(BuildContext context) {
@@ -317,98 +246,97 @@ class _MainPageScreenState extends State<MainPageScreen>
                 // height: MediaQuery.of(context).size.height * 0.7,
                 width: MediaQuery.of(context).size.width * 0.95,
                 child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Arrange Where:'),
-                      RadioListTile(
-                        contentPadding: EdgeInsets.all(0),
-                        title: Text(
-                          'From High Price To Low',
+                  child: GetBuilder<ProductsController>(
+                    builder: (_)=>
+                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Arrange Where:'),
+                        RadioListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          title: Text(
+                            'From High Price To Low',
+                            textAlign: TextAlign.start,
+                          ),
+                          value: 0,
+                          groupValue: _productController.filterRad,
+                          onChanged: (value) {
+                         _productController.filterRad=value;
+                         _productController.update();
+
+                          },
+                          activeColor: Cons.primary_color,
+                        ),
+                        //SizedBox(width: 10,)
+                        RadioListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          value: 1,
+                          groupValue: _productController.filterRad,
+                          onChanged: (value) {
+                            _productController.filterRad=value;
+                            _productController.update();
+                          },
+                          title: Text('From Low Price To High'),
+                          activeColor: Cons.primary_color,
+                        ),
+                        //SizedBox(width: 30,),
+
+                        Divider(
+                          color: Cons.primary_color,
+                          thickness: 1.5,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Filter Where:',
                           textAlign: TextAlign.start,
                         ),
-                        value: 0,
-                        groupValue: filterRad,
-                        onChanged: (value) {
-                          setState(() {
-                            filterRad = value;
-                          });
-                        },
-                        activeColor: Cons.primary_color,
-                      ),
-                      //SizedBox(width: 10,)
-                      RadioListTile(
-                        contentPadding: EdgeInsets.all(0),
-                        value: 1,
-                        groupValue: filterRad,
-                        onChanged: (value) {
-                          setState(() {
-                            filterRad = value;
-                          });
-                        },
-                        title: Text('From Low Price To High'),
-                        activeColor: Cons.primary_color,
-                      ),
-                      //SizedBox(width: 30,),
-
-                      Divider(
-                        color: Cons.primary_color,
-                        thickness: 1.5,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'Filter Where:',
-                        textAlign: TextAlign.start,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CheckboxListTile(
-                        value: statusNewChecked,
-                        onChanged: (val) {
-                          setState(() {
-                            statusNewChecked = val;
-                          });
-                        },
-                        title: Text('New Products'),
-                        activeColor: Cons.primary_color,
-                      ),
-                      //  SizedBox(height: 20,),
-                      CheckboxListTile(
-                        value: statusOldChecked,
-                        onChanged: (val) {
-                          setState(() {
-                            statusOldChecked = val;
-                          });
-                        },
-                        title: Text('Old Products'),
-                        activeColor: Cons.primary_color,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          onPressed: () {
-                            setState(()=>flag=true);
-                          _productController.changeFilterFlag(true);
-                           // filteredProducts= _productController.getfilteredCheckRadioProducts(filterRad, statusOldChecked, statusNewChecked);
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            'Do Filter',
-                            style: Cons.whiteFont,
-                          ),
-                          color: Cons.accent_color,
+                        SizedBox(
+                          height: 10,
                         ),
-                      )
-                    ],
+                        CheckboxListTile(
+                          value: _productController.statusNewChecked,
+                          onChanged: (val) {
+                            _productController.statusNewChecked=val;
+                            _productController.update();
+
+                          },
+                          title: Text('New Products'),
+                          activeColor: Cons.primary_color,
+                        ),
+                        //  SizedBox(height: 20,),
+                        CheckboxListTile(
+                          value:   _productController.statusOldChecked,
+                          onChanged: (val) {
+                            _productController.statusOldChecked=val;
+                            _productController.update();
+                          },
+                          title: Text('Old Products'),
+                          activeColor: Cons.primary_color,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            onPressed: () async{
+                              _productController.changeFilterFlag(true);
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              'Do Filter',
+                              style: Cons.whiteFont,
+                            ),
+                            color: Cons.accent_color,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
