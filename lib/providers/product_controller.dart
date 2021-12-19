@@ -161,29 +161,23 @@ class ProductController extends GetxController {
     var response;
     int index = allProducts.indexWhere((element) => element.id == id);
     // map['id']=index;
-    if (_favProducts.length > 0) {
-      //_favProducts.forEach((element) {element.id==id;})?
-     // _favProducts.forEach((element) {element.id==id})?flag=1:flag=0;
-      _favProducts.forEach((element) {
+    if (favProducts.length > 0) {
+      favProducts.forEach((element) {
         if(element.id==id){
+          print('ele  '+element.id);
           flag=1;
         }else{
           flag=0;
         }
       });
       print('flagggg   '+flag.toString());
-    //   _favProducts.where((element) => (element.id == id)).toList() != null
-    //       ? flag = 0
-    //       : flag = 1;
      }
     if (flag == 0) {
       print('yesss');
       response = await http.post(Uri.parse(url), body: json.encode(map));
-
     } else if(flag==1) {
       print('noooooo');
       response = await http.patch(Uri.parse(url1), body: json.encode(map));
-
     }
 
     print(response.statusCode);
