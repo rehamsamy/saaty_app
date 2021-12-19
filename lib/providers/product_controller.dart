@@ -23,6 +23,7 @@ class ProductController extends GetxController {
   List<Product> watchProducts = [];
   List<Product> bracletesProducts = [];
   List<Product> searchList = [];
+  int isFavorite=0;
   String favKey;
 
   List<String> imagesResult = [];
@@ -61,6 +62,12 @@ class ProductController extends GetxController {
     } catch (err) {
       print(err);
     }
+  }
+
+
+  changeFavoriteFlag(int fav){
+    isFavorite=fav;
+    update();
   }
 
   Future editProduct(String id, Map<String, Object> map) async {
@@ -154,17 +161,29 @@ class ProductController extends GetxController {
     var response;
     int index = allProducts.indexWhere((element) => element.id == id);
     // map['id']=index;
-    if (_favProducts.length != 0) {
-      _favProducts.firstWhere((element) => (element.id == id)) == null
-          ? flag = 0
-          : flag = 1;
-    }
+    if (_favProducts.length > 0) {
+      //_favProducts.forEach((element) {element.id==id;})?
+     // _favProducts.forEach((element) {element.id==id})?flag=1:flag=0;
+      _favProducts.forEach((element) {
+        if(element.id==id){
+          flag=1;
+        }else{
+          flag=0;
+        }
+      });
+      print('flagggg   '+flag.toString());
+    //   _favProducts.where((element) => (element.id == id)).toList() != null
+    //       ? flag = 0
+    //       : flag = 1;
+     }
     if (flag == 0) {
-      response = await http.post(Uri.parse(url), body: json.encode(map));
       print('yesss');
+      response = await http.post(Uri.parse(url), body: json.encode(map));
+
     } else if(flag==1) {
-      response = await http.patch(Uri.parse(url1), body: json.encode(map));
       print('noooooo');
+      response = await http.patch(Uri.parse(url1), body: json.encode(map));
+
     }
 
     print(response.statusCode);
