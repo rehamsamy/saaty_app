@@ -15,7 +15,7 @@ import '../cons.dart';
 
 class ProductsController extends GetxController {
   List<Product> _allProds = [];
-  List<Product> favProducts = [];
+  List<Product> _favProducts = [];
   List<Product> adsProducts = [];
 
   int filterRad = 0;
@@ -23,6 +23,7 @@ class ProductsController extends GetxController {
   bool statusNewChecked = false;
   String txt;
   bool isFiltering = false;
+
 
   int selectedTabIndex = 0;
 
@@ -32,6 +33,9 @@ class ProductsController extends GetxController {
   List<Product> get allProducts {
     return _allProds;
   }
+  List<Product> get favProducts {
+    return _favProducts;
+  }
 
   Future fetchProducts(String flag) async {
     allProducts.clear();
@@ -39,6 +43,7 @@ class ProductsController extends GetxController {
     String token = AuthController.token;
     String url;
     print(token);
+    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
     if (flag == 'fav') {
       url =
           'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites.json?auth=$token';
@@ -47,18 +52,23 @@ class ProductsController extends GetxController {
           'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
     }
     try {
+      var favResponse=await http.get(Uri.parse(urlFav));
       var response = await http.get(Uri.parse(url));
       print('step0');
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200&& favResponse.statusCode==200) {
         print('step1');
         Map<String, dynamic> result =
             json.decode(response.body) as Map<String, dynamic>;
+
+        var favResult=  json.decode(favResponse.body) as Map<String, dynamic>;
+
         print(result);
         if (flag == 'all') {
           result.forEach((key, value) async {
             String prodId = value['id'];
             List<String> imgs;
             Product product = Product.fromJson(key, value);
+            product.isFav=favResult[key];
             _allProds.add(product);
           });
           print('all prods size -----  ${_allProds.length}');
@@ -104,6 +114,8 @@ class ProductsController extends GetxController {
     isFiltering = value;
     getFinalProducts();
   }
+
+
 
   List<Product> get watchProductsList {
     return _allProds.where((element) => element.cat == 0).toList();
@@ -156,7 +168,7 @@ class ProductsController extends GetxController {
             statusNewChecked == true) {
           List<Product> newList = [];
           newList = watchProductsList;
-          filteredList = Cons.selectionAsecSortFilter(newList);
+          filteredList = Cons.selectionDescSortFilter(newList);
         } else if (selectedTabIndex == 2 &&
             filterRad == 1 &&
             statusOldChecked == true &&
@@ -170,7 +182,7 @@ class ProductsController extends GetxController {
             statusNewChecked == true) {
           List<Product> newList = [];
           newList = bracletesProductsList;
-          filteredList = Cons.selectionAsecSortFilter(newList);
+          filteredList = Cons.selectionDescSortFilter(newList);
         }
       }
     } else {
@@ -289,4 +301,37 @@ class ProductsController extends GetxController {
     txt = text;
     getFinalProducts();
   }
+
+
+  // Future fetchFavorite() async {
+  //   String token = AuthController.token;
+  //   String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
+  //   try {
+  //     var response = await http.get(Uri.parse(url));
+  //     print('step0');
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> result =
+  //       json.decode(response.body) as Map<String, dynamic>;
+  //       result.forEach((key, value) async {
+  //         // allProducts.forEach((element) {
+  //         //   if(element.id==key){
+  //         //     print('xxx  ccc    '+element.id);
+  //         //    // _favProducts.add(element);
+  //         //   }
+  //         // });
+  //
+  //       });
+  //       print('xxx  ccc    '+_favProducts.length.toString());
+  //       // _favProducts.clear();
+  //       // _favProducts=newList;
+  //       update();
+  //     }
+  //   }catch(err){
+  //
+  //   }
+  //
+  // }
+
 }
+
+

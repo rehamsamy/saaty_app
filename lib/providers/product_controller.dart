@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +17,9 @@ import 'dart:io';
 import 'package:saaty_app/providers/products_controller.dart';
 
 class ProductController extends GetxController {
+  IconData _icon = Icons.favorite_border;
+  int fav = 0;
+
   List<String> vv = [];
   List<Product> allProducts = [];
   List<Product> _favProducts = [];
@@ -34,6 +38,12 @@ class ProductController extends GetxController {
 
   List<Product> get favProducts {
     return _favProducts;
+  }
+
+
+  changeFavoriteFlag(int fav) async {
+    isFavorite = fav;
+   update();
   }
 
   Future createProduct(Map<String, dynamic> map, List<dynamic> images) async {
@@ -65,11 +75,6 @@ class ProductController extends GetxController {
   }
 
 
-  changeFavoriteFlag(int fav){
-    isFavorite=fav;
-    update();
-  }
-
   Future editProduct(String id, Map<String, Object> map) async {
     print('step 1');
     int index = adsProducts.indexWhere((element) => id == element.id);
@@ -100,40 +105,38 @@ class ProductController extends GetxController {
   }
 
 
-  Future fetchFavorite() async {
-    allProducts.clear();
-    _favProducts.clear();
-    List<Product> newList=[];
-    String token = AuthController.token;
-  String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites.json?auth=$token';
-    try {
-      var response = await http.get(Uri.parse(url));
-      print('step0');
-      if (response.statusCode == 200) {
-        Map<String, dynamic> result =
-        json.decode(response.body) as Map<String, dynamic>;
-        result.forEach((key, value) async {
-          if (key == AuthController.userId) {
-            value.forEach((key, val1) async {
-             favKey=key;
-
-              Product product = Product.fromJson(val1['id'], val1);
-              newList.add(product);
-            // _favProducts.add(product);
-             print('key   => '+_favProducts.length.toString());
-              print('fav  vvvv ${val1['id']}');
-            });
-          }
-        });
-        _favProducts.clear();
-        _favProducts=newList;
-        update();
-      }
-      }catch(err){
-
-    }
-
-  }
+  // Future fetchFavorite() async {
+  //   _favProducts.clear();
+  //   List<Product> newList=[];
+  //   String token = AuthController.token;
+  // String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
+  //   try {
+  //     var response = await http.get(Uri.parse(url));
+  //     print('step0');
+  //     if (response.statusCode == 200) {
+  //       Map<String, dynamic> result =
+  //       json.decode(response.body) as Map<String, dynamic>;
+  //       result.forEach((key, value) async {
+  //         allProducts.forEach((element) {
+  //           if(element.id==key){
+  //
+  //             print('xxx  ccc    '+element.id);
+  //             _favProducts.add(element);
+  //           }
+  //         });
+  //
+  //
+  //       });
+  //       print('xxx  ccc    '+_favProducts.length.toString());
+  //       // _favProducts.clear();
+  //       // _favProducts=newList;
+  //       update();
+  //     }
+  //     }catch(err){
+  //
+  //   }
+  //
+  // }
 
 
   Future<int> fetchFavByProdId(String id) async{
@@ -147,41 +150,18 @@ class ProductController extends GetxController {
   }
 
 
-  Future toggleFav(String id, Map<String, dynamic> map) async {
+  Future toggleFav(String id, int isFav) async {
     String token = AuthController.token;
     print(AuthController.userId);
-   // print('favvvvvvvv  '+favProducts.length.toString());
     print(id);
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
-    ;
-    String url1 =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}/$favKey.json?auth=$token';
-    int flag = 0;
-    var response;
-    int index = allProducts.indexWhere((element) => element.id == id);
-    // map['id']=index;
-    if (favProducts.length > 0) {
-      favProducts.forEach((element) {
-        if(element.id==id){
-          print('ele  '+element.id);
-          flag=1;
-        }else{
-          flag=0;
-        }
-      });
-      print('flagggg   '+flag.toString());
-     }
-    if (flag == 0) {
-      print('yesss');
-      response = await http.post(Uri.parse(url), body: json.encode(map));
-    } else if(flag==1) {
-      print('noooooo');
-      response = await http.patch(Uri.parse(url1), body: json.encode(map));
-    }
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}/$id.json?auth=$token';
 
-    print(response.statusCode);
+    var response;
+
     try {
+      response = await http.put(Uri.parse(url), body: json.encode(isFav));
+      print(response.statusCode);
       if (response.statusCode == 200) {
         print('yesss');
       } else {
@@ -190,7 +170,7 @@ class ProductController extends GetxController {
     } on Exception catch (e) {
       print(e);
     }
-    // allProducts[index] = Product.fromJson(id, map) as Product;
+    changeFavoriteFlag(fav);
      update();
   }
 

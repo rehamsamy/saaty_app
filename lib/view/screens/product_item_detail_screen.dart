@@ -263,7 +263,7 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
 
   toogleFav(int fav ,IconData iconData,Map<String,dynamic> map) async{
     map['isFav']=fav;
-    await _productController.toggleFav(map['id'], map).then((value) {
+    await _productController.toggleFav(map['id'], fav).then((value) {
       if (mounted) {
 
       }

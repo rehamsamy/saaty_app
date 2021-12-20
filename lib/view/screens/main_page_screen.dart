@@ -76,69 +76,78 @@ class _MainPageScreenState extends State<MainPageScreen>
               SizedBox(
                 height: 2,
               ),
-              Card(
-                margin: EdgeInsets.all(2),
-                elevation: 6,
-                child: Padding(
-                  padding: EdgeInsets.all(5),
-                  child: TextFormField(
-                    controller: _searcController,
-                    focusNode: _textFocus,
-                    onChanged: onTextChange,
-                    decoration: InputDecoration(
-                        hintText: 'search',
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: Cons.accent_color,
-                          size: 25,
-                        ),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            Icons.filter_list_alt,
+              Expanded(
+                flex: 1,
+                child: Card(
+                  margin: EdgeInsets.all(2),
+                  elevation: 6,
+                  child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: TextFormField(
+                      controller: _searcController,
+                      focusNode: _textFocus,
+                      onChanged: onTextChange,
+                      decoration: InputDecoration(
+                          hintText: 'search',
+                          prefixIcon: Icon(
+                            Icons.search,
                             color: Cons.accent_color,
                             size: 25,
                           ),
-                          onPressed: () {
-                            buildFilterDialogWidget(context);
-                          },
-                        ),
-                        // SizedBox(
-                        //     width:10,
-                        //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Cons.accent_color,
-                            width: 1.0,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              Icons.filter_list_alt,
+                              color: Cons.accent_color,
+                              size: 25,
+                            ),
+                            onPressed: () {
+                              buildFilterDialogWidget(context);
+                            },
                           ),
-                        )
-                        //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
-                        ),
+                          // SizedBox(
+                          //     width:10,
+                          //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Cons.accent_color,
+                              width: 1.0,
+                            ),
+                          )
+                          //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
+                          ),
+                    ),
                   ),
                 ),
               ),
               GetBuilder<ProductController>(builder: (_) {
                 int index = _productController.selectedTabIndex;
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                        child: Icon(Icons.home),
-                        onTap: () {
-                          _productController.changeSelectedTab(0);
-                        },
-                      ),
-                      InkWell(
-                        child: Icon(Icons.add_alert),
-                        onTap: () {
-                          _productController.changeSelectedTab(1);
-                          print('index   ?   '+_productController.selectedTabIndex.toString());
-                        },
-                      ),
-                      InkWell(
-                        child: Icon(Icons.flag),
-                        onTap: () => _productController.changeSelectedTab(2),
-                      ),
-                    ]);
+                return Expanded(
+                  flex: 1,
+                  child: Card(
+                    elevation: 5,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          InkWell(
+                            child: Text('Stores'),
+                            onTap: () {
+                              _productController.changeSelectedTab(0);
+                            },
+                          ),
+                          InkWell(
+                            child: Text('Watches'),
+                            onTap: () {
+                              _productController.changeSelectedTab(1);
+                              print('index   ?   '+_productController.selectedTabIndex.toString());
+                            },
+                          ),
+                          InkWell(
+                            child: Text('Bracletes'),
+                            onTap: () => _productController.changeSelectedTab(2),
+                          ),
+                        ]),
+                  ),
+                );
               }),
             ],
           ),
@@ -171,6 +180,15 @@ class _MainPageScreenState extends State<MainPageScreen>
                     crossAxisCount: 2),
                 itemCount: _productController.filteredList.length,
                 itemBuilder: (ctx, inx) {
+                //   print('favccccccc'+_productController.favProducts.length.toString());
+                //       Product prod = _productController.favProducts
+                //           .firstWhere((element) => (element.id == _productController.filteredList[inx]));
+                //       if(prod==null){
+                //         print('nooooooooo');
+                //       }else {
+                //         print('yooooooooo');
+                    //   }
+
                   return ProductItemWidget(_productController.filteredList[inx]);
                 });
   }
@@ -226,6 +244,10 @@ class _MainPageScreenState extends State<MainPageScreen>
         .then((value) => setState(() => _isLoading = false))
         .catchError((err) => print('=>>>>>  $err'));
     print('length 44444444  => ${_productController.allProducts.length}');
+
+
+
+
   }
 
   onTextChange(String text) {
@@ -344,4 +366,7 @@ class _MainPageScreenState extends State<MainPageScreen>
           );
         });
   }
+
+
+
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
+import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 
 import '../../cons.dart';
@@ -10,6 +11,8 @@ class ProductItemWidget extends StatelessWidget {
   Product product;
   String flag;
   ProductController _productController = Get.find();
+  ProductsController _productsController = Get.find();
+
 
   ProductItemWidget(this.product, [this.flag]);
 
@@ -101,25 +104,24 @@ class ProductItemWidget extends StatelessWidget {
   }
 
   void fetchFav() async{
-        _productController.favProducts.clear();
-    await _productController.fetchFavorite().then((value) {
-      if (!_productController.favProducts.isEmpty) {
-        _productController.favProducts
-            .firstWhere((element) => (element.id ==product.id))==null?product.isFav=0:
-          product.isFav=1;
-      } else {
-        product.isFav=0;
-      }
-    });
+        _productsController.favProducts.clear();
+    // await _productsController.fetchFavorite().then((value) {
+    //   if (!_productController.favProducts.isEmpty) {
+    //     _productController.favProducts
+    //         .firstWhere((element) => (element.id ==product.id))==null?product.isFav=0:
+    //       product.isFav=1;
+    //   } else {
+    //     product.isFav=0;
+    //   }
+    // });
   }
 
 
 
   Future toogleFav(int fav, IconData iconData, Map<String, dynamic> map) async {
     map['isFav'] = fav;
-    print('favxxxxx  ' + map['id']);
     await _productController
-        .toggleFav(map['id'], map)
+        .toggleFav(map['id'], fav)
         .then((value) => product.isFav=fav);
   }
 
