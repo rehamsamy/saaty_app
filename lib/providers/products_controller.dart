@@ -303,35 +303,6 @@ class ProductsController extends GetxController {
   }
 
 
-  // Future fetchFavorite() async {
-  //   String token = AuthController.token;
-  //   String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
-  //   try {
-  //     var response = await http.get(Uri.parse(url));
-  //     print('step0');
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> result =
-  //       json.decode(response.body) as Map<String, dynamic>;
-  //       result.forEach((key, value) async {
-  //         // allProducts.forEach((element) {
-  //         //   if(element.id==key){
-  //         //     print('xxx  ccc    '+element.id);
-  //         //    // _favProducts.add(element);
-  //         //   }
-  //         // });
-  //
-  //       });
-  //       print('xxx  ccc    '+_favProducts.length.toString());
-  //       // _favProducts.clear();
-  //       // _favProducts=newList;
-  //       update();
-  //     }
-  //   }catch(err){
-  //
-  //   }
-  //
-  // }
-
 }
 
 
