@@ -11,16 +11,10 @@ import 'package:saaty_app/view/screens/send_message_screen.dart';
 
 import '../../cons.dart';
 
-class ProductItemDetailScreen extends StatefulWidget {
+class ProductItemDetailScreen extends StatelessWidget {
 
   static String PRODUCT_DETAIL_ROUTE='/6';
 
-  @override
-  _ProductItemDetailScreenState createState() => _ProductItemDetailScreenState();
-}
-
-class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
-  var _index;
   CarouselController _carouselController = CarouselController();
   ProductController _productController=Get.find();
   IconData _icon;
@@ -34,202 +28,104 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
 
     Map<String,dynamic> map = ModalRoute.of(context).settings.arguments as  Map<String,dynamic> ;
     Product product=map['prod'];
-    String flag=map['flag'];
+    String _prodType=map['flag'];
     _icon=Icons.favorite_border;
     //product.isFav==0?Icons.favorite_border:Icons.favorite;
     return Scaffold(
-      // appBar: AppBar(title: Text(product.name, style: Cons.greyFont),
-      //           actions: flag==null? null:[
-      //             flag=='ads'?
-      //             Row(
-      //               children: [
-      //                 IconButton(icon: Icon(
-      //                   Icons.edit, color: Cons.accent_color, size: 25,),
-      //                 onPressed: (){
-      //                   Navigator.of(context).
-      //                   pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE,arguments: product);
-      //                 },),
-      //                 IconButton(icon: Icon(
-      //                   Icons.delete, color: Cons.accent_color, size: 25,)),
-      //               ],
-      //             ):
-      //
-      //             IconButton(icon: Icon(
-      //               Icons.delete, color: Cons.accent_color, size: 25,)),
-      //           ],),
-      body:CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 300,
-            pinned: true,
-            centerTitle: true,
-            actions:  flag==null? null:[
-              flag=='ads'?
-              Row(
-                children: [
-                  IconButton(icon: Icon(
-                    Icons.edit, color: Cons.accent_color, size: 25,),
-                    onPressed: (){
-                      Navigator.of(context).
-                      pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE,arguments: product);
-                    },),
-                  IconButton(icon: Icon(
-                    Icons.delete, color: Cons.accent_color, size: 25,)),
-                ],
-              ):
+        body:CustomScrollView(
+          slivers: [
+            buildAppBar(context,product,_prodType),
+            SliverList(delegate: SliverChildListDelegate(
+                [
+                  Column(
+                    children: [
+                      SizedBox(height: 20,),
+                      Padding(padding: EdgeInsets.symmetric(horizontal: 15),child: Column(
+                        children: [
 
-              IconButton(icon: Icon(
-                Icons.delete, color: Cons.accent_color, size: 25,)),
-            ],
-            flexibleSpace: FlexibleSpaceBar(
-              title:
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(product.name, style: Cons.greyFont),
-                  IconButton(icon: Icon(
-                    Icons.delete, color: Cons.accent_color, size: 25,)),
-                ],
-              ) ,
-              background:
-              Stack(
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5,vertical: 25),
-                    width: double.infinity,
-                    height: 180,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.white,
-                            Colors.yellow.shade50,
-                          ],)
-                    ),
-                     child:   Hero(
-                       tag: product.id,
-                       child: FadeInImage(image: NetworkImage(product.images[0],scale: 1),
-                         placeholder: AssetImage('assets/images/watch_item1.png'),
-                         fit: BoxFit.cover,
-                       ),
-                     ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(product.cat==0?'Watch':'Braclet',style: Cons.accentFont,),
+                              Text('${product.price} PSD',style: Cons.greenFont,)
+                            ],
+                          ),
+                          //SizedBox(height: 20,),
+                          ListTile(title: Text(product.desc),contentPadding: EdgeInsets.all(0)),
+                          SizedBox(height: 50,),
+                          Container(
+                              height: 100,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Cons.primary_color)
+                              ),
+                              child: Stack(
+                                children: [
+                                  ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: product.images.length,
+                                      itemBuilder: (_,indx){
+                                        return Container(
+                                            margin:EdgeInsets.all(5)
+                                            ,child: SizedBox(
+                                            height: 65,
+                                            width: 80,
+                                            child: Image.network(product.images[indx],scale: 1,fit: BoxFit.cover,)));
+                                      }
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Container(
+                                      height: 100,
+                                      width: 90,
+                                      color: Cons.accent_color,
+                                      child:InkWell(
+                                        onTap: (){
+                                          showImageDialog(context,product);
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(product.images.length.toString(),style: TextStyle(color: Colors.white,fontSize: 20),),
+                                            Icon(Icons.photo_camera,color: Colors.white,),
+                                            Icon(Icons.arrow_forward_ios,color: Colors.white,)
+                                          ],
+                                        ),
+                                      ) ,
+                                    ),
+                                  ),
+
+                                ],
+                              )
+
+                          ),
+                          SizedBox(height: 30,),
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Divider(color: Cons.primary_color,thickness: 1.2,),
+                          ),
+
+                          ListTile(title: Text('User Name:'),contentPadding: EdgeInsets.all(0)),
+                          ListTile(title: Text('Status:${product.status==0?'Old Product':'New Product'}'),contentPadding: EdgeInsets.all(0)),
+                          ListTile(leading: Icon(Icons.phone_android_sharp,color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
+                          ListTile(leading: Icon(Icons.email,color: Cons.primary_color,),title: Text(product.email),contentPadding: EdgeInsets.all(0)),
+                          SizedBox(height: 50,),
+                        ],
+                      ),)
+
+                    ],
                   ),
-                  Positioned(
-                      left: 0,
-                      bottom: 0,
-                      child: IconButton(onPressed: ()async{
-                        Map<String, dynamic> map = Product().toMap(product);
-                        if (product.isFav == 1) {
-                          print('case1');
-                          await toogleFav(0,Icons.favorite_border,map);
-                        } else {
-                          print('case2');
-                          await toogleFav(1,Icons.favorite,map);
-                        }
-                      }, icon: Icon(product.isFav==0?_icon:Icons.favorite,color: Colors.red, size: 30,))
-                    //Icon(product.isFav==0?Icons.favorite_border:Icons.favorite,color: Colors.red,
-                    //  size: 30,)
-                  )
-                ],
-              ),
+                ]
+            ))
+          ],
 
-            ),
+        ),
 
-
-          ),
-         SliverList(delegate: SliverChildListDelegate(
-           [
-             Column(
-               children: [
-
-                 SizedBox(height: 20,),
-                 Padding(padding: EdgeInsets.symmetric(horizontal: 15),child: Column(
-                   children: [
-
-                     Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: [
-                         Text(product.cat==0?'Watch':'Braclet',style: Cons.accentFont,),
-                         Text('${product.price} PSD',style: Cons.greenFont,)
-                       ],
-                     ),
-                     //SizedBox(height: 20,),
-                     ListTile(title: Text(product.desc),contentPadding: EdgeInsets.all(0)),
-                      SizedBox(height: 200,),
-
-                     Container(
-                         height: 70,
-                         width: double.infinity,
-                         decoration: BoxDecoration(
-                             borderRadius: BorderRadius.circular(10),
-                             border: Border.all(color: Cons.primary_color)
-                         ),
-                         child: Stack(
-                           children: [
-                             ListView.builder(
-                                 scrollDirection: Axis.horizontal,
-                                 itemCount: product.images.length,
-                                 itemBuilder: (_,indx){
-                                   return Container(
-                                       margin:EdgeInsets.all(5)
-                                       ,child: SizedBox(
-                                       height: 65,
-                                       width: 60,
-                                       child: Image.network(product.images[indx],scale: 1,fit: BoxFit.cover,)));
-                                 }
-                             ),
-                             Align(
-                               alignment: Alignment.centerRight,
-                               child: Container(
-                                 height: 70,
-                                 width: 80,
-                                 color: Cons.accent_color,
-                                 child:InkWell(
-                                   onTap: (){
-                                     showImageDialog(context,product);
-                                   },
-                                   child: Row(
-                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                     children: [
-                                       Text(product.images.length.toString(),style: TextStyle(color: Colors.white,fontSize: 20),),
-                                       Icon(Icons.photo_camera,color: Colors.white,),
-                                       Icon(Icons.arrow_forward_ios,color: Colors.white,)
-                                     ],
-                                   ),
-                                 ) ,
-                               ),
-                             ),
-
-                           ],
-                         )
-
-                     ),
-                     SizedBox(height: 10,),
-                     Padding(
-                       padding: const EdgeInsets.all(10.0),
-                       child: Divider(color: Cons.primary_color,thickness: 1.2,),
-                     ),
-
-                     ListTile(title: Text('User Name:'),contentPadding: EdgeInsets.all(0)),
-                     ListTile(title: Text('Status:${product.status==0?'Old Product':'New Product'}'),contentPadding: EdgeInsets.all(0)),
-                     ListTile(leading: Icon(Icons.phone_android_sharp,color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
-                     ListTile(leading: Icon(Icons.email,color: Cons.primary_color,),title: Text(product.email),contentPadding: EdgeInsets.all(0))
-                   ],
-                 ),)
-
-               ],
-             ),
-           ]
-         ))
-        ],
-
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.email_rounded,color: Colors.white,),
-        onPressed: ()=>Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE),
-      )
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.email_rounded,color: Colors.white,),
+          onPressed: ()=>Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE),
+        )
     );
   }
 
@@ -242,21 +138,21 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
           margin: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
           width: double.infinity,
           child:
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                  buildCarouselSlider(product)  ,
-               SizedBox(height: 20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (int i =0;i<product.images.length;i++)
-                      buildCircleSlider(i)
-                  ],
-                )
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              buildCarouselSlider(product,context)  ,
+              SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (int i =0;i<product.images.length;i++)
+                    buildCircleSlider(i)
+                ],
+              )
 
-              ],
-            ),
+            ],
+          ),
 
         ),
       );
@@ -265,66 +161,124 @@ class _ProductItemDetailScreenState extends State<ProductItemDetailScreen> {
   }
 
   Widget buildCircleSlider(int i){
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: Container(
-        height: 13,
-        width: 13,
-        decoration: BoxDecoration(
-            border:i==_index? Border.all(width:2,color:Cons.accent_color ):Border.all(width:1,color:Cons.accent_color ),
-            shape: BoxShape.circle,
-            color:_index==i?Colors.white:Cons.primary_color
+    return GetBuilder<ProductController>(
+      builder: (_)=>Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Container(
+          height: 13,
+          width: 13,
+          decoration: BoxDecoration(
+              border:i==_productController.sliderIndex? Border.all(width:2,color:Cons.accent_color ):Border.all(width:1,color:Cons.accent_color ),
+              shape: BoxShape.circle,
+              color:_productController.sliderIndex==i?Colors.white:Cons.primary_color
+          ),
         ),
       ),
     );
   }
 
 
-  Widget buildCarouselSlider(Product product) {
+  Widget buildCarouselSlider(Product product,BuildContext context) {
     return
       Container(
         width: double.infinity,
         height: MediaQuery.of(context).size.height *.4,
         child:
-        CarouselSlider(
-          carouselController:_carouselController,
-          items: product.images.map((e) =>
-            Image.network(e,fit: BoxFit.fill,)
-             ).toList(),
-           options: CarouselOptions(
-            onPageChanged: (ind,x){
-              setState(() {
-                _index=ind;
-              });
-            },
-            initialPage: 1,
-            autoPlayAnimationDuration:Duration(milliseconds: 100),
-            autoPlay: true,
-            enlargeCenterPage: true,
-            aspectRatio: 9/6,
-            viewportFraction: 0.97
-        ),),
+        GetBuilder<ProductController>(
+          builder: (_)=>
+           CarouselSlider(
+            carouselController:_carouselController,
+            items: product.images.map((e) =>
+                Image.network(e,fit: BoxFit.fill,)
+            ).toList(),
+            options: CarouselOptions(
+                onPageChanged: (ind,x){
+                 _productController.changeSliderImage(ind);
+                 _productController.update();
+                },
+                initialPage: 1,
+                autoPlayAnimationDuration:Duration(milliseconds: 100),
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 9/6,
+                viewportFraction: 0.97
+            ),),
+        ),
 
-    );
+      );
   }
 
-  toogleFav(int fav ,IconData iconData,Map<String,dynamic> map) async{
-    map['isFav']=fav;
-    await _productController.toggleFav(map['id'], fav).then((value) {
-      if (mounted) {
 
-      }
-      print(iconData.toString());
-    }
+  Widget buildAppBar(BuildContext context,Product product,String _prodType){
+  return  SliverAppBar(
+        expandedHeight: MediaQuery.of(context).size.height*0.4,
+        pinned: true,
+        floating: true,
+        centerTitle: true,
+      automaticallyImplyLeading: false,
+        flexibleSpace:  GetBuilder<ProductController>(
+          builder: (_)=>
+           FlexibleSpaceBar(
+            titlePadding: EdgeInsets.all(5),
+            centerTitle: true,
+      title: _prodType==null?
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(onPressed: (){
+                  Navigator.of(context).pop();
+                }, icon: Icon(Icons.arrow_back,color: Cons.accent_color,size: 30)),
+                Text(product.name, style: Cons.greyFont1),
+                IconButton(onPressed: ()async{
+                  print('pppp');
+                  if(product.isFav==1){
+                  await  toogleFav(0, product.id,product);
+                  }else{
+                   await toogleFav(1, product.id,product);
+                  }
+                  _productController.changeFavoriteFlag(product.isFav);
+                }, icon: Icon(product.isFav==1?Icons.favorite:Icons.favorite_border,color: Colors.red,size: 30,)),
+              ],
+            ):
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                IconButton(onPressed: (){
+                  Navigator.of(context).pop();
+                }, icon: Icon(Icons.arrow_back,color: Cons.accent_color,size: 30)),
+                IconButton(onPressed: ()async{
+                  print('ppppp');
+                  if(product.isFav==1){
+                   await toogleFav(0, product.id,product);
+                  }else{
+                   await toogleFav(1, product.id,product);
+                  }
+                  _productController.changeFavoriteFlag(product.isFav);
+                  _productController.update();
+                }, icon: Icon(product.isFav==1?Icons.favorite:Icons.favorite_border,color: Colors.red,size: 30)),
+                Text(product.name, style: Cons.accentFont),
+                IconButton(onPressed: (){}, icon: Icon(Icons.delete,color: Cons.accent_color,)),
+                IconButton(onPressed: (){}, icon: Icon(Icons.edit,color: Cons.accent_color,)),
 
-    );
+              ],
+            ), background: Hero(
+          tag: product.id,
+          child: FadeInImage(
+            image: NetworkImage(product.images[0],scale: 3),
+           // Image.network(product.images[0],),
+            placeholder: AssetImage('assets/images/watch_item1.png'),
+            fit: BoxFit.cover,
+          ),
+      )
+    ),
+        ));
 
-    setState(() {
-      print('vvvvvvvvvvvv---------  $fav');
-      _icon=Icons.add_alert;
-    });
+  }
 
 
-
+  Future toogleFav(int fav,String prodId,Product product) async {
+    await _productController
+        .toggleFav(prodId, fav)
+        .then((value) => product.isFav=fav);
   }
 }

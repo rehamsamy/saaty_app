@@ -9,38 +9,18 @@ import 'package:saaty_app/view/widget/product_item_widget.dart';
 
 import '../../cons.dart';
 
-class AdsScreen extends StatefulWidget {
+class AdsScreen extends StatelessWidget {
   static String ADS_SCREEN_ROUTE='/8';
-  @override
-  _AdsScreenState createState() => _AdsScreenState();
-}
-
-class _AdsScreenState extends State<AdsScreen> {
   ProductsController _productController=Get.find();
   double width, height;
-  bool _isLoading = false;
+
   List<Product> allProducts = [];
-
-  // @override
-  // void initState() {
-  //   String flag=ModalRoute.of(context).settings.arguments as String;
-  //   super.initState();
-  //
-  //   Future.delayed(Duration.zero, () {
-  //    this. fetchData(flag);
-  //   });
-  // }
-
-  @override
-  void didChangeDependencies() {
-    String flag=ModalRoute.of(context).settings.arguments as String;
-    fetchData(flag);
-  }
 
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
     String flag=ModalRoute.of(context).settings.arguments as String;
+    fetchData('all');
     width = MediaQuery
         .of(context)
         .size
@@ -102,45 +82,67 @@ class _AdsScreenState extends State<AdsScreen> {
 
 
   Widget buildGrid(String flag) {
-    return _isLoading == true ? Center(child: CircularProgressIndicator(),) :
-    GetBuilder<ProductsController>(
-        init: _productController,
-        builder: (_) {
-          flag=='ads'?
-          _productController.adsProducts.forEach((element) {
-            print('#########  ${element.id}');
-             allProducts.add(element);
-              print(element.name);
-          }): _productController.favProducts.forEach((element) {
-            if (element.isFav==1) {
-              allProducts.add(element);
-              print(element.name);
-            }
-          })
-          ;
-          return allProducts.length==0?Center(child: Text('Empty Data'),):
-            GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 0,
-                    crossAxisSpacing: 0,
-                    childAspectRatio: 8 / 9,
-                    crossAxisCount: 2
-                ),
-                itemCount: allProducts.length,
-                itemBuilder: (ctx, inx) {
-                  // return storeGridItem(_productController.allProducts,inx);
-                  return ProductItemWidget(allProducts[inx],flag);
-                }
-            );
-        });
+    List<Product> finalProds=[];
+    flag='fav';
+    return
+      GetBuilder<ProductsController>(builder: (_)=>
+         // print(' vvvv   xxx '+ _productController.favProducts.length.toString()));
+          _productController.isLoading? Center(child: CircularProgressIndicator(),) :
+              _productController.favProducts.length==0?Center(child:Text('Empty Data')):
+              GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      mainAxisSpacing: 0,
+                      crossAxisSpacing: 0,
+                      childAspectRatio: 8 / 9,
+                      crossAxisCount: 2
+                  ),
+                  itemCount: _productController.favProducts.length,
+                  itemBuilder: (ctx, inx) {
+                    print(' vvvv   xxx '+ _productController.favProducts.length.toString());
+                    // return storeGridItem(_productController.allProducts,inx);
+                    return ProductItemWidget(_productController.favProducts[inx],flag);
+                  }
+              ));
+
+    // GetBuilder<ProductsController>(
+    //     builder: (_) {
+    //       flag=='ads'?
+    //       _productController.adsProducts.forEach((element) {
+    //         print('#########  ${element.id}');
+    //         allProducts.add(element);
+    //         print(element.name);
+    //       }): _productController.favProducts;
+    //
+    //       finalProds=_productController.favProducts;
+    //       return finalProds.length==0?Center(child: Text('Empty Data'),):
+    //       GridView.builder(
+    //           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    //               mainAxisSpacing: 0,
+    //               crossAxisSpacing: 0,
+    //               childAspectRatio: 8 / 9,
+    //               crossAxisCount: 2
+    //           ),
+    //           itemCount: finalProds.length,
+    //           itemBuilder: (ctx, inx) {
+    //             // return storeGridItem(_productController.allProducts,inx);
+    //             return ProductItemWidget(finalProds[inx],flag);
+    //           }
+    //       );
+
+       //  );
 
   }
 
   void fetchData(String flag) async{
-    setState(() {
-      _isLoading=true;
-    });
-    await _productController.fetchProducts(flag).then((value) => setState(()=>_isLoading=false));
+    print('flag = '+flag);
+   await _productController.changeIsLoadingFlag(true);
+    await _productController.fetchProducts('fav').then((value) {
+      _productController.changeIsLoadingFlag(false);
+      _productController.update();
+      print('fav length  0000 '+_productController.favProducts.length.toString());
+    }
+    );
   }
 
 }
+

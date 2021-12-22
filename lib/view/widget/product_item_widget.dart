@@ -11,14 +11,10 @@ class ProductItemWidget extends StatelessWidget {
   Product product;
   String flag;
   ProductController _productController = Get.find();
-  ProductsController _productsController = Get.find();
-
-
   ProductItemWidget(this.product, [this.flag]);
 
   @override
   Widget build(BuildContext context) {
-    fetchFav();
         return GetBuilder<ProductController>(
           builder: (_)=>
            GestureDetector(
@@ -103,19 +99,6 @@ class ProductItemWidget extends StatelessWidget {
 
   }
 
-  void fetchFav() async{
-        _productsController.favProducts.clear();
-    // await _productsController.fetchFavorite().then((value) {
-    //   if (!_productController.favProducts.isEmpty) {
-    //     _productController.favProducts
-    //         .firstWhere((element) => (element.id ==product.id))==null?product.isFav=0:
-    //       product.isFav=1;
-    //   } else {
-    //     product.isFav=0;
-    //   }
-    // });
-  }
-
 
 
   Future toogleFav(int fav, IconData iconData, Map<String, dynamic> map) async {
@@ -124,9 +107,4 @@ class ProductItemWidget extends StatelessWidget {
         .toggleFav(map['id'], fav)
         .then((value) => product.isFav=fav);
   }
-
-
-
-
-
 }

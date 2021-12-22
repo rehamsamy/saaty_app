@@ -29,6 +29,7 @@ class ProductController extends GetxController {
   List<Product> searchList = [];
   int isFavorite=0;
   String favKey;
+  int sliderIndex=0;
 
   List<String> imagesResult = [];
   int selectedTabIndex = 0;
@@ -44,6 +45,11 @@ class ProductController extends GetxController {
   changeFavoriteFlag(int fav) async {
     isFavorite = fav;
    update();
+  }
+
+  changeSliderImage(int index) async {
+   sliderIndex=index;
+    update();
   }
 
   Future createProduct(Map<String, dynamic> map, List<dynamic> images) async {
@@ -105,39 +111,6 @@ class ProductController extends GetxController {
   }
 
 
-  // Future fetchFavorite() async {
-  //   _favProducts.clear();
-  //   List<Product> newList=[];
-  //   String token = AuthController.token;
-  // String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
-  //   try {
-  //     var response = await http.get(Uri.parse(url));
-  //     print('step0');
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> result =
-  //       json.decode(response.body) as Map<String, dynamic>;
-  //       result.forEach((key, value) async {
-  //         allProducts.forEach((element) {
-  //           if(element.id==key){
-  //
-  //             print('xxx  ccc    '+element.id);
-  //             _favProducts.add(element);
-  //           }
-  //         });
-  //
-  //
-  //       });
-  //       print('xxx  ccc    '+_favProducts.length.toString());
-  //       // _favProducts.clear();
-  //       // _favProducts=newList;
-  //       update();
-  //     }
-  //     }catch(err){
-  //
-  //   }
-  //
-  // }
-
 
   Future<int> fetchFavByProdId(String id) async{
     String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}/$favKey.json?auth=$token';
@@ -151,6 +124,7 @@ class ProductController extends GetxController {
 
 
   Future toggleFav(String id, int isFav) async {
+    print('faccccccc '+isFav.toString());
     String token = AuthController.token;
     print(AuthController.userId);
     print(id);
