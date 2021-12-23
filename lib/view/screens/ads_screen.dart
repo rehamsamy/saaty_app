@@ -12,6 +12,7 @@ import '../../cons.dart';
 class AdsScreen extends StatelessWidget {
   static String ADS_SCREEN_ROUTE='/8';
   ProductsController _productController=Get.find();
+  var _searcController = TextEditingController();
   double width, height;
 
   List<Product> allProducts = [];
@@ -20,7 +21,9 @@ class AdsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
     String flag=ModalRoute.of(context).settings.arguments as String;
-    fetchData('all');
+ _productController.prodTypeFlag=flag;
+
+    fetchData(flag);
     width = MediaQuery
         .of(context)
         .size
@@ -53,8 +56,10 @@ class AdsScreen extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: TextFormField(
+                      controller: _searcController,
+                      onChanged: onTextChange,
                       decoration: InputDecoration(
-                          labelText: 'search',
+                          hintText: 'search',
                           prefixIcon: Icon(
                             Icons.search, color: Cons.accent_color, size: 25,),
                           enabledBorder: UnderlineInputBorder(
@@ -82,64 +87,47 @@ class AdsScreen extends StatelessWidget {
 
 
   Widget buildGrid(String flag) {
-    List<Product> finalProds=[];
-    flag='fav';
     return
-      GetBuilder<ProductsController>(builder: (_)=>
-         // print(' vvvv   xxx '+ _productController.favProducts.length.toString()));
-          _productController.isLoading? Center(child: CircularProgressIndicator(),) :
-              _productController.favProducts.length==0?Center(child:Text('Empty Data')):
-              GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing: 0,
-                      crossAxisSpacing: 0,
-                      childAspectRatio: 8 / 9,
-                      crossAxisCount: 2
-                  ),
-                  itemCount: _productController.favProducts.length,
-                  itemBuilder: (ctx, inx) {
-                    print(' vvvv   xxx '+ _productController.favProducts.length.toString());
-                    // return storeGridItem(_productController.allProducts,inx);
-                    return ProductItemWidget(_productController.favProducts[inx],flag);
-                  }
-              ));
+      GetBuilder<ProductsController>(builder: (_) {
+        List<Product> finalProds = _productController.filteredList;
+        // if (flag == 'fav') {
+        //   finalProds = _productController.favProducts;
+        // } else {
+        //   finalProds = _productController.addsProduct;
+        // }
 
-    // GetBuilder<ProductsController>(
-    //     builder: (_) {
-    //       flag=='ads'?
-    //       _productController.adsProducts.forEach((element) {
-    //         print('#########  ${element.id}');
-    //         allProducts.add(element);
-    //         print(element.name);
-    //       }): _productController.favProducts;
-    //
-    //       finalProds=_productController.favProducts;
-    //       return finalProds.length==0?Center(child: Text('Empty Data'),):
-    //       GridView.builder(
-    //           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-    //               mainAxisSpacing: 0,
-    //               crossAxisSpacing: 0,
-    //               childAspectRatio: 8 / 9,
-    //               crossAxisCount: 2
-    //           ),
-    //           itemCount: finalProds.length,
-    //           itemBuilder: (ctx, inx) {
-    //             // return storeGridItem(_productController.allProducts,inx);
-    //             return ProductItemWidget(finalProds[inx],flag);
-    //           }
-    //       );
+        return _productController.isLoading ?
+        Center(child: CircularProgressIndicator(),) :
+        finalProds.length == 0 ? Center(child: Text('Empty Data')) :
+        GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisSpacing: 0,
+                crossAxisSpacing: 0,
+                childAspectRatio: 8 / 9,
+                crossAxisCount: 2
+            ),
+            itemCount: finalProds.length,
+            itemBuilder: (ctx, inx) {
+              return ProductItemWidget(finalProds[inx], flag);
+            }
+        );
+      }  );
 
-       //  );
 
   }
 
+  onTextChange(String text) {
+    //String text = _searcController.text;
+    _productController.search(text);
+  }
+
   void fetchData(String flag) async{
-    print('flag = '+flag);
+    print('step '+flag);
    await _productController.changeIsLoadingFlag(true);
-    await _productController.fetchProducts('fav').then((value) {
+    await _productController.fetchProducts(flag).then((value) {
       _productController.changeIsLoadingFlag(false);
+     // _productController.changeProdTypeFlag(flag);
       _productController.update();
-      print('fav length  0000 '+_productController.favProducts.length.toString());
     }
     );
   }

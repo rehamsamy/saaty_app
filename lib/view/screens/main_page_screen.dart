@@ -180,15 +180,6 @@ class _MainPageScreenState extends State<MainPageScreen>
                     crossAxisCount: 2),
                 itemCount: _productController.filteredList.length,
                 itemBuilder: (ctx, inx) {
-                //   print('favccccccc'+_productController.favProducts.length.toString());
-                //       Product prod = _productController.favProducts
-                //           .firstWhere((element) => (element.id == _productController.filteredList[inx]));
-                //       if(prod==null){
-                //         print('nooooooooo');
-                //       }else {
-                //         print('yooooooooo');
-                    //   }
-
                   return ProductItemWidget(_productController.filteredList[inx]);
                 });
   }

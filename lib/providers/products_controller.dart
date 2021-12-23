@@ -15,7 +15,7 @@ import '../cons.dart';
 
 class ProductsController extends GetxController {
   List<Product> _allProds = [];
-  List<Product> adsProducts = [];
+  List<Product> _adsProducts = [];
   List<Product> _favProducts = [];
 
   int filterRad = 0;
@@ -24,6 +24,7 @@ class ProductsController extends GetxController {
   String txt=null;
   bool isFiltering = false;
   bool isLoading = false;
+  String prodTypeFlag;
 
 
   int selectedTabIndex = 0;
@@ -36,7 +37,10 @@ class ProductsController extends GetxController {
   }
   List<Product> get favProducts {
     return _favProducts;
-      //_favProducts.where((element) => element.isFav==1).toList();
+  }
+
+  List<Product> get addsProduct {
+    return _adsProducts;
   }
 
   List<Product> get watchProductsList {
@@ -51,6 +55,7 @@ class ProductsController extends GetxController {
   Future fetchProducts(String flag) async {
     allProducts.clear();
     favProducts.clear();
+    addsProduct.clear();
     String token = AuthController.token;
     print(token);
     String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
@@ -58,9 +63,7 @@ class ProductsController extends GetxController {
     try {
       var favResponse=await http.get(Uri.parse(urlFav));
       var response = await http.get(Uri.parse(url));
-      print('step0');
       if (response.statusCode == 200) {
-        print('step1');
         Map<String, dynamic> result =
             json.decode(response.body) as Map<String, dynamic>;
 
@@ -68,7 +71,6 @@ class ProductsController extends GetxController {
 
         if (flag == 'all') {
           result.forEach((key, value) async {
-          //  print('8888888888888  '+favResult[key].toString());
             Product product = Product.fromJson(key, value);
             product.isFav=favResult[key];
             _allProds.add(product);
@@ -79,42 +81,24 @@ class ProductsController extends GetxController {
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
             product.isFav=favResult[key];
-            print('8888888888888  '+favResult[key].toString());
             if(product.isFav==1) {
-              _allProds.add(product);
-              _favProducts=_allProds;
-              print('all prods size -----  ${_favProducts.length}');
-              update();
+              _favProducts.add(product);
+             // _favProducts.add(product);
             }
-
           });
+          getFinalFavAdsProducts();
         }
-        // else if (flag == 'ads') {
-        //   adsProducts.clear();
-        //   result.forEach((key, value) async {
-        //     if (value['id'] == AuthController.userId) {
-        //       List<String> imgs;
-        //       String prodId = value['id'];
-        //       Product product = Product.fromJson(key, value);
-        //       adsProducts.add(product);
-        //       print('!!!!!!!!!!!   ${adsProducts.length}');
-        //       print(adsProducts);
-        //     }
-        //   });
-        // } else if (flag == 'fav') {
-        //   result.forEach((key, value) async {
-        //     if (key == AuthController.userId) {
-        //       value.forEach((key, val1) async {
-        //         Product product = Product.fromJson(val1['id'], val1);
-        //         _allProds.add(product);
-        //         favProducts.add(product);
-        //         print('fav  vvvv  => ${favProducts[0].id}');
-        //       });
-        //     }
-        //   });
-        // }
+        else if(flag=='ads'){
+          result.forEach((key, value) async {
+            Product product = Product.fromJson(key, value);
+            product.isFav=favResult[key];
+            if(value['id']==AuthController.userId) {
+              _adsProducts.add(product);
+            }
+          });
+          getFinalFavAdsProducts();
+        }
       }
-      print('ddd ${_allProds.length} ');
 
     } catch (err) {
       print(err);
@@ -136,6 +120,12 @@ class ProductsController extends GetxController {
   changeIsLoadingFlag(bool value) async {
     isLoading = value;
    // getFinalProducts();
+  }
+
+  changeProdTypeFlag(String flag){
+    prodTypeFlag=flag;
+    print('new flag  '+prodTypeFlag);
+    update();
   }
 
 
@@ -167,9 +157,7 @@ class ProductsController extends GetxController {
             statusNewChecked == true) {
           List<Product> newList = [];
           newList = allProducts;
-          print('888888888  ' + newList.length.toString());
           filteredList = Cons.selectionAsecSortFilter(newList);
-          print('888888888  ' + filteredList.length.toString());
         } else if (selectedTabIndex == 1 &&
             filterRad == 1 &&
             statusOldChecked == true &&
@@ -202,7 +190,6 @@ class ProductsController extends GetxController {
       }
     } else {
       // _productController.searchTextFormProducts.clear();
-      print('-----------  ' + txt);
       filteredList = searchTextFormProducts;
       if (txt.isEmpty) {
         filteredList.clear();
@@ -211,9 +198,22 @@ class ProductsController extends GetxController {
     update();
   }
 
+  void getFinalFavAdsProducts(){
+    if (txt.isEmpty) {
+      if(prodTypeFlag=='fav'){
+        filteredList=favProducts;
+      }else if(prodTypeFlag=='ads'){
+        filteredList=addsProduct;
+      }
+    }else{
+      filteredList = searchTextFormProducts;
+    }
+    update();
+  }
+
   List<Product> get searchTextFormProducts {
     String text = this.txt;
-    print('-----------  ' + text);
+    print('step1' +prodTypeFlag);
     if (selectedTabIndex == 0) {
       return allProducts
           .where((element) => element.name.contains(text))
@@ -226,6 +226,11 @@ class ProductsController extends GetxController {
       return bracletesProductsList
           .where((element) => element.name.contains(text))
           .toList();
+    }else  if(prodTypeFlag=='fav'){
+      print('hereee ');
+      return favProducts.where((element) => element.name.contains(text)).toList();
+    }else  if(prodTypeFlag=='ads'){
+      return addsProduct.where((element) => element.name.contains(text)).toList();
     }
   }
 
@@ -276,12 +281,8 @@ class ProductsController extends GetxController {
           print('not exist');
         }
       });
-      // favProducts.firstWhere((element) => (element.id == id)) == null
-      //     ? flag = 0
-      //     : flag = 1;
     }
 
-    print('flagggggg  = $flag');
 
     if (flag == 0) {
       response = await http.post(Uri.parse(url), body: json.encode(map));
@@ -292,20 +293,22 @@ class ProductsController extends GetxController {
     print(response.statusCode);
     try {
       if (response.statusCode == 200) {
-        print('yesss');
       } else {
-        print('noooooo');
       }
     } on Exception catch (e) {
       print(e);
     }
-    // allProducts[index] = Product.fromJson(id, map) as Product;
-    // update();
+
   }
 
   void search(String text) {
     txt = text;
-    getFinalProducts();
+    if(prodTypeFlag==null){
+      getFinalProducts();
+    }else{
+      getFinalFavAdsProducts();
+    }
+
   }
 
 
