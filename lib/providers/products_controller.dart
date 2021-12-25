@@ -23,11 +23,11 @@ class ProductsController extends GetxController {
   bool statusNewChecked = false;
   String txt=null;
   bool isFiltering = false;
-  bool isLoading = false;
-  String prodTypeFlag;
+  bool isLoading = true;
+  String prodTypeFlag=null;
 
 
-  int selectedTabIndex = 0;
+  int selectedTabIndex ;
 
   String token = AuthController.token;
   String userId = AuthController.userId;
@@ -66,16 +66,19 @@ class ProductsController extends GetxController {
       if (response.statusCode == 200) {
         Map<String, dynamic> result =
             json.decode(response.body) as Map<String, dynamic>;
-
         var favResult=  json.decode(favResponse.body) as Map<String, dynamic>;
-
         if (flag == 'all') {
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
-            product.isFav=favResult[key];
+            if(favResponse==200){
+              product.isFav=favResult[key];
+            }else{
+              product.isFav=0;
+            }
+
             _allProds.add(product);
           });
-          getFinalProducts();
+         // getFinalProducts();
 
         } else if(flag=='fav'){
           result.forEach((key, value) async {
@@ -86,7 +89,7 @@ class ProductsController extends GetxController {
              // _favProducts.add(product);
             }
           });
-          getFinalFavAdsProducts();
+print ('xxxxxxxxxx  '+favProducts.length.toString());
         }
         else if(flag=='ads'){
           result.forEach((key, value) async {
@@ -95,9 +98,11 @@ class ProductsController extends GetxController {
             if(value['id']==AuthController.userId) {
               _adsProducts.add(product);
             }
+
           });
-          getFinalFavAdsProducts();
         }
+
+        getFinalProducts();
       }
 
     } catch (err) {
@@ -119,7 +124,8 @@ class ProductsController extends GetxController {
 
   changeIsLoadingFlag(bool value) async {
     isLoading = value;
-   // getFinalProducts();
+   // update();
+    //getFinalProducts();
   }
 
   changeProdTypeFlag(String flag){
@@ -136,12 +142,16 @@ class ProductsController extends GetxController {
     print('flag  ' + isFiltering.toString());
     if (txt.isEmpty) {
       if (isFiltering == false) {
-        if (selectedTabIndex == 0) {
+        if (selectedTabIndex == 0 ) {
           filteredList = allProducts;
         } else if (selectedTabIndex == 1) {
           filteredList = watchProductsList;
         } else if (selectedTabIndex == 2) {
           filteredList = bracletesProductsList;
+        }else if (prodTypeFlag == 'fav') {
+          filteredList = favProducts;
+        }else if (prodTypeFlag == 'ads') {
+          filteredList = addsProduct;
         }
       } else {
         if (selectedTabIndex == 0 &&
@@ -189,7 +199,6 @@ class ProductsController extends GetxController {
         }
       }
     } else {
-      // _productController.searchTextFormProducts.clear();
       filteredList = searchTextFormProducts;
       if (txt.isEmpty) {
         filteredList.clear();
@@ -198,22 +207,9 @@ class ProductsController extends GetxController {
     update();
   }
 
-  void getFinalFavAdsProducts(){
-    if (txt.isEmpty) {
-      if(prodTypeFlag=='fav'){
-        filteredList=favProducts;
-      }else if(prodTypeFlag=='ads'){
-        filteredList=addsProduct;
-      }
-    }else{
-      filteredList = searchTextFormProducts;
-    }
-    update();
-  }
 
   List<Product> get searchTextFormProducts {
     String text = this.txt;
-    print('step1' +prodTypeFlag);
     if (selectedTabIndex == 0) {
       return allProducts
           .where((element) => element.name.contains(text))
@@ -303,12 +299,7 @@ class ProductsController extends GetxController {
 
   void search(String text) {
     txt = text;
-    if(prodTypeFlag==null){
-      getFinalProducts();
-    }else{
-      getFinalFavAdsProducts();
-    }
-
+    getFinalProducts();
   }
 
 

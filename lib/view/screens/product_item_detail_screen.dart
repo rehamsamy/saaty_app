@@ -221,7 +221,7 @@ class ProductItemDetailScreen extends StatelessWidget {
            FlexibleSpaceBar(
             titlePadding: EdgeInsets.all(5),
             centerTitle: true,
-      title: _prodType==null?
+      title: _prodType==null ||_prodType=='fav'?
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -243,22 +243,33 @@ class ProductItemDetailScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                IconButton(onPressed: (){
-                  Navigator.of(context).pop();
-                }, icon: Icon(Icons.arrow_back,color: Cons.accent_color,size: 30)),
-                IconButton(onPressed: ()async{
-                  print('ppppp');
-                  if(product.isFav==1){
-                   await toogleFav(0, product.id,product);
-                  }else{
-                   await toogleFav(1, product.id,product);
-                  }
-                  _productController.changeFavoriteFlag(product.isFav);
-                  _productController.update();
-                }, icon: Icon(product.isFav==1?Icons.favorite:Icons.favorite_border,color: Colors.red,size: 30)),
-                Text(product.name, style: Cons.accentFont),
-                IconButton(onPressed: (){}, icon: Icon(Icons.delete,color: Cons.accent_color,)),
-                IconButton(onPressed: (){}, icon: Icon(Icons.edit,color: Cons.accent_color,)),
+                Flexible(
+                  flex: 1,
+                  child: IconButton(onPressed: (){
+                    Navigator.of(context).pop();
+                  }, icon: Icon(Icons.arrow_back,color: Cons.accent_color,size: 25)),
+                ),
+                Flexible(
+                  flex: 1,
+                  child: IconButton(onPressed: ()async{
+                    print('ppppp');
+                    if(product.isFav==1){
+                     await toogleFav(0, product.id,product);
+                    }else{
+                     await toogleFav(1, product.id,product);
+                    }
+                    _productController.changeFavoriteFlag(product.isFav);
+                    _productController.update();
+                  }, icon: Icon(product.isFav==1?Icons.favorite:Icons.favorite_border,color: Colors.red,size: 25)),
+                ),
+                Padding(
+                    padding:EdgeInsets.only(left: 10,right: 10),child: Text(product.name, style: TextStyle(fontSize: 18,color: Colors.black54))),
+                Flexible(
+                    flex:1,child: IconButton(onPressed: (){}, icon: Icon(Icons.delete,color: Cons.accent_color,size: 25))),
+                Flexible(
+                    flex:1,child: IconButton(onPressed: (){
+                      Navigator.of(context).pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE,arguments: product);
+                }, icon: Icon(Icons.edit,color: Cons.accent_color,size: 25))),
 
               ],
             ), background: Hero(

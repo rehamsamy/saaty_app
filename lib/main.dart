@@ -10,6 +10,8 @@ import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
+import 'package:saaty_app/view/screens/setting_screen.dart';
+import 'package:saaty_app/view/screens/stores_screen.dart';
 
 import 'providers/products_controller.dart';
 import 'view/screens/register_screen.dart';
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
         )
 
     ),
-      home: LoginScreen(),
+      home: StoresScreen(),
       routes: {
          LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>LoginScreen(),
         RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),
@@ -56,7 +58,9 @@ class MyApp extends StatelessWidget {
         MainPageScreen.MAIN_PRAGE_ROUTE:(_)=>MainPageScreen(),
         ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE:(_)=>ProductItemDetailScreen(),
         SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE:(_)=>SendMessageScreen(),
-        AdsScreen.ADS_SCREEN_ROUTE:(_)=>AdsScreen()
+        AdsScreen.ADS_SCREEN_ROUTE:(_)=>AdsScreen(),
+        SettingScreen.SETTING_SCREEN_ROUTE:(_)=>SettingScreen(),
+        StoresScreen.Stores_SCREEN_ROUTE:(_)=>StoresScreen()
       },
     );
   }

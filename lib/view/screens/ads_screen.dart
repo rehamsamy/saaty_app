@@ -41,7 +41,7 @@ class AdsScreen extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
-                child: AppBar(title: Text('My Ads', style: Cons.greyFont),
+                child: AppBar(title: Text(flag=='ads'?'My Own Ads':'My Favorites', style: Cons.greyFont),
                   elevation: 8,
                   actions: [
                     IconButton(icon: Icon(
@@ -90,12 +90,6 @@ class AdsScreen extends StatelessWidget {
     return
       GetBuilder<ProductsController>(builder: (_) {
         List<Product> finalProds = _productController.filteredList;
-        // if (flag == 'fav') {
-        //   finalProds = _productController.favProducts;
-        // } else {
-        //   finalProds = _productController.addsProduct;
-        // }
-
         return _productController.isLoading ?
         Center(child: CircularProgressIndicator(),) :
         finalProds.length == 0 ? Center(child: Text('Empty Data')) :
@@ -117,16 +111,16 @@ class AdsScreen extends StatelessWidget {
   }
 
   onTextChange(String text) {
-    //String text = _searcController.text;
+    String text = _searcController.text;
     _productController.search(text);
   }
 
   void fetchData(String flag) async{
     print('step '+flag);
-   await _productController.changeIsLoadingFlag(true);
+   _productController.isLoading=true;
+   _productController.isFiltering=false;
     await _productController.fetchProducts(flag).then((value) {
       _productController.changeIsLoadingFlag(false);
-     // _productController.changeProdTypeFlag(flag);
       _productController.update();
     }
     );

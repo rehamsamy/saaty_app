@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
+import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 
 import '../../cons.dart';
@@ -116,6 +117,9 @@ class MyDrawer extends StatelessWidget {
                 title: Text('Call Us'),
               ),
               ListTile(
+                onTap: (){
+                  Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+                },
                 leading: Icon(
                   Icons.logout,
                   color: Cons.primary_color,
