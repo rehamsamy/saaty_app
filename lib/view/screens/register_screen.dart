@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/cons.dart';
@@ -12,8 +10,6 @@ class RegisterScreen extends StatefulWidget{
 }
 
 class RegisterScreenState extends State<RegisterScreen>  with SingleTickerProviderStateMixin {
-
-
    TabController _tabController;
  @override
  void initState() {
@@ -21,9 +17,9 @@ class RegisterScreenState extends State<RegisterScreen>  with SingleTickerProvid
    super.initState();
  }
 
-
  @override
   Widget build(BuildContext context) {
+  // FocusScope.of(context).unfocus();
     var width=MediaQuery.of(context).size.width;
     var height=MediaQuery.of(context).size.height;
     Cons.buildColors(context);
@@ -87,7 +83,7 @@ class RegisterScreenState extends State<RegisterScreen>  with SingleTickerProvid
                         child: SizedBox(
                           height: height*0.4,
                           child: TabBarView(
-                            children: [RegisterWidget(), Text('Person')],
+                            children: [RegisterWidget(0), RegisterWidget(1)],
                             controller: _tabController,
                           ),
                         ),

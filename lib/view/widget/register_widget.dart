@@ -8,6 +8,8 @@ import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/register_screen.dart';
 
 class RegisterWidget extends StatefulWidget {
+  int userType;
+  RegisterWidget(this.userType);
   @override
   _RegisterWidgetState createState() => _RegisterWidgetState();
 }
@@ -21,6 +23,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
     'email': '',
     'password': '',
     'confirm_password': '',
+    'type': '',
+    'store_name':''
   };
   var password_controller = TextEditingController();
   var confirm_password_controller = TextEditingController();
@@ -41,6 +45,15 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 SizedBox(height: 10,),
                 buidTextForm('email', 'Enter Email', Icons.email, map,
                     TextInputType.emailAddress),
+                widget.userType==1?
+                    Column(
+                      children: [
+                        SizedBox(height: 10,),
+                        buidTextForm(
+                            'store_name', 'Enter Store Name', Icons.store_mall_directory_outlined, map,
+                            TextInputType.text),
+                      ],
+                    ):
                 SizedBox(height: 10,),
                 buidTextForm(
                     'phone', 'Enter Phone', Icons.phone_android_sharp, map,
@@ -126,6 +139,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         if (flag == 'confirm_password') {
           map['confirm_password'] = value;
         }
+        if (flag == 'store_name') {
+          map['store_name'] = value;
+        }
       },
       keyboardType: inputType,
     );
@@ -139,6 +155,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         _isLoading = true;
       });
       _formKey.currentState.save();
+        map['type']=widget.userType.toString();
       print(map.toString());
       try {
         await ctrl.registerUser(map).then((value) {

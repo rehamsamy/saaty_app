@@ -70,12 +70,11 @@ class ProductsController extends GetxController {
         if (flag == 'all') {
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
-            if(favResponse==200){
+            if(favResponse.statusCode==200){
               product.isFav=favResult[key];
             }else{
               product.isFav=0;
             }
-
             _allProds.add(product);
           });
          // getFinalProducts();
@@ -89,7 +88,7 @@ class ProductsController extends GetxController {
              // _favProducts.add(product);
             }
           });
-print ('xxxxxxxxxx  '+favProducts.length.toString());
+     print ('xxxxxxxxxx  '+favProducts.length.toString());
         }
         else if(flag=='ads'){
           result.forEach((key, value) async {

@@ -8,8 +8,7 @@ import 'package:saaty_app/model/user_model.dart';
 class AuthController extends GetxController{
 static String userId;
  static String token;
-
-
+ static UserModel model;
   Future registerUser(Map<String,String> regMap)async {
     String url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
     Map<String, Object> map = {
@@ -26,15 +25,16 @@ static String userId;
          token = res['idToken'];
          print(token);
 
-        UserModel model = UserModel(
-            regMap['name'], regMap['email'], regMap['mobile'],
-            regMap['password'], regMap['confirm_password'], userId);
+        // UserModel model = UserModel(
+        //     regMap['name'], regMap['email'], regMap['mobile'],
+        //     regMap['password'], regMap['confirm_password'], userId);
 
         String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/$userId.json?auth=$token';
 
         var y = await http.post(Uri.parse(url), body: json.encode(regMap));
         if (y.statusCode == 200) {
           print('step2');
+           model=json.decode(y.body);
           print(y.statusCode);
           print(y.body);
         } else {

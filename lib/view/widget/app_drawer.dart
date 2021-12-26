@@ -4,12 +4,13 @@ import 'package:saaty_app/view/screens/ads_screen.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
+import 'package:saaty_app/view/screens/stores_screen.dart';
 
 import '../../cons.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     String flag='all';
     return Drawer(
       child: Padding(
@@ -96,6 +97,7 @@ class MyDrawer extends StatelessWidget {
                 title: Text('Setting'),
               ),
               ListTile(
+                onTap:()=>  Navigator.of(context).pushNamed(StoresScreen.Stores_SCREEN_ROUTE,arguments:flag='all' ) ,
                 leading: Icon(
                   Icons.info,
                   color: Cons.primary_color,

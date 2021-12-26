@@ -29,7 +29,7 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-
+  //  FocusScope.of(context).unfocus();
    // FocusManager.instance.primaryFocus!.unfocus();
     var width=MediaQuery.of(context).size.width;
     var height=MediaQuery.of(context).size.height;
