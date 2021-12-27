@@ -15,6 +15,7 @@ class ProductItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('vvvvv' +product.isFav.toString());
         return GetBuilder<ProductController>(
           builder: (_)=>
            GestureDetector(
@@ -85,7 +86,7 @@ class ProductItemWidget extends StatelessWidget {
 
                           },
                           icon: Icon(
-                            product.isFav==0 ? Icons.favorite_border : Icons.favorite,
+                            product.isFav==1 ?Icons.favorite  : Icons.favorite_border,
                             color: Colors.red,
                           )
                           ))

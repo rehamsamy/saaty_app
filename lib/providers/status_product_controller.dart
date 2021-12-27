@@ -54,7 +54,6 @@ class StatusProductController extends GetxController{
       if (response.statusCode == 200) {
         Map<String, dynamic> result =
         json.decode(response.body) as Map<String, dynamic>;
-
         var favResult=  json.decode(favResponse.body) as Map<String, dynamic>;
         if (flag == 'all') {
           result.forEach((key, value) async {

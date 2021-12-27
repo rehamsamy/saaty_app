@@ -28,6 +28,7 @@ class _MainPageScreenState extends State<MainPageScreen>
   String productsType;
   var _searcController = TextEditingController();
   FocusNode _textFocus = new FocusNode();
+  TabController _tabController;
   var hintText;
   int filterRad = 0;
   bool flag = false;
@@ -36,6 +37,7 @@ class _MainPageScreenState extends State<MainPageScreen>
   void initState() {
     super.initState();
     fetchData();
+    _tabController=TabController(length: 3, vsync: this);
   }
 
   @override
@@ -46,123 +48,156 @@ class _MainPageScreenState extends State<MainPageScreen>
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     // FocusManager.instance.primaryFocus.unfocus();
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(150),
-        child: Container(
-          //height: 250,
-          child: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: AppBar(
-                  title: Text('Stores', style: Cons.greyFont),
-                  elevation: 8,
-                  actions: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.home,
-                        color: Cons.accent_color,
-                        size: 25,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(150),
+          child: Container(
+            //height: 250,
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: AppBar(
+                    title: Text('Stores', style: Cons.greyFont),
+                    elevation: 8,
+                    actions: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.home,
+                          color: Cons.accent_color,
+                          size: 25,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
+                        },
                       ),
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 2,
-              ),
-              Expanded(
-                flex: 1,
-                child: Card(
-                  margin: EdgeInsets.all(2),
-                  elevation: 6,
-                  child: Padding(
-                    padding: EdgeInsets.all(5),
-                    child: TextFormField(
-                      controller: _searcController,
-                      focusNode: _textFocus,
-                      onChanged: onTextChange,
-                      decoration: InputDecoration(
-                          hintText: 'search',
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Cons.accent_color,
-                            size: 25,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              Icons.filter_list_alt,
+                    ],
+                    bottom: TabBar(
+                      onTap: (ind)=>_productController.changeSelectedTab(ind),
+                      controller: _tabController,
+                      tabs: [
+                        Tab(
+                          child: Text('Old',style: _tabController.index==0?Cons.greyFont:Cons.blueFont,),
+                        ),
+                        Tab(
+                          child:  Text('New',style: _tabController.index==1?Cons.greyFont:Cons.blueFont,),
+                        ),
+                        Tab(
+                          child:  Text('New',style: _tabController.index==1?Cons.greyFont:Cons.blueFont,),
+                        ),
+                      ],
+                  ),
+                ),),
+                SizedBox(height: 2,),
+                Expanded(
+                  flex: 1,
+                  child: Card(
+                    margin: EdgeInsets.all(2),
+                    elevation: 6,
+                    child: Padding(
+                      padding: EdgeInsets.all(5),
+                      child: TextFormField(
+                        controller: _searcController,
+                        focusNode: _textFocus,
+                        onChanged: onTextChange,
+                        decoration: InputDecoration(
+                            hintText: 'search',
+                            prefixIcon: Icon(
+                              Icons.search,
                               color: Cons.accent_color,
                               size: 25,
                             ),
-                            onPressed: () {
-                              buildFilterDialogWidget(context);
-                            },
-                          ),
-                          // SizedBox(
-                          //     width:10,
-                          //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Cons.accent_color,
-                              width: 1.0,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                Icons.filter_list_alt,
+                                color: Cons.accent_color,
+                                size: 25,
+                              ),
+                              onPressed: () {
+                                buildFilterDialogWidget(context);
+                              },
                             ),
-                          )
-                          //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
-                          ),
+                            // SizedBox(
+                            //     width:10,
+                            //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Cons.accent_color,
+                                width: 1.0,
+                              ),
+                            )
+                            //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
+                            ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              GetBuilder<ProductController>(builder: (_) {
-                int index = _productController.selectedTabIndex;
-                return Expanded(
-                  flex: 1,
-                  child: Card(
-                    elevation: 5,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          InkWell(
-                            child: Text('Stores'),
-                            onTap: () {
-                              _productController.changeSelectedTab(0);
-                            },
-                          ),
-                          InkWell(
-                            child: Text('Watches'),
-                            onTap: () {
-                              _productController.changeSelectedTab(1);
-                              print('index   ?   '+_productController.selectedTabIndex.toString());
-                            },
-                          ),
-                          InkWell(
-                            child: Text('Bracletes'),
-                            onTap: () => _productController.changeSelectedTab(2),
-                          ),
-                        ]),
-                  ),
-                );
-              }),
-            ],
+                GetBuilder<ProductController>(builder: (_) {
+                  int index = _productController.selectedTabIndex;
+                  return Expanded(
+                    flex: 1,
+                    child: Card(
+                      elevation: 5,
+                      child:
+                        TabBarView(
+                          controller: _tabController,
+                          children: [
+                            Scaffold(
+                              body:  buildGrid(_productController.changeSelectedTab(0)),
+                            ),
+                            Scaffold(
+                              body:    buildGrid(_productController.changeSelectedTab(1)),
+                            ),
+                            Scaffold(
+                              body:  buildGrid(_productController.changeSelectedTab(2)),
+                            ),
+
+
+
+                          ],
+                        )
+                      // Row(
+                      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      //     children: [
+                      //       InkWell(
+                      //         child: Text('Stores'),
+                      //         onTap: () {
+                      //           _productController.changeSelectedTab(0);
+                      //         },
+                      //       ),
+                      //       InkWell(
+                      //         child: Text('Watches'),
+                      //         onTap: () {
+                      //           _productController.changeSelectedTab(1);
+                      //           print('index   ?   '+_productController.selectedTabIndex.toString());
+                      //         },
+                      //       ),
+                      //       InkWell(
+                      //         child: Text('Bracletes'),
+                      //         onTap: () => _productController.changeSelectedTab(2),
+                      //       ),
+                      //     ]),
+                    ),
+                  );
+                }),
+              ],
+            ),
           ),
         ),
+        body: GetBuilder<ProductsController> (builder: (productController) {
+          print('index'+productController.selectedTabIndex.toString());
+          return  buildGrid(_productController.selectedTabIndex);
+          // buildGrid(productController.selectedTabIndex ?? 0)
+        }),
+        drawer: MyDrawer(),
       ),
-      body: GetBuilder<ProductsController> (builder: (productController) {
-        print('index'+productController.selectedTabIndex.toString());
-        return  buildGrid();
-        // buildGrid(productController.selectedTabIndex ?? 0)
-      }),
-      drawer: MyDrawer(),
     );
   }
 
-  Widget buildGrid() {
+  Widget buildGrid( int x) {
     _productController.txt=_searcController.text;
     return _isLoading == true
         ? Center(

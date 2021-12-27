@@ -27,7 +27,7 @@ class ProductsController extends GetxController {
   String prodTypeFlag=null;
 
 
-  int selectedTabIndex ;
+  int selectedTabIndex =0;
 
   String token = AuthController.token;
   String userId = AuthController.userId;
@@ -57,12 +57,13 @@ class ProductsController extends GetxController {
     favProducts.clear();
     addsProduct.clear();
     String token = AuthController.token;
-    print(token);
+    print('${AuthController.userId}');
     String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
   String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
     try {
       var favResponse=await http.get(Uri.parse(urlFav));
       var response = await http.get(Uri.parse(url));
+
       if (response.statusCode == 200) {
         Map<String, dynamic> result =
             json.decode(response.body) as Map<String, dynamic>;
@@ -75,6 +76,7 @@ class ProductsController extends GetxController {
             }else{
               product.isFav=0;
             }
+             print(product.isFav.toString() +"  " + product.id);
             _allProds.add(product);
           });
          // getFinalProducts();
@@ -147,10 +149,6 @@ class ProductsController extends GetxController {
           filteredList = watchProductsList;
         } else if (selectedTabIndex == 2) {
           filteredList = bracletesProductsList;
-        }else if (prodTypeFlag == 'fav') {
-          filteredList = favProducts;
-        }else if (prodTypeFlag == 'ads') {
-          filteredList = addsProduct;
         }
       } else {
         if (selectedTabIndex == 0 &&
@@ -221,11 +219,6 @@ class ProductsController extends GetxController {
       return bracletesProductsList
           .where((element) => element.name.contains(text))
           .toList();
-    }else  if(prodTypeFlag=='fav'){
-      print('hereee ');
-      return favProducts.where((element) => element.name.contains(text)).toList();
-    }else  if(prodTypeFlag=='ads'){
-      return addsProduct.where((element) => element.name.contains(text)).toList();
     }
   }
 

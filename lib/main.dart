@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
+import 'package:saaty_app/providers/fav_ads_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/status_product_controller.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
   final controller1 = Get.put(ProductController());
   final controller2 = Get.put(ProductsController());
   final controller3 = Get.put(StatusProductController());
+  final controller4=Get.put(FavsAdsController());
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
