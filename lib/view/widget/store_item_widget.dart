@@ -42,12 +42,12 @@ class StoreItemWidget extends StatelessWidget {
 
   }
 
+// Future toogleFav(int fav, IconData iconData, Map<String, dynamic> map) async {
+//   map['isFav'] = fav;
+//   await _productController
+//       .toggleFav(map['id'], fav)
+//       .then((value) => product.isFav=fav);
+// }
 
 
-  Future toogleFav(int fav, IconData iconData, Map<String, dynamic> map) async {
-    map['isFav'] = fav;
-    await _productController
-        .toggleFav(map['id'], fav)
-        .then((value) => product.isFav=fav);
-  }
 }
