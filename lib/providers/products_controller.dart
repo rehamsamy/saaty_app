@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:saaty_app/model/product_model.dart';
+import 'package:saaty_app/model/user_model.dart';
 import 'dart:convert';
 
 import 'package:saaty_app/providers/auth_controller.dart';
@@ -17,6 +18,7 @@ class ProductsController extends GetxController {
   List<Product> _allProds = [];
   List<Product> _adsProducts = [];
   List<Product> _favProducts = [];
+  List<UserModel> _storesList = [];
 
   int filterRad = 0;
   bool statusOldChecked = false;
@@ -108,6 +110,27 @@ class ProductsController extends GetxController {
 
     } catch (err) {
       print(err);
+    }
+
+  }
+
+  Future fetchStores()async{
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=$token';
+    try {
+      var response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> result =
+        json.decode(response.body) as Map<String, dynamic>;
+        result.forEach((key, value) {
+          UserModel userModel=UserModel.fromJson(value);
+          _storesList.add(userModel);
+        });
+
+      }
+    }
+    catch(err){
+
     }
 
   }
@@ -293,6 +316,7 @@ class ProductsController extends GetxController {
     txt = text;
     getFinalProducts();
   }
+
 
 
 }

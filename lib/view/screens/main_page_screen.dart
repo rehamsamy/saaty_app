@@ -7,6 +7,7 @@ import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
+import 'package:saaty_app/view/widget/store_item_widget.dart';
 
 import '../../cons.dart';
 
@@ -37,7 +38,7 @@ class _MainPageScreenState extends State<MainPageScreen>
   void initState() {
     super.initState();
     fetchData();
-    _tabController=TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -50,155 +51,143 @@ class _MainPageScreenState extends State<MainPageScreen>
     // FocusManager.instance.primaryFocus.unfocus();
     return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(150),
-          child: Container(
-            //height: 250,
-            child: Column(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: AppBar(
-                    title: Text('Stores', style: Cons.greyFont),
-                    elevation: 8,
-                    actions: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.home,
-                          color: Cons.accent_color,
-                          size: 25,
-                        ),
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
-                        },
-                      ),
-                    ],
-                    bottom: TabBar(
-                      onTap: (ind)=>_productController.changeSelectedTab(ind),
-                      controller: _tabController,
-                      tabs: [
-                        Tab(
-                          child: Text('Old',style: _tabController.index==0?Cons.greyFont:Cons.blueFont,),
-                        ),
-                        Tab(
-                          child:  Text('New',style: _tabController.index==1?Cons.greyFont:Cons.blueFont,),
-                        ),
-                        Tab(
-                          child:  Text('New',style: _tabController.index==1?Cons.greyFont:Cons.blueFont,),
+      child: GetBuilder<ProductsController>(
+        builder: (_)=>
+         Scaffold(
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(height *0.25),
+            child: Container(
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: AppBar(
+                      title: Text('Storesmm', style: Cons.greyFont),
+                      elevation: 6,
+                      actions: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.home,
+                            color: Cons.accent_color,
+                            size: 25,
+                          ),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
+                          },
                         ),
                       ],
+                    ),
                   ),
-                ),),
-                SizedBox(height: 2,),
-                Expanded(
-                  flex: 1,
-                  child: Card(
-                    margin: EdgeInsets.all(2),
-                    elevation: 6,
-                    child: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: TextFormField(
-                        controller: _searcController,
-                        focusNode: _textFocus,
-                        onChanged: onTextChange,
-                        decoration: InputDecoration(
-                            hintText: 'search',
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: Cons.accent_color,
-                              size: 25,
-                            ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                Icons.filter_list_alt,
+                  SizedBox(
+                    height: 2,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Card(
+                      margin: EdgeInsets.all(2),
+                      elevation: 5,
+                      child: Padding(
+                        padding: EdgeInsets.all(5),
+                        child: TextFormField(
+                          controller: _searcController,
+                          focusNode: _textFocus,
+                          onChanged: onTextChange,
+                          decoration: InputDecoration(
+                              hintText: 'search',
+                              prefixIcon: Icon(
+                                Icons.search,
                                 color: Cons.accent_color,
                                 size: 25,
                               ),
-                              onPressed: () {
-                                buildFilterDialogWidget(context);
-                              },
-                            ),
-                            // SizedBox(
-                            //     width:10,
-                            //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Cons.accent_color,
-                                width: 1.0,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  Icons.filter_list_alt,
+                                  color: Cons.accent_color,
+                                  size: 25,
+                                ),
+                                onPressed: () {
+                                  buildFilterDialogWidget(context);
+                                },
                               ),
-                            )
-                            //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
-                            ),
+                              // SizedBox(
+                              //     width:10,
+                              //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Cons.accent_color,
+                                  width: 1.0,
+                                ),
+                              )
+                              //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
+                              ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                GetBuilder<ProductController>(builder: (_) {
-                  int index = _productController.selectedTabIndex;
-                  return Expanded(
+                  Expanded(
                     flex: 1,
                     child: Card(
-                      elevation: 5,
-                      child:
-                        TabBarView(
-                          controller: _tabController,
-                          children: [
-                            Scaffold(
-                              body:  buildGrid(_productController.changeSelectedTab(0)),
+                      elevation: 4,
+                      child: TabBar(
+                        onTap: (ind) {
+                          _productController.changeSelectedTab(ind);
+                          _productController.update();
+                        } ,
+                        controller: _tabController,
+                        tabs: [
+                          Tab(
+                            child: Text(
+                              'Stores',
+                              style: _tabController.index == 0
+                                  ? Cons.blueFont
+                                  :Cons.greyFont ,
                             ),
-                            Scaffold(
-                              body:    buildGrid(_productController.changeSelectedTab(1)),
+                          ),
+                          Tab(
+                            child: Text(
+                              'Watches',
+                              style: _tabController.index == 1
+                                  ? Cons.blueFont
+                                  :Cons.greyFont ,
                             ),
-                            Scaffold(
-                              body:  buildGrid(_productController.changeSelectedTab(2)),
+                          ),
+                          Tab(
+                            child: Text(
+                              'Bracltes',
+                              style: _tabController.index == 2
+                                  ? Cons.blueFont
+                                  :Cons.greyFont ,
                             ),
-
-
-
-                          ],
-                        )
-                      // Row(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //     children: [
-                      //       InkWell(
-                      //         child: Text('Stores'),
-                      //         onTap: () {
-                      //           _productController.changeSelectedTab(0);
-                      //         },
-                      //       ),
-                      //       InkWell(
-                      //         child: Text('Watches'),
-                      //         onTap: () {
-                      //           _productController.changeSelectedTab(1);
-                      //           print('index   ?   '+_productController.selectedTabIndex.toString());
-                      //         },
-                      //       ),
-                      //       InkWell(
-                      //         child: Text('Bracletes'),
-                      //         onTap: () => _productController.changeSelectedTab(2),
-                      //       ),
-                      //     ]),
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                }),
-              ],
+                  ),
+                  SizedBox(
+                    height: 2,
+                  ),
+                ],
+              ),
             ),
           ),
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+             buildStoreGrid(),
+              buildGrid(),
+              buildGrid()
+            ],
+          ),
+          drawer: MyDrawer(),
         ),
-        body: GetBuilder<ProductsController> (builder: (productController) {
-          print('index'+productController.selectedTabIndex.toString());
-          return  buildGrid(_productController.selectedTabIndex);
-          // buildGrid(productController.selectedTabIndex ?? 0)
-        }),
-        drawer: MyDrawer(),
       ),
     );
   }
 
-  Widget buildGrid( int x) {
-    _productController.txt=_searcController.text;
+  Widget buildGrid() {
+    print('9999      '+_productController.filteredList.length.toString());
+    _productController.txt = _searcController.text;
     return _isLoading == true
         ? Center(
             child: CircularProgressIndicator(),
@@ -215,7 +204,8 @@ class _MainPageScreenState extends State<MainPageScreen>
                     crossAxisCount: 2),
                 itemCount: _productController.filteredList.length,
                 itemBuilder: (ctx, inx) {
-                  return ProductItemWidget(_productController.filteredList[inx]);
+                  return ProductItemWidget(
+                      _productController.filteredList[inx]);
                 });
   }
 
@@ -251,9 +241,6 @@ class _MainPageScreenState extends State<MainPageScreen>
     );
   }
 
-  // @override
-  // // TODO: implement wantKeepAlive
-  // bool get wantKeepAlive => throw UnimplementedError();
 
   @override
   bool get wantKeepAlive => true;
@@ -265,21 +252,17 @@ class _MainPageScreenState extends State<MainPageScreen>
     });
 
     await Future.delayed(Duration(milliseconds: 200));
-     _productController
+    _productController
         .fetchProducts('all')
         .then((value) => setState(() => _isLoading = false))
         .catchError((err) => print('=>>>>>  $err'));
     print('length 44444444  => ${_productController.allProducts.length}');
-
-
-
-
   }
 
   onTextChange(String text) {
     String text = _searcController.text;
     print('rrrr  $text');
-     _productController.search(text);
+    _productController.search(text);
   }
 
   void buildFilterDialogWidget(BuildContext context) {
@@ -295,8 +278,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                 width: MediaQuery.of(context).size.width * 0.95,
                 child: SingleChildScrollView(
                   child: GetBuilder<ProductsController>(
-                    builder: (_)=>
-                     Column(
+                    builder: (_) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Arrange Where:'),
@@ -309,9 +291,8 @@ class _MainPageScreenState extends State<MainPageScreen>
                           value: 0,
                           groupValue: _productController.filterRad,
                           onChanged: (value) {
-                         _productController.filterRad=value;
-                         _productController.update();
-
+                            _productController.filterRad = value;
+                            _productController.update();
                           },
                           activeColor: Cons.primary_color,
                         ),
@@ -321,7 +302,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                           value: 1,
                           groupValue: _productController.filterRad,
                           onChanged: (value) {
-                            _productController.filterRad=value;
+                            _productController.filterRad = value;
                             _productController.update();
                           },
                           title: Text('From Low Price To High'),
@@ -346,18 +327,17 @@ class _MainPageScreenState extends State<MainPageScreen>
                         CheckboxListTile(
                           value: _productController.statusNewChecked,
                           onChanged: (val) {
-                            _productController.statusNewChecked=val;
+                            _productController.statusNewChecked = val;
                             _productController.update();
-
                           },
                           title: Text('New Products'),
                           activeColor: Cons.primary_color,
                         ),
                         //  SizedBox(height: 20,),
                         CheckboxListTile(
-                          value:   _productController.statusOldChecked,
+                          value: _productController.statusOldChecked,
                           onChanged: (val) {
-                            _productController.statusOldChecked=val;
+                            _productController.statusOldChecked = val;
                             _productController.update();
                           },
                           title: Text('Old Products'),
@@ -372,7 +352,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            onPressed: () async{
+                            onPressed: () async {
                               _productController.changeFilterFlag(true);
                               Navigator.of(context).pop();
                             },
@@ -393,6 +373,24 @@ class _MainPageScreenState extends State<MainPageScreen>
         });
   }
 
-
-
+  buildStoreGrid() {
+    return _isLoading == true
+        ? Center(
+      child: CircularProgressIndicator(),
+    )
+        : _productController.filteredList.isEmpty
+        ? Center(
+      child: Text('Empty Data'),
+    )
+        : GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            mainAxisSpacing: 0,
+            crossAxisSpacing: 0,
+            childAspectRatio: 8 / 9,
+            crossAxisCount: 2),
+        itemCount: _productController.filteredList.length,
+        itemBuilder: (ctx, inx) {
+          return StoreItemWidget();
+        });
+  }
 }
