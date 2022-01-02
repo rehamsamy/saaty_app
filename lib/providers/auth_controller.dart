@@ -29,7 +29,7 @@ static String userId;
         //     regMap['name'], regMap['email'], regMap['mobile'],
         //     regMap['password'], regMap['confirm_password'], userId);
 
-        String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/$userId.json?auth=$token';
+        String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=$token';
 
         var y = await http.post(Uri.parse(url), body: json.encode(regMap));
         if (y.statusCode == 200) {
@@ -62,7 +62,6 @@ static String userId;
     'returnSecureToken': true };
     try{
       var x= await http.post(Uri.parse(url),body:json.encode(map));
-      //await Future.delayed(Duration(seconds: 1));
       print(x.body);
       if(x.statusCode==200){
           print('step1');
@@ -82,7 +81,5 @@ static String userId;
       print('step3');
       throw err;
     }
-
-
   }
 }

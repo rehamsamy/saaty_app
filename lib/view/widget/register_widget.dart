@@ -156,6 +156,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       });
       _formKey.currentState.save();
         map['type']=widget.userType.toString();
+        map['localId']=AuthController.userId;
       print(map.toString());
       try {
         await ctrl.registerUser(map).then((value) {

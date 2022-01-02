@@ -1,29 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
+import 'package:saaty_app/model/user_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
+import 'package:saaty_app/view/screens/stores_screen.dart';
 
 import '../../cons.dart';
 
 class StoreItemWidget extends StatelessWidget {
-  Product product;
-  String flag;
-  ProductController _productController = Get.find();
+  int index;
+  UserModel model;
+  StoreItemWidget(this.model,this.index);
+
   @override
   Widget build(BuildContext context) {
-    print('vvvvv' +product.isFav.toString());
-    return GetBuilder<ProductController>(
+    int inx;
+    if (index>4 ){
+      inx=1;
+    }else{
+      inx=index+1;
+    }
+    print('+++ '+inx.toString());
+    return GetBuilder<ProductsController>(
+
       builder: (_)=>
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed(
-                  ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE,
-                  arguments: {'prod': product, 'flag': flag});
+                  StoresScreen.Stores_SCREEN_ROUTE,
+                  arguments: model);
             },
             child: Padding(
-              padding: const EdgeInsets.all(1.0),
+              padding: const EdgeInsets.all(5.0),
               child: Card(
                 color: Colors.white,
                 shape:
@@ -31,8 +41,12 @@ class StoreItemWidget extends StatelessWidget {
                 elevation: 8,
                 child: Column(
                   children: [
-                    Image.asset('assetes/images/store2.png'),
-                    Center(child:Text('name'))
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Hero(tag:model.userId,child: Image.asset('assets/images/store${inx.toString()}.png')),
+                    ),
+                   // SizedBox(height: 10,),
+                    Center(child:Text(model.name,style: TextStyle(color: Colors.black87,fontSize: 18),))
                   ],
                 )
               ),

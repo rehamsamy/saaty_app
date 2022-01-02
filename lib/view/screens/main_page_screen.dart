@@ -196,17 +196,20 @@ class _MainPageScreenState extends State<MainPageScreen>
             ? Center(
                 child: Text('Empty Data'),
               )
-            : GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 0,
-                    crossAxisSpacing: 0,
-                    childAspectRatio: 8 / 9,
-                    crossAxisCount: 2),
-                itemCount: _productController.filteredList.length,
-                itemBuilder: (ctx, inx) {
-                  return ProductItemWidget(
-                      _productController.filteredList[inx]);
-                });
+            : GetBuilder<ProductsController>(
+      builder: (_)=>
+               GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      mainAxisSpacing: 0,
+                      crossAxisSpacing: 0,
+                      childAspectRatio: 8 / 9,
+                      crossAxisCount: 2),
+                  itemCount: _productController.filteredList.length,
+                  itemBuilder: (ctx, inx) {
+                    return ProductItemWidget(
+                        _productController.filteredList[inx]);
+                  }),
+            );
   }
 
   Widget storeGridItem(List<Product> stores, int indx) {
@@ -241,11 +244,12 @@ class _MainPageScreenState extends State<MainPageScreen>
     );
   }
 
-
   @override
   bool get wantKeepAlive => true;
 
   Future fetchData() async {
+    await _productController.fetchStores().then((value) =>
+        print('length 44444444  => '));
     await Future.delayed(Duration(milliseconds: 200));
     setState(() {
       _isLoading = true;
@@ -256,7 +260,7 @@ class _MainPageScreenState extends State<MainPageScreen>
         .fetchProducts('all')
         .then((value) => setState(() => _isLoading = false))
         .catchError((err) => print('=>>>>>  $err'));
-    print('length 44444444  => ${_productController.allProducts.length}');
+
   }
 
   onTextChange(String text) {
@@ -378,7 +382,7 @@ class _MainPageScreenState extends State<MainPageScreen>
         ? Center(
       child: CircularProgressIndicator(),
     )
-        : _productController.filteredList.isEmpty
+        : _productController.allStores.isEmpty
         ? Center(
       child: Text('Empty Data'),
     )
@@ -388,9 +392,9 @@ class _MainPageScreenState extends State<MainPageScreen>
             crossAxisSpacing: 0,
             childAspectRatio: 8 / 9,
             crossAxisCount: 2),
-        itemCount: _productController.filteredList.length,
+        itemCount:  _productController.allStores.length,
         itemBuilder: (ctx, inx) {
-          return StoreItemWidget();
+          return StoreItemWidget(_productController.allStores[inx],inx);
         });
   }
 }

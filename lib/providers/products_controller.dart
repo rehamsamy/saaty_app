@@ -8,10 +8,6 @@ import 'dart:convert';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:async';
-import 'dart:io';
-
-import 'package:saaty_app/view/widget/product_item_widget.dart';
-
 import '../cons.dart';
 
 class ProductsController extends GetxController {
@@ -37,6 +33,11 @@ class ProductsController extends GetxController {
   List<Product> get allProducts {
     return _allProds;
   }
+
+  List<UserModel> get allStores {
+    return _storesList;
+  }
+
   List<Product> get favProducts {
     return _favProducts;
   }
@@ -83,28 +84,7 @@ class ProductsController extends GetxController {
           });
          // getFinalProducts();
 
-        } else if(flag=='fav'){
-          result.forEach((key, value) async {
-            Product product = Product.fromJson(key, value);
-            product.isFav=favResult[key];
-            if(product.isFav==1) {
-              _favProducts.add(product);
-             // _favProducts.add(product);
-            }
-          });
-     print ('xxxxxxxxxx  '+favProducts.length.toString());
         }
-        else if(flag=='ads'){
-          result.forEach((key, value) async {
-            Product product = Product.fromJson(key, value);
-            product.isFav=favResult[key];
-            if(value['id']==AuthController.userId) {
-              _adsProducts.add(product);
-            }
-
-          });
-        }
-
         getFinalProducts();
       }
 
@@ -115,24 +95,29 @@ class ProductsController extends GetxController {
   }
 
   Future fetchStores()async{
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=$token';
-    try {
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${AuthController.token}';
+     print('vvv  '+AuthController.token);
+     _storesList.clear();
+     try {
       var response = await http.get(Uri.parse(url));
-
+      print('vvv  '+response.statusCode.toString());
       if (response.statusCode == 200) {
-        Map<String, dynamic> result =
+        var result =
         json.decode(response.body) as Map<String, dynamic>;
         result.forEach((key, value) {
-          UserModel userModel=UserModel.fromJson(value);
-          _storesList.add(userModel);
+          print(value);
+          if(value['type']=='1'){
+            print('yes');
+            UserModel userModel=UserModel.fromJson(value);
+            _storesList.add(userModel);
+          }
         });
 
+        update();
       }
-    }
+   }
     catch(err){
-
     }
-
   }
 
   changeSelectedTab(int index) async {

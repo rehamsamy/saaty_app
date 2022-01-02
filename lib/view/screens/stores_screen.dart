@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saaty_app/model/user_model.dart';
 import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/providers/status_product_controller.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
@@ -10,6 +11,7 @@ import 'main_page_screen.dart';
 
 class StoresScreen extends StatefulWidget{
   static String Stores_SCREEN_ROUTE='/10';
+  UserModel model;
   @override
   State createState() {
     return StoresScreenState();
@@ -33,6 +35,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    widget.model=ModalRoute.of(context).settings.arguments as UserModel;
     return GetBuilder<StatusProductController>(
       builder: (_)=>
        DefaultTabController(length: 2, child:
@@ -56,7 +59,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                        child:  Card(
                          elevation: 8,
                          child: Container(color: Colors.white,
-                         child: Center(child: Text('Store 1')),),
+                         child: Center(child: Text(widget.model.name)),),
                        ),
                      ),
                     Container(
@@ -110,10 +113,13 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                            child: ListTile(
                                        title: Text('Name1'),
                                        leading:
-                                            CircleAvatar(
-                                             radius: 50,
-                                             backgroundImage: AssetImage('assets/images/store1.png'),
+                                            Hero(
+                                              tag: widget.model.userId,
+                                              child: CircleAvatar(
+                                               radius: 50,
+                                               backgroundImage: AssetImage('assets/images/store1.png'),
                                            ),
+                                            ),
                                        trailing: IconButton(icon: Icon(Icons.message,color: Cons.accent_color,),),
                            )
 
@@ -315,7 +321,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
 
     await Future.delayed(Duration(milliseconds: 200));
     _statusController
-        .fetchProducts('all','Tf7EKlajOTVF03a4orCoDqtdK302')
+        .fetchProducts('all',widget.model.userId)
         .then((value) => setState(() => _isLoading = false))
         .catchError((err) => print('=>>>>>  $err'));
     print('length 44444444  => ${_statusController.allProducts.length}');
