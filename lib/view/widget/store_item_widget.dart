@@ -23,14 +23,17 @@ class StoreItemWidget extends StatelessWidget {
       inx=index+1;
     }
     print('+++ '+inx.toString());
+    Map<String,dynamic> map={
+      'model':model,
+    'index':inx
+    };
     return GetBuilder<ProductsController>(
-
       builder: (_)=>
           GestureDetector(
             onTap: () {
               Navigator.of(context).pushNamed(
                   StoresScreen.Stores_SCREEN_ROUTE,
-                  arguments: model);
+                  arguments: map);
             },
             child: Padding(
               padding: const EdgeInsets.all(5.0),

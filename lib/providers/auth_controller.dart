@@ -23,14 +23,14 @@ static String userId;
         var res = json.decode(x.body);
         String userId = res['localId'];
          token = res['idToken'];
-         print(token);
+         print(userId);
 
         // UserModel model = UserModel(
         //     regMap['name'], regMap['email'], regMap['mobile'],
         //     regMap['password'], regMap['confirm_password'], userId);
 
         String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=$token';
-
+           regMap['localId']=userId;
         var y = await http.post(Uri.parse(url), body: json.encode(regMap));
         if (y.statusCode == 200) {
           print('step2');

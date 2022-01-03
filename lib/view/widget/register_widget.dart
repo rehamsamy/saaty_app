@@ -156,7 +156,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       });
       _formKey.currentState.save();
         map['type']=widget.userType.toString();
-        map['localId']=AuthController.userId;
       print(map.toString());
       try {
         await ctrl.registerUser(map).then((value) {
@@ -186,8 +185,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       }
     }
   }
-
-
    _showErrorMessage(BuildContext context, String message) {
     showDialog(context: context, builder: (context)=>
         AlertDialog(
@@ -203,9 +200,5 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 child: Text('OK!'))
           ],
         ));
-
   }
-
-
-
 }
