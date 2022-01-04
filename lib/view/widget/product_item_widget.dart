@@ -15,7 +15,7 @@ class ProductItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('vvvvv' +product.isFav.toString());
+    print('vvvvv' +product.images[0]);
         return GetBuilder<ProductController>(
           builder: (_)=>
            GestureDetector(

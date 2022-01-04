@@ -136,10 +136,10 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                  controller: _tabController,
                  tabs: [
                    Tab(
-                     child: Text('Old',style: _tabController.index==0?Cons.greyFont:Cons.blueFont,),
+                     child: Text('Old',style: _tabController.index==0?Cons.blueFont:Cons.greyFont,),
                    ),
                    Tab(
-                     child:  Text('New',style: _tabController.index==1?Cons.greyFont:Cons.blueFont,),
+                     child:  Text('New',style: _tabController.index==1?Cons.blueFont:Cons.greyFont,),
                    ),
                  ],
                ),
@@ -280,14 +280,12 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
           );
         });
   }
+
   onTextChange(String text){
     String text = _searcController.text;
     print('rrrr  $text');
     _statusController.search(text);
   }
-
-
-
 
  Widget buildGrid(int i) {
     return GetBuilder<ProductsController>(builder: (ctx) {
@@ -315,7 +313,6 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
     );
 
   }
-
 
   Future fetchData() async {
     await Future.delayed(Duration(milliseconds: 200));

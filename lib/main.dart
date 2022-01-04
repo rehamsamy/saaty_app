@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/fav_ads_controller.dart';
+import 'package:saaty_app/providers/message_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/status_product_controller.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
@@ -10,6 +11,8 @@ import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
+import 'package:saaty_app/view/screens/message_detail_screen.dart';
+import 'package:saaty_app/view/screens/messages_screen.dart';
 import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
 import 'package:saaty_app/view/screens/setting_screen.dart';
@@ -28,6 +31,7 @@ class MyApp extends StatelessWidget {
   final controller2 = Get.put(ProductsController());
   final controller3 = Get.put(StatusProductController());
   final controller4=Get.put(FavsAdsController());
+  final controller5=Get.put(MessageController());
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,7 @@ class MyApp extends StatelessWidget {
         )
 
     ),
-      home: LoginScreen(),
+      home: MessageScreen(),
       routes: {
          LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>LoginScreen(),
         RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),
@@ -64,7 +68,9 @@ class MyApp extends StatelessWidget {
         SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE:(_)=>SendMessageScreen(),
         AdsScreen.ADS_SCREEN_ROUTE:(_)=>AdsScreen(),
         SettingScreen.SETTING_SCREEN_ROUTE:(_)=>SettingScreen(),
-        StoresScreen.Stores_SCREEN_ROUTE:(_)=>StoresScreen()
+        StoresScreen.Stores_SCREEN_ROUTE:(_)=>StoresScreen(),
+        MessageScreen.MESSAGES_SCREEN_ROUTE:(_)=>MessageScreen(),
+        MessageDetailScreen.MESSAGES_Detail_SCREEN_ROUTE:(_)=>MessageDetailScreen()
       },
     );
   }
