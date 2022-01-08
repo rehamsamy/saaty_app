@@ -124,7 +124,7 @@ class ProductItemDetailScreen extends StatelessWidget {
 
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.email_rounded,color: Colors.white,),
-          onPressed: ()=>Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE),
+          onPressed: ()=>Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE,arguments: product.creator_id),
         )
     );
   }

@@ -1,7 +1,11 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saaty_app/model/message_model.dart';
 import 'package:saaty_app/providers/message_controller.dart';
+import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'package:saaty_app/view/widget/message_item_widget.dart';
 
 import '../../cons.dart';
@@ -24,9 +28,11 @@ MessageController _messageController=Get.find();
     super.initState();
 
     _tabController = TabController(length: 2, vsync: this);
+    fetchMessages();
   }
   @override
   Widget build(BuildContext context) {
+    _messageController.changeVisibleCheckBox(false);
     width=MediaQuery.of(context).size.width;
     height=MediaQuery.of(context).size.height;
 
@@ -40,26 +46,30 @@ MessageController _messageController=Get.find();
             child: Column(
               children: [
                 Card(
-                  elevation: 8,
+                  elevation: 5,
                   child: AppBar(
                     title: Text('Messages',style: Cons.greyFont),
                   centerTitle: true,
                   actions: [
                     IconButton(onPressed: (){
-                      _modalBottomSheetMenu();
+                      _messageController.changeVisibleCheckBox(true);
+                      _messageController.changeCheckedMessageAll(false);
+                      _modalBottomSheetMenu(context);
                     }, icon: Icon(Icons.delete,color: Cons.accent_color,)),
-                    IconButton(onPressed: (){}, icon: Icon(Icons.home,color: Cons.accent_color,)),
+                    IconButton(onPressed: (){
+                      Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
+                    }, icon: Icon(Icons.home,color: Cons.accent_color,)),
 
                   ],
                   ),
                 ),
                 Card(
-                  elevation: 7,
+                  elevation: 4,
                   child: TabBar(
+                    controller: _tabController,
                     onTap: (indx){
-                      setState(() {
-                        indx= _tabController.index ;
-                      });
+                      _messageController.changeVisibleCheckBox(false);
+                      _messageController.changeSelectedTabIndex(indx);
                     },
                     tabs: [
                       Tab(child: Text('Received',style:  _tabController.index == 0
@@ -90,21 +100,41 @@ MessageController _messageController=Get.find();
     );
   }
  Widget buildMessageList() {
-    return ListView.builder(
-      itemCount: 4,
-        itemBuilder: (_,index)=>
-        MessageItemWidget(index)
+    print('mmmm'+ _messageController.messagesList.length.toString());
+    return GetBuilder<MessageController>(
+      builder: (_)=>_messageController.isLoading==true?
+          Center(child: CircularProgressIndicator(),):
+      _messageController.newList.isEmpty?
+          Center(child: Text('empty data')):
+      ListView.builder(
+        itemCount: _messageController.newList.length,
+          itemBuilder: (_,index){
+          return  MessageItemWidget(index,_messageController.newList[index]);
+          }
+
+      ),
+
     );
   }
 
 
-void _modalBottomSheetMenu(){
+
+  void fetchMessages()async {
+ await  _messageController.changeLoadingMessage(true);
+    await _messageController.fetchMessages().then(
+      _messageController.isLoading=false
+    );
+  }
+
+
+void _modalBottomSheetMenu(BuildContext context){
   showModalBottomSheet(
       context: context,
       builder: (builder){
         return new Container(
           height: height * 0.3,
-          color: Colors.transparent, //could change this to Color(0xFF737373),
+          color: Colors.red,
+          //could change this to Color(0xFF737373),
           //so you don't have to change MaterialApp canvasColor
           child: new Container(
               decoration: new BoxDecoration(
@@ -119,7 +149,7 @@ void _modalBottomSheetMenu(){
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                    width: width *0.4,
+                        width: width *0.4,
                         height: 50,
                         child: RaisedButton(
                           color: Cons.accent_color,
@@ -127,6 +157,7 @@ void _modalBottomSheetMenu(){
                               borderRadius: BorderRadius.circular(10)
                           ),
                           onPressed: (){
+                            showConfirmDeleteMessageDialog(context);
                           },child: Text('Delete',style: Cons.whiteFont,),),
                       ),
                       SizedBox(width: 20,),
@@ -139,33 +170,36 @@ void _modalBottomSheetMenu(){
                               borderRadius: BorderRadius.circular(10)
                           ),
                           onPressed: (){
+                            _messageController.changeCheckedMessageAll(false);
+                            _messageController.changeVisibleCheckBox(false);
                             Navigator.of(context).pop();
                           },child: Text('Cancel',style: Cons.whiteFont,),),
                       ),
                     ],
                   ),
-                 SizedBox(height: 10,),
+                  SizedBox(height: 10,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       FlatButton(
                         onPressed: (){
-                         _messageController.changeCheckedMessageAll(true);
+                          _messageController.changeCheckedMessageAll(true);
                           Navigator.of(context).pop();
                         },
                         child: Container(
                             width: width *0.4,
-                            height: 50,child: Center(child: Text('select all',style: Cons.blueFont,))),
+                            height: 50,child: Center(child: Text('Select All',style: Cons.blueFont,))),
                       ),
-                     // SizedBox(width: 10,),
+                      // SizedBox(width: 10,),
                       FlatButton(
                         onPressed: (){
                           _messageController.changeCheckedMessageAll(false);
+                          _messageController.changeVisibleCheckBox(false);
                           Navigator.of(context).pop();
                         },
                         child: Container(
                             width: width *0.4,
-                            height: 50,child: Center(child: Text('cancell all',style: Cons.blueFont,))),
+                            height: 50,child: Center(child: Text('Cancel All',style: Cons.blueFont,))),
                       )
                     ],
                   )
@@ -175,4 +209,72 @@ void _modalBottomSheetMenu(){
       }
   );
 }
+
+
+
+void showConfirmDeleteMessageDialog(BuildContext context){
+  showDialog(
+      context: context, builder: (_){
+    return Center(
+      child: Container(
+        width: width *0.9,
+        height: height *0.4,
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))
+          ),
+          title: Center(child: Text('Delete 2 Messages',style: Cons.accentFont,)),
+          content: Center(child: Text('are you sure delete this messages ?')),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  width: width *0.3,
+                  child: RaisedButton(
+                    color: Cons.accent_color,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    onPressed: (){
+                      deleteSelectedMessages(context);
+                    },child: Text('Delete',style: Cons.whiteFont,),),
+                ),
+                Container(
+                  width: width *0.3,
+                  child: RaisedButton(
+                    color: Cons.accent_color,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                      _messageController.changeVisibleCheckBox(false);
+                      _messageController.changeCheckedMessageAll(false);
+                    },child: Text('Cancel',style: Cons.whiteFont,),
+                  ),
+                ),
+              ],
+            )
+
+
+
+          ],
+        ),
+      ),
+    );
+  });
+}
+
+
+void deleteSelectedMessages(BuildContext context) async{
+  List<MessageModel> list= _messageController.newList.where((element) => element.isSelected==true).toList();
+  print(list.length.toString());
+  await _messageController.deleteSelectedMessages(list);
+  await _messageController.fetchMessages();
+  Navigator.of(context).pop();
+}
+
+
+
 }

@@ -4,6 +4,7 @@ import 'package:saaty_app/view/screens/ads_screen.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
+import 'package:saaty_app/view/screens/messages_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
 
 import '../../cons.dart';
@@ -83,6 +84,8 @@ class MyDrawer extends StatelessWidget {
                 },
               ),
               ListTile(
+                onTap: ()=>Navigator.of(context).pushNamed(MessageScreen.MESSAGES_SCREEN_ROUTE)
+                ,
                 leading: Icon(
                   Icons.message_sharp,
                   color: Cons.primary_color,

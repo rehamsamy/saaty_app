@@ -7,6 +7,7 @@ class Product{
   String email;
   String phone;
   String id;
+  String creator_id;
   int cat;
   int status;
   int isFav;
@@ -14,7 +15,7 @@ class Product{
   List<dynamic> images;
 
   Product({@required this.id,@ required this.name,@ required this.price,@ required this.desc, @ required this.email, @ required this.phone, @ required this.cat,
-  @ required this.status,@ required  this.isFav, @ required this.images,@required this.connType});
+  @ required this.status,@ required  this.isFav, @ required this.images,@required this.connType,@required this.creator_id});
 
 
   factory Product.fromJson(String prodId,Map<String,dynamic> map){
@@ -29,7 +30,8 @@ class Product{
         status:map['status'],
         isFav: map['isFav'],
         images:map['images'],
-        connType:map['connType']);
+        connType:map['connType'],
+        creator_id:map['creator_id']);
   }
 
   Map<String, dynamic> toMap(Product p) {

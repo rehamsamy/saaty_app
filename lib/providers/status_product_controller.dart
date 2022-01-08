@@ -58,11 +58,15 @@ class StatusProductController extends GetxController{
         if (flag == 'all') {
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
+            print('************* here '+favResponse.body.toString());
             if(favResponse.statusCode==200){
+              if(favResponse.body.toString()=='null'){
+                product.isFav=0;
+              }else{
+                product.isFav=favResult[key];
+              }
               print('************* here ');
-              product.isFav=favResult[key];
-            }else{
-              product.isFav=0;
+
             }
             if(value['id']==id) {
               print('bbbb  '+id +'  '+value['id']);

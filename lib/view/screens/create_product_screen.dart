@@ -432,6 +432,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
           }
           map['images']=newImages;
           map['id']=AuthController.userId;
+          map['creator_id']=AuthController.userId;
 
           await controller.createProduct(map,images).catchError(()=>buildLoading(context))
               .then((value) {
