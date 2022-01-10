@@ -9,6 +9,7 @@ import 'package:saaty_app/providers/status_product_controller.dart';
 import 'package:saaty_app/view/screens/account_screen.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
+import 'package:saaty_app/view/screens/edit_account_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
         )
 
     ),
-      home: AccountScreen(),
+      home: LoginScreen(),
       routes: {
          LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>LoginScreen(),
         RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),
@@ -72,7 +73,8 @@ class MyApp extends StatelessWidget {
         StoresScreen.Stores_SCREEN_ROUTE:(_)=>StoresScreen(),
         MessageScreen.MESSAGES_SCREEN_ROUTE:(_)=>MessageScreen(),
         MessageDetailScreen.MESSAGES_Detail_SCREEN_ROUTE:(_)=>MessageDetailScreen(),
-        AccountScreen.ACCOUNT_SCREEN_ROUTE:(_)=>AccountScreen()
+        AccountScreen.ACCOUNT_SCREEN_ROUTE:(_)=>AccountScreen(),
+        EditAccountScreen.EDIT_ACCOUNT_SCREEN_ROUTE:(_)=>EditAccountScreen()
       },
     );
   }

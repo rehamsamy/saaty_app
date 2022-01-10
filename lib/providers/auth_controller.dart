@@ -9,6 +9,9 @@ class AuthController extends GetxController{
 static String userId;
  static String token;
  static UserModel model;
+ bool visiblePassword;
+
+
   Future registerUser(Map<String,String> regMap)async {
     String url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
     Map<String, Object> map = {
@@ -34,7 +37,8 @@ static String userId;
         var y = await http.post(Uri.parse(url), body: json.encode(regMap));
         if (y.statusCode == 200) {
           print('step2');
-           model=json.decode(y.body);
+        //   model=json.decode(y.body);
+
           print(y.statusCode);
           print(y.body);
         } else {
@@ -82,4 +86,39 @@ static String userId;
       throw err;
     }
   }
+
+  void updateUserData(Map<String, String> map) async{
+    String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${model.id}.json?auth=$token';
+    try{
+      var response=await http.patch(Uri.parse(url),body:json.encode(map));
+      if(response.statusCode==200){
+
+      }
+    }catch(err){
+
+    }
+  }
+
+
+  getUserDate()async{
+    String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=$token';
+    try{
+      var response=await http.get(Uri.parse(url));
+      if(response.statusCode==200){
+
+        var res=json.decode(response.body) as Map<String,dynamic> ;
+       res.forEach((key, value) {
+         if(value['localId']==userId){
+           model=UserModel.fromJson(value, key);
+         }
+       });
+       print('user data '+model.id);
+      }
+    }catch(err){
+
+    }
+  }
+
+
+  changeVisiblePassword
 }

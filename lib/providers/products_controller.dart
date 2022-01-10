@@ -108,7 +108,7 @@ class ProductsController extends GetxController {
           print(value);
           if(value['type']=='1'){
             print('yes');
-            UserModel userModel=UserModel.fromJson(value);
+            UserModel userModel=UserModel.fromJson(value,key);
             _storesList.add(userModel);
           }
         });

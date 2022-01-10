@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:saaty_app/view/screens/account_screen.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'package:saaty_app/view/screens/messages_screen.dart';
+import 'package:saaty_app/view/screens/setting_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
 
 import '../../cons.dart';
@@ -62,6 +64,7 @@ class MyDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('My Account'),
+                  onTap: ()=>Navigator.of(context).pushNamed(AccountScreen.ACCOUNT_SCREEN_ROUTE)
               ),
               ListTile(
                 leading: Icon(
@@ -98,6 +101,7 @@ class MyDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('Setting'),
+                  onTap: ()=>Navigator.of(context).pushNamed(SettingScreen.SETTING_SCREEN_ROUTE)
               ),
               ListTile(
                 onTap:()=>  Navigator.of(context).pushNamed(StoresScreen.Stores_SCREEN_ROUTE,arguments:flag='all' ) ,
