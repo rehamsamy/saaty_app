@@ -70,9 +70,11 @@ class SettingScreen extends StatelessWidget {
   }
 
   void showChangeLangDialog(BuildContext context) {
+
+
     showDialog(context: context, builder: (ctx)=>
         AlertDialog(
-          title: Text('Change To Prefered Language',style: Cons.accentFont,),
+          title: Text(getText('change_lang'),style: Cons.accentFont,),
           content:Container(
             width:MediaQuery.of(context).size.width,
             child: LayoutBuilder(
@@ -91,7 +93,8 @@ class SettingScreen extends StatelessWidget {
                         ),
                         onPressed: (){
                           _langController.changeLang(false);
-                        },child: Text('العربيه',style: Cons.whiteFont,),),
+                          Navigator.of(context).pop();
+                        },child: Text(getText('lang'),style: Cons.whiteFont,),),
                     ),
                     SizedBox(width: cons.maxWidth*0.05,),
                     SizedBox(
@@ -103,7 +106,8 @@ class SettingScreen extends StatelessWidget {
                         ),
                         onPressed: (){
                           _langController.changeLang(true);
-                        },child: Text('English',style: Cons.whiteFont,),),
+                          Navigator.of(context).pop();
+                        },child: Text(getText('lang'),style: Cons.whiteFont,),),
                     ),
                   ],
               ),
@@ -114,6 +118,10 @@ class SettingScreen extends StatelessWidget {
         )
     );
 
+  }
+
+  String getText(String x){
+    return  _langController.isEn?_langController.getEnText[x]:_langController.getArText[x];
   }
 
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
+import 'package:saaty_app/view/screens/account_screen.dart';
 
 import '../../cons.dart';
 
@@ -39,15 +40,18 @@ class EditAccountScreen extends StatelessWidget {
                         buidTextForm('name', 'Enter Name', Icons.person, map,
                             TextInputType.text),
                         SizedBox(
-                          height: 10,
+                          height: 20,
                         ),
                         buidTextForm('email', 'Enter Email', Icons.email, map,
                             TextInputType.emailAddress),
+                        SizedBox(
+                          height: 20,
+                        ),
                         buidTextForm('phone', 'Enter Phone', Icons.phone_android_sharp, map,
                             TextInputType.number),
                       ])
     ),
-              SizedBox(height: 40,),
+              SizedBox(height: 60,),
               SizedBox(
                 width: MediaQuery
                     .of(context)
@@ -60,7 +64,7 @@ class EditAccountScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)
                   ),
                   onPressed: () {
-                    UpdateUserData();
+                    UpdateUserData(context);
                   }, child: Text('Save', style: Cons.whiteFont,),),
               ),]
     ),
@@ -114,10 +118,12 @@ class EditAccountScreen extends StatelessWidget {
     );
   }
 
-  void UpdateUserData() {
+  void UpdateUserData(BuildContext context) {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      _authController.updateUserData(map);
+      _authController.updateUserData(map).then(
+          ()=>Navigator.of(context).pushNamed(AccountScreen.ACCOUNT_SCREEN_ROUTE)
+      );
     }
   }
 

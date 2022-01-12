@@ -3,19 +3,23 @@ import 'package:get/get.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/fav_ads_controller.dart';
+import 'package:saaty_app/providers/lang_controller.dart';
 import 'package:saaty_app/providers/message_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/status_product_controller.dart';
 import 'package:saaty_app/view/screens/account_screen.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
+import 'package:saaty_app/view/screens/change_password_screen.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/edit_account_screen.dart';
+import 'package:saaty_app/view/screens/forget_password_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'package:saaty_app/view/screens/message_detail_screen.dart';
 import 'package:saaty_app/view/screens/messages_screen.dart';
 import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
+import 'package:saaty_app/view/screens/reset_password_screen.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
 import 'package:saaty_app/view/screens/setting_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
@@ -34,6 +38,7 @@ class MyApp extends StatelessWidget {
   final controller3 = Get.put(StatusProductController());
   final controller4=Get.put(FavsAdsController());
   final controller5=Get.put(MessageController());
+  final controller6=Get.put(LangController());
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -74,7 +79,10 @@ class MyApp extends StatelessWidget {
         MessageScreen.MESSAGES_SCREEN_ROUTE:(_)=>MessageScreen(),
         MessageDetailScreen.MESSAGES_Detail_SCREEN_ROUTE:(_)=>MessageDetailScreen(),
         AccountScreen.ACCOUNT_SCREEN_ROUTE:(_)=>AccountScreen(),
-        EditAccountScreen.EDIT_ACCOUNT_SCREEN_ROUTE:(_)=>EditAccountScreen()
+        EditAccountScreen.EDIT_ACCOUNT_SCREEN_ROUTE:(_)=>EditAccountScreen(),
+        ChangePasswordScreen.CHANGE_PASSWORD_SCREEN_ROUTE:(_)=>ChangePasswordScreen(),
+        ForgetPasswordScreen.FORGET_PASSWORD_SCREEN_ROUTE:(_)=>ForgetPasswordScreen(),
+        ResetPasswordScreen.RESET_PASSWORD_SCREEN_ROUTE:(_)=>ResetPasswordScreen()
       },
     );
   }

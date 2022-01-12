@@ -69,7 +69,9 @@ class LangController extends GetxController{
     'message_send':'الوارده',
     'message_receive':'الصادرة',
     'delete':'مسح',
-    'cancel':'الغاء'
+    'cancel':'الغاء',
+  'change_lang':'اختر لغتك المفضله',
+  'lang':'العربية'
   };
   Map<String,String> getEnText={
     'email' :'Email',
@@ -136,7 +138,9 @@ class LangController extends GetxController{
     'message_send':'',
     'message_receive':'',
     'delete':'',
-    'cancel':''
+    'cancel':'',
+    'change_lang':'Change To Preferred Language',
+    'lang':'English'
   };
 
 

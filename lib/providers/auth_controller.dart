@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:saaty_app/model/http_exception.dart';
@@ -9,7 +11,13 @@ class AuthController extends GetxController{
 static String userId;
  static String token;
  static UserModel model;
- bool visiblePassword;
+ bool visiblePassword=true;
+ bool isLoading=true;
+
+ changeIsLoading(bool newVal){
+   isLoading=newVal;
+   update();
+ }
 
 
   Future registerUser(Map<String,String> regMap)async {
@@ -87,12 +95,29 @@ static String userId;
     }
   }
 
-  void updateUserData(Map<String, String> map) async{
+   updateUserData(Map<String, String> map) async{
     String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${model.id}.json?auth=$token';
-    try{
-      var response=await http.patch(Uri.parse(url),body:json.encode(map));
-      if(response.statusCode==200){
+    String url1 = 'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
 
+    Map<String,dynamic> map_new={
+      'email': map['email'],
+      'idToken': token,
+      'returnSecureToken': true };
+    try{
+      var response2=await http.post(Uri.parse(url1),body:json.encode(map_new));
+      print('ssssssss  '+response2.body.toString());
+      if(response2.statusCode==200){
+        var response=await http.patch(Uri.parse(url),body:json.encode(map));
+        getUserDate();
+      }else{
+        Fluttertoast.showToast(
+            msg: 'Token is expired Please login again',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.yellow
+        );
       }
     }catch(err){
 
@@ -110,15 +135,97 @@ static String userId;
        res.forEach((key, value) {
          if(value['localId']==userId){
            model=UserModel.fromJson(value, key);
+           print('user data      herrrrrrrrrrrrrrrrrr'+model.name );
          }
        });
-       print('user data '+model.id);
+
       }
+
+      update();
     }catch(err){
 
     }
   }
 
 
-  changeVisiblePassword
+  changeVisiblePassword(bool val){
+    visiblePassword=val;
+    update();
+  }
+
+  changePassword(Map<String,dynamic> map)async{
+    String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${model.id}.json?auth=$token';
+    String url1 = 'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
+
+    Map<String,dynamic> map_new={
+      'password': map['new'],
+      'idToken': token,
+      'returnSecureToken': true };
+    Map<String,dynamic> map_new1={
+      'password': map['new'],
+      'confirm_password':map['confirm']
+     };
+
+    try{
+      var response2=await http.post(Uri.parse(url1),body:json.encode(map_new));
+      print('ssssssss  '+response2.body.toString());
+      if(response2.statusCode==200){
+        var response=await http.patch(Uri.parse(url),body:json.encode(map_new1));
+        getUserDate();
+      }else{
+        Fluttertoast.showToast(
+            msg: 'Token is expired Please login again',
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.yellow
+        );
+      }
+    }catch(err){
+
+    }
+
+  }
+
+
+resetForgetPassword(Map<String,dynamic> map)async{
+  String url1 = 'https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
+  Map<String,dynamic> map_new={
+    'email': map['email'],
+    'requestType':'PASSWORD_RESET'
+  };
+
+
+  try{
+    var response2=await http.post(Uri.parse(url1),body:json.encode(map_new));
+    print('ssssssss  '+response2.body.toString());
+    if(response2.statusCode==200){
+     // enterNewResetPassword();
+      print(response2.body.toString());
+      getUserDate();
+    }else{
+      Fluttertoast.showToast(
+          msg: 'Token is expired Please login again',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.yellow
+      );
+    }
+  }catch(err){
+
+  }
+
+
+}
+
+   enterNewResetPassword(Map<String,dynamic> map) async{
+    String url2='https://saaty-9ba9f.firebaseapp.com/__/auth/action?mode=resetPassword&oobCode=elUokGpI0Twg9sSHiHnMTP9sMc9BWBQAWwBSM78gbpkAAAF-Th-8_w&apiKey=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0&lang=en';
+    var response=await http.patch(Uri.parse(url2),body:json.encode(map));
+    if(response.statusCode==200){
+      print('sucesssssssssss');
+    }
+  }
 }

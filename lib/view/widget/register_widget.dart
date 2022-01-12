@@ -165,6 +165,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
           Navigator.of(context).pushNamed(HomeScreen.HOME_SCREEN_RIUTE);
         }
         );
+
+        Navigator.of(context).pushNamed(HomeScreen.HOME_SCREEN_RIUTE);
       }
     on HttpError catch(r) {
       String message='';

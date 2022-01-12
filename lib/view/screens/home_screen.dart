@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 import 'package:saaty_app/view/widget/visitor_drawer.dart';
 
@@ -26,6 +28,8 @@ class HomeScreenState extends State<HomeScreen> {
                         'assets/images/store4.png'];
 
   int _index=0;
+  AuthController _authController=Get.find();
+
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +128,8 @@ class HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
 
 
 }

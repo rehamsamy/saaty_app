@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/model/http_exception.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
+import 'package:saaty_app/view/screens/forget_password_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/register_screen.dart';
 
@@ -170,7 +171,10 @@ class LoginScreenState extends State<LoginScreen> {
                     child: Text('Create Account',style: Cons.blackFont,),
                   ),
                   InkWell(
-                    onTap: (){},
+                    onTap: (){
+                      print('jjjj');
+                      Navigator.of(context).pushNamed(ForgetPasswordScreen.FORGET_PASSWORD_SCREEN_ROUTE);
+                    },
                     child: Text('Forget Password?',style: Cons.blackFont,),
                   ),
                 ],
