@@ -18,7 +18,7 @@ class EditAccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Account',style: Cons.greyFont,),
+        title: Text('my_account'.tr,style: Cons.greyFont,),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -37,17 +37,17 @@ class EditAccountScreen extends StatelessWidget {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        buidTextForm('name', 'Enter Name', Icons.person, map,
+                        buidTextForm('name', 'name'.tr, Icons.person, map,
                             TextInputType.text),
                         SizedBox(
                           height: 20,
                         ),
-                        buidTextForm('email', 'Enter Email', Icons.email, map,
+                        buidTextForm('email', 'email'.tr, Icons.email, map,
                             TextInputType.emailAddress),
                         SizedBox(
                           height: 20,
                         ),
-                        buidTextForm('phone', 'Enter Phone', Icons.phone_android_sharp, map,
+                        buidTextForm('phone', 'phone'.tr, Icons.phone_android_sharp, map,
                             TextInputType.number),
                       ])
     ),
@@ -65,7 +65,7 @@ class EditAccountScreen extends StatelessWidget {
                   ),
                   onPressed: () {
                     UpdateUserData(context);
-                  }, child: Text('Save', style: Cons.whiteFont,),),
+                  }, child: Text('save'.tr, style: Cons.whiteFont,),),
               ),]
     ),
         ),

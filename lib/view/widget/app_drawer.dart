@@ -10,6 +10,7 @@ import 'package:saaty_app/view/screens/setting_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
 
 import '../../cons.dart';
+import 'package:get/get.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -30,7 +31,7 @@ class MyDrawer extends StatelessWidget {
               SizedBox(height: 20,),
               ListTile(
                 leading: Image.asset('assets/images/sidemenu_photo.png',fit: BoxFit.cover,),
-                title: Text('user name'),
+                title: Text('user_name'.tr),
               ),
               SizedBox(height: 15,),
               SizedBox(
@@ -41,7 +42,7 @@ class MyDrawer extends StatelessWidget {
                     Navigator.of(context).pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE);
                   },
                   child: Text(
-                    'Add Product',
+                    'add_ads'.tr,
                     style: TextStyle(color: Colors.white,fontSize: 16),
                   ),
                   color: Cons.accent_color,
@@ -55,7 +56,7 @@ class MyDrawer extends StatelessWidget {
                   Icons.home,
                   color: Cons.primary_color,
                 ),
-                title: Text('Main Page'),
+                title: Text('main_page'.tr),
                 onTap: ()=>Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE),
               ),
               ListTile(
@@ -63,7 +64,7 @@ class MyDrawer extends StatelessWidget {
                   Icons.person,
                   color: Cons.primary_color,
                 ),
-                title: Text('My Account'),
+                title: Text('my_account'.tr),
                   onTap: ()=>Navigator.of(context).pushNamed(AccountScreen.ACCOUNT_SCREEN_ROUTE)
               ),
               ListTile(
@@ -71,7 +72,7 @@ class MyDrawer extends StatelessWidget {
                   Icons.favorite,
                   color: Cons.primary_color,
                 ),
-                title: Text('Favorites'),
+                title: Text('favorites'.tr),
                 onTap: (){
                   Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE,arguments:flag='fav' );
                 },
@@ -81,7 +82,7 @@ class MyDrawer extends StatelessWidget {
                   Icons.add_alert,
                   color: Cons.primary_color,
                 ),
-                title: Text('My Ads'),
+                title: Text('my_ads'.tr),
                 onTap: (){
                   Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE,arguments:flag='ads' );
                 },
@@ -93,14 +94,14 @@ class MyDrawer extends StatelessWidget {
                   Icons.message_sharp,
                   color: Cons.primary_color,
                 ),
-                title: Text('Messages'),
+                title: Text('messages'.tr),
               ),
               ListTile(
                 leading: Icon(
                   Icons.settings,
                   color: Cons.primary_color,
                 ),
-                title: Text('Setting'),
+                title: Text('setting'.tr),
                   onTap: ()=>Navigator.of(context).pushNamed(SettingScreen.SETTING_SCREEN_ROUTE)
               ),
               ListTile(
@@ -109,21 +110,21 @@ class MyDrawer extends StatelessWidget {
                   Icons.info,
                   color: Cons.primary_color,
                 ),
-                title: Text('About App'),
+                title: Text('about_app'.tr),
               ),
               ListTile(
                 leading: Icon(
                   Icons.help_rounded,
                   color: Cons.primary_color,
                 ),
-                title: Text('Who Are We'),
+                title: Text('about_us'.tr),
               ),
               ListTile(
                 leading: Icon(
                   Icons.phone,
                   color: Cons.primary_color,
                 ),
-                title: Text('Call Us'),
+                title: Text('call_us'.tr),
               ),
               ListTile(
                 onTap: (){
@@ -133,7 +134,7 @@ class MyDrawer extends StatelessWidget {
                   Icons.logout,
                   color: Cons.primary_color,
                 ),
-                title: Text('Log Out'),
+                title: Text('log_out'.tr),
               ),
             ],
           ),

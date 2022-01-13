@@ -62,7 +62,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                   Expanded(
                     flex: 1,
                     child: AppBar(
-                      title: Text('Storesmm', style: Cons.greyFont),
+                      title: Text('main_page'.tr, style: Cons.greyFont),
                       elevation: 6,
                       actions: [
                         IconButton(
@@ -94,7 +94,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                           focusNode: _textFocus,
                           onChanged: onTextChange,
                           decoration: InputDecoration(
-                              hintText: 'search',
+                              hintText: 'search'.tr,
                               prefixIcon: Icon(
                                 Icons.search,
                                 color: Cons.accent_color,
@@ -138,7 +138,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                         tabs: [
                           Tab(
                             child: Text(
-                              'Stores',
+                              'stores'.tr,
                               style: _tabController.index == 0
                                   ? Cons.blueFont
                                   :Cons.greyFont ,
@@ -146,7 +146,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                           ),
                           Tab(
                             child: Text(
-                              'Watches',
+                              'watches'.tr,
                               style: _tabController.index == 1
                                   ? Cons.blueFont
                                   :Cons.greyFont ,
@@ -154,7 +154,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                           ),
                           Tab(
                             child: Text(
-                              'Bracltes',
+                              'bracletes'.tr,
                               style: _tabController.index == 2
                                   ? Cons.blueFont
                                   :Cons.greyFont ,
@@ -194,7 +194,7 @@ class _MainPageScreenState extends State<MainPageScreen>
           )
         : _productController.filteredList.isEmpty
             ? Center(
-                child: Text('Empty Data'),
+                child: Text('empty_data'.tr),
               )
             : GetBuilder<ProductsController>(
       builder: (_)=>
@@ -285,11 +285,11 @@ class _MainPageScreenState extends State<MainPageScreen>
                     builder: (_) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Arrange Where:'),
+                        Text('arrange'.tr),
                         RadioListTile(
                           contentPadding: EdgeInsets.all(0),
                           title: Text(
-                            'From High Price To Low',
+                            'from_high'.tr,
                             textAlign: TextAlign.start,
                           ),
                           value: 0,
@@ -309,7 +309,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                             _productController.filterRad = value;
                             _productController.update();
                           },
-                          title: Text('From Low Price To High'),
+                          title: Text('from_low'.tr),
                           activeColor: Cons.primary_color,
                         ),
                         //SizedBox(width: 30,),
@@ -322,7 +322,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                           height: 10,
                         ),
                         Text(
-                          'Filter Where:',
+                          'filter'.tr,
                           textAlign: TextAlign.start,
                         ),
                         SizedBox(
@@ -334,7 +334,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                             _productController.statusNewChecked = val;
                             _productController.update();
                           },
-                          title: Text('New Products'),
+                          title: Text('new_prods'.tr),
                           activeColor: Cons.primary_color,
                         ),
                         //  SizedBox(height: 20,),
@@ -344,7 +344,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                             _productController.statusOldChecked = val;
                             _productController.update();
                           },
-                          title: Text('Old Products'),
+                          title: Text('old_prods'.tr),
                           activeColor: Cons.primary_color,
                         ),
                         SizedBox(
@@ -361,7 +361,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                               Navigator.of(context).pop();
                             },
                             child: Text(
-                              'Do Filter',
+                              'execute'.tr,
                               style: Cons.whiteFont,
                             ),
                             color: Cons.accent_color,
@@ -384,7 +384,7 @@ class _MainPageScreenState extends State<MainPageScreen>
     )
         : _productController.allStores.isEmpty
         ? Center(
-      child: Text('Empty Data'),
+      child: Text('empty_data'.tr),
     )
         : GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

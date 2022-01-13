@@ -30,8 +30,6 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-  //  FocusScope.of(context).unfocus();
-   // FocusManager.instance.primaryFocus!.unfocus();
     var width=MediaQuery.of(context).size.width;
     var height=MediaQuery.of(context).size.height;
     Color primary=Theme.of(context).primaryColor;
@@ -76,7 +74,7 @@ class LoginScreenState extends State<LoginScreen> {
                         textAlign: TextAlign.start,
                         decoration: InputDecoration(
                           icon: Icon(Icons.email,color: primary,),
-                          hintText:'Enter Email',
+                          hintText:'enter_email'.tr,
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: primary,
@@ -87,7 +85,7 @@ class LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (value){
                           if(!value.contains('.com')||value.isEmpty) {
-                            return 'not valid mail';
+                            return 'not_valid_mail'.tr;
                           }
                         },
                         onSaved: (value){
@@ -101,7 +99,7 @@ class LoginScreenState extends State<LoginScreen> {
                         textAlign: TextAlign.start,
                         decoration: InputDecoration(
                             icon: Icon(Icons.work,color: primary,),
-                            hintText:'Enter Password',
+                            hintText:'password'.tr,
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                 color: primary,
@@ -112,9 +110,9 @@ class LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (value){
                           if(value.isEmpty) {
-                            return 'enter password';
+                            return 'password'.tr;
                           } if(value.length<6) {
-                            return 'password weak';
+                            return  'weak_password'.tr;
                           }
                         },
                         onSaved: (value){
@@ -140,7 +138,7 @@ class LoginScreenState extends State<LoginScreen> {
                   color: accent,
                   onPressed: (){
                     loginUser();
-                  },child: Text('Login User',style: Cons.whiteFont,),
+                  },child: Text('login_user'.tr,style: Cons.whiteFont,),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)
                   ),
@@ -158,7 +156,7 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                   onPressed: (){
 
-                  },child: Text('Login Visitor',style: Cons.whiteFont,),),
+                  },child: Text('login_as_visitor'.tr,style: Cons.whiteFont,),),
               ),
               SizedBox(height: 20,),
               Row(
@@ -168,14 +166,14 @@ class LoginScreenState extends State<LoginScreen> {
                     onTap: (){
                       Navigator.of(context).pushNamed(RegisterScreen.REGISTER_SCREEN_ROUTE);
                     },
-                    child: Text('Create Account',style: Cons.blackFont,),
+                    child: Text('create_new_account'.tr,style: Cons.blackFont,),
                   ),
                   InkWell(
                     onTap: (){
                       print('jjjj');
                       Navigator.of(context).pushNamed(ForgetPasswordScreen.FORGET_PASSWORD_SCREEN_ROUTE);
                     },
-                    child: Text('Forget Password?',style: Cons.blackFont,),
+                    child: Text('forget_password'.tr,style: Cons.blackFont,),
                   ),
                 ],
               )
@@ -224,8 +222,6 @@ class LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-
-
 
   _showErrorMessage(BuildContext context, String message) {
     showDialog(context: context, builder: (context)=>

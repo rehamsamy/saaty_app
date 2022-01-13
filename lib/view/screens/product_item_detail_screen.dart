@@ -31,6 +31,7 @@ class ProductItemDetailScreen extends StatelessWidget {
     String _prodType=map['flag'];
     _icon=Icons.favorite_border;
     //product.isFav==0?Icons.favorite_border:Icons.favorite;
+    var psd='currency'.tr;
     return Scaffold(
         body:CustomScrollView(
           slivers: [
@@ -46,8 +47,8 @@ class ProductItemDetailScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(product.cat==0?'Watch':'Braclet',style: Cons.accentFont,),
-                              Text('${product.price} PSD',style: Cons.greenFont,)
+                              Text(product.cat==0?'watch'.tr:'braclet'.tr,style: Cons.accentFont,),
+                              Text('${product.price} $psd',style: Cons.greenFont,)
                             ],
                           ),
                           //SizedBox(height: 20,),
@@ -106,8 +107,8 @@ class ProductItemDetailScreen extends StatelessWidget {
                             child: Divider(color: Cons.primary_color,thickness: 1.2,),
                           ),
 
-                          ListTile(title: Text('User Name:'),contentPadding: EdgeInsets.all(0)),
-                          ListTile(title: Text('Status:${product.status==0?'Old Product':'New Product'}'),contentPadding: EdgeInsets.all(0)),
+                          ListTile(title: Text('user_name'.tr),contentPadding: EdgeInsets.all(0)),
+                          ListTile(title: Text('Status:${product.status==0?'old_prods'.tr:'new_prods'.tr}'),contentPadding: EdgeInsets.all(0)),
                           ListTile(leading: Icon(Icons.phone_android_sharp,color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
                           ListTile(leading: Icon(Icons.email,color: Cons.primary_color,),title: Text(product.email),contentPadding: EdgeInsets.all(0)),
                           SizedBox(height: 50,),

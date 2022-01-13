@@ -77,7 +77,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                             focusNode: _textFocus,
                             onChanged:(txt) =>_statusController.search(txt),
                             decoration: InputDecoration(
-                                hintText: 'search',
+                                hintText: 'search'.tr,
                                 prefixIcon: Icon(
                                   Icons.search,
                                   color: Cons.accent_color,
@@ -115,7 +115,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                          child:
                          Center(
                            child: ListTile(
-                                       title: Text('Name1'),
+                                       title: Text(model.name),
                                        leading:
                                             Hero(
                                               tag: model.userId,
@@ -136,10 +136,10 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                  controller: _tabController,
                  tabs: [
                    Tab(
-                     child: Text('Old',style: _tabController.index==0?Cons.blueFont:Cons.greyFont,),
+                     child: Text('old'.tr,style: _tabController.index==0?Cons.blueFont:Cons.greyFont,),
                    ),
                    Tab(
-                     child:  Text('New',style: _tabController.index==1?Cons.blueFont:Cons.greyFont,),
+                     child:  Text('new'.tr,style: _tabController.index==1?Cons.blueFont:Cons.greyFont,),
                    ),
                  ],
                ),
@@ -187,11 +187,11 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Arrange Where:'),
+                                Text('arrange'.tr),
                                 RadioListTile(
                                   contentPadding: EdgeInsets.all(0),
                                   title: Text(
-                                    'From High Price To Low',
+                                    'from_high'.tr,
                                     textAlign: TextAlign.start,
                                   ),
                                   value: 0,
@@ -212,7 +212,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                                     _statusController.filterRad=value;
                                     _statusController.update();
                                   },
-                                  title: Text('From Low Price To High'),
+                                  title: Text('from_low'.tr),
                                   activeColor: Cons.primary_color,
                                 ),
                                 //SizedBox(width: 30,),
@@ -225,7 +225,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                                   height: 10,
                                 ),
                                 Text(
-                                  'Filter Where:',
+                                  'filter'.tr,
                                   textAlign: TextAlign.start,
                                 ),
                                 SizedBox(
@@ -238,7 +238,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                                     _statusController.update();
 
                                   },
-                                  title: Text('New Products'),
+                                  title: Text('new'.tr),
                                   activeColor: Cons.primary_color,
                                 ),
                                 //  SizedBox(height: 20,),
@@ -248,7 +248,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                                     _statusController.statusOldChecked=val;
                                     _statusController.update();
                                   },
-                                  title: Text('Old Products'),
+                                  title: Text('old'.tr),
                                   activeColor: Cons.primary_color,
                                 ),
                                 SizedBox(
@@ -265,7 +265,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                                       Navigator.of(context).pop();
                                     },
                                     child: Text(
-                                      'Do Filter',
+                                      'filter'.tr,
                                       style: Cons.whiteFont,
                                     ),
                                     color: Cons.accent_color,

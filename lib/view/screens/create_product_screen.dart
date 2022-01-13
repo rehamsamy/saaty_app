@@ -66,7 +66,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
     Cons.buildColors(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Product'),
+        title: Text('create_product'.tr),
       ),
       body:
       Form(
@@ -82,17 +82,17 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                Column(
                  mainAxisAlignment: MainAxisAlignment.center,
                  children: [
-                   Align(alignment:Alignment.topLeft,child: Text('Product name:',style: Cons.blackFont,)),
-                      buildTextFormProductData('name', 'Enter Name', Icons.info_sharp, TextInputType.text),
+                   Align(alignment:Alignment.topLeft,child: Text('prod_name'.tr,style: Cons.blackFont,)),
+                      buildTextFormProductData('name', 'prod_name'.tr, Icons.info_sharp, TextInputType.text),
                  ],
                ),
               SizedBox(height: 15,),
               Column(
                 children: [
-                  Align(alignment:Alignment.topLeft,child: Text('Product Price:',style: Cons.blackFont,)),
+                  Align(alignment:Alignment.topLeft,child: Text('prod_price'.tr,style: Cons.blackFont,)),
                   Row(
                     children: [
-                      Flexible(child: buildTextFormProductData('price', 'Enter Price', Icons.monetization_on_rounded, TextInputType.number)),
+                      Flexible(child: buildTextFormProductData('price','prod_price'.tr, Icons.monetization_on_rounded, TextInputType.number)),
                       Text('EGYPT',style: Cons.greenFont,)
                     ],
                   ),
@@ -101,21 +101,21 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               SizedBox(height: 15,),
               Column(
                 children: [
-                  Align(alignment:Alignment.topLeft,child: Text('Owner Phone:',style: Cons.blackFont,)),
-                  buildTextFormProductData('phone', 'Enter Phone Number', Icons.phone_android_sharp,  TextInputType.number),
+                  Align(alignment:Alignment.topLeft,child: Text('phone_conn'.tr,style: Cons.blackFont,)),
+                  buildTextFormProductData('phone', 'phone_conn'.tr, Icons.phone_android_sharp,  TextInputType.number),
                 ],
               ),
               SizedBox(height: 15,),
               Column(
                 children: [
-                  Align(alignment:Alignment.topLeft,child: Text('Owner Email:',style: Cons.blackFont,)),
-                  buildTextFormProductData('email', 'Enter Email', Icons.email,  TextInputType.emailAddress),
+                  Align(alignment:Alignment.topLeft,child: Text('email_conn'.tr,style: Cons.blackFont,)),
+                  buildTextFormProductData('email', 'email_conn'.tr, Icons.email,  TextInputType.emailAddress),
                 ],
               ),
               SizedBox(height: 15,),
               Column(
                 children: [
-                  Align(alignment:Alignment.topLeft,child: Text('Connection Method:',style: Cons.blackFont,)),
+                  Align(alignment:Alignment.topLeft,child: Text('conn_type'.tr,style: Cons.blackFont,)),
                  buildConnectionTypeRadio(),
                 ],
               ),
@@ -126,7 +126,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               SizedBox(height: 15,),
               Column(
                 children: [
-                  Align(alignment:Alignment.topLeft,child: Text('Product Description:',style: Cons.blackFont,)),
+                  Align(alignment:Alignment.topLeft,child: Text('prod_desc'.tr,style: Cons.blackFont,)),
                   buildTextFormProductData('desc', 'Enter Description', Icons.comment, TextInputType.text,),
                 ],
               ),
@@ -135,7 +135,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                 Visibility(
                   visible: product==null?true:false,
                   child: ListTile(
-                    leading: Text('Attatch Product Images:',style: Cons.blackFont,),
+                    leading: Text('attatch_prod_images'.tr,style: Cons.blackFont,),
                     onTap:
                         (){
                       buildMultiImagePicker(1);
@@ -168,7 +168,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                   onPressed: (){
                     saveProductData();
                   },child:
-                  Text('Save',style: Cons.whiteFont,),
+                  Text('save'.tr,style: Cons.whiteFont,),
                 color: Cons.accent_color,),
               )
 
@@ -186,7 +186,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
        Row(
       // mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Category:'),
+          Text('category'.tr),
           SizedBox(width: 30,),
           Radio(value: 0, groupValue: _radValCat, onChanged: (value){
             setState(() {
@@ -196,14 +196,14 @@ class CreateProductScreenState extends State<CreateProductScreen>{
           },
               hoverColor: Cons.primary_color,
               materialTapTargetSize: MaterialTapTargetSize.padded, activeColor:Cons.primary_color ,),
-          Text('Watch'),
+          Text('watch'.tr),
           Radio(value: 1, groupValue: _radValCat, onChanged: (value){
             setState(() {
               _radValCat=value;
             });
           },
           materialTapTargetSize: MaterialTapTargetSize.padded, activeColor:Cons.primary_color ,),
-          Text('Braclet'),
+          Text('braclete'.tr),
 
         ],
       ),
@@ -287,7 +287,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               },
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 activeColor:Cons.primary_color ,),
-              Text('phone'),
+              Text('phone'.tr),
              // SizedBox(width: 10,),
               Radio(value: 1, groupValue: _radValContact, onChanged: (value){
                 setState(() {
@@ -296,7 +296,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               },
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 activeColor:Cons.primary_color ,),
-              Text('email'),
+              Text('email'.tr),
               //SizedBox(width: 10,),
               Radio(value: 2, groupValue: _radValContact, onChanged: (value){
                 setState(() {
@@ -305,7 +305,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               },
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 activeColor:Cons.primary_color ,),
-              Text('meessage'),
+              Text('private_messages'.tr),
              // SizedBox(width: 10,),
             ],
           ),
@@ -319,7 +319,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                   materialTapTargetSize: MaterialTapTargetSize.padded,
               activeColor:Cons.primary_color ,
               ),
-              Text('All'),
+              Text('all'.tr),
             ],
           ),
 
@@ -389,7 +389,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
         },
             materialTapTargetSize: MaterialTapTargetSize.padded,
           activeColor:Cons.primary_color ,),
-       Text('Old Products'),
+       Text('old_prods'.tr),
         Radio(value: 1, groupValue: _radValType, onChanged: (value){
           setState(() {
             print(value);
@@ -398,7 +398,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
         },
           materialTapTargetSize: MaterialTapTargetSize.padded,
           activeColor:Cons.primary_color ,),
-        Text('New Products'),
+        Text('new_prods'.tr),
 
       ],
     )

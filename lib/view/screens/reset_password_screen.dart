@@ -39,7 +39,7 @@ class ResetPasswordScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forget Password',style: Cons.greyFont,),
+        title: Text('forget_password'.tr,style: Cons.greyFont,),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -82,7 +82,7 @@ class ResetPasswordScreen extends StatelessWidget {
                             textAlign: TextAlign.start,
                             decoration: InputDecoration(
                                 icon: Icon(Icons.email, color: primary,),
-                                hintText: 'Enter Email',
+                                hintText: 'email'.tr,
                                 enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color: primary,
@@ -114,7 +114,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   color: accent,
                   onPressed: () {
                     loginUser(context);
-                  }, child: Text('Confirm', style: Cons.whiteFont,),
+                  }, child: Text('confirm'.tr, style: Cons.whiteFont,),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)
                   ),

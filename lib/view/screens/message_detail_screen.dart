@@ -23,7 +23,7 @@ class MessageDetailScreen extends StatelessWidget {
 
     return Scaffold(
      appBar:  AppBar(
-        title: Text('Messages',style: Cons.greyFont),
+        title: Text('messages'.tr,style: Cons.greyFont),
     centerTitle: true,
       ),
       body: GetBuilder<MessageController>(
@@ -110,7 +110,7 @@ class MessageDetailScreen extends StatelessWidget {
                       ),
                       onPressed: (){
                         Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE);
-                      },child: Text('Reply',style: Cons.whiteFont,),),
+                      },child: Text('reply'.tr,style: Cons.whiteFont,),),
                   ),
                   SizedBox(width: 20,),
                   Container(
@@ -124,7 +124,7 @@ class MessageDetailScreen extends StatelessWidget {
                       onPressed: (){
                         deleteSelectedMessage(model.id,context);
                         Navigator.of(context).pop();
-                      },child: Text('Delete',style: Cons.whiteFont,),),
+                      },child: Text('delete'.tr,style: Cons.whiteFont,),),
                   ),
                 ],
               ),

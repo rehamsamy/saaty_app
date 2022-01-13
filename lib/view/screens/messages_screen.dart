@@ -48,7 +48,7 @@ MessageController _messageController=Get.find();
                 Card(
                   elevation: 5,
                   child: AppBar(
-                    title: Text('Messages',style: Cons.greyFont),
+                    title: Text('messages'.tr,style: Cons.greyFont),
                   centerTitle: true,
                   actions: [
                     IconButton(onPressed: (){
@@ -72,11 +72,11 @@ MessageController _messageController=Get.find();
                       _messageController.changeSelectedTabIndex(indx);
                     },
                     tabs: [
-                      Tab(child: Text('Received',style:  _tabController.index == 0
+                      Tab(child: Text('message_receive'.tr,style:  _tabController.index == 0
                       ? Cons.blueFont
                           :Cons.greyFont ,),
                       ),
-                  Tab(child: Text('Sender',style:  _tabController.index == 1
+                  Tab(child: Text('message_send'.tr,style:  _tabController.index == 1
                       ? Cons.blueFont
                       :Cons.greyFont ,),
                   )
@@ -105,7 +105,7 @@ MessageController _messageController=Get.find();
       builder: (_)=>_messageController.isLoading==true?
           Center(child: CircularProgressIndicator(),):
       _messageController.newList.isEmpty?
-          Center(child: Text('empty data')):
+          Center(child: Text('empty_data.tr')):
       ListView.builder(
         itemCount: _messageController.newList.length,
           itemBuilder: (_,index){
@@ -158,7 +158,7 @@ void _modalBottomSheetMenu(BuildContext context){
                           ),
                           onPressed: (){
                             showConfirmDeleteMessageDialog(context);
-                          },child: Text('Delete',style: Cons.whiteFont,),),
+                          },child: Text('delete'.tr,style: Cons.whiteFont,),),
                       ),
                       SizedBox(width: 20,),
                       Container(
@@ -188,7 +188,7 @@ void _modalBottomSheetMenu(BuildContext context){
                         },
                         child: Container(
                             width: width *0.4,
-                            height: 50,child: Center(child: Text('Select All',style: Cons.blueFont,))),
+                            height: 50,child: Center(child: Text('select_all'.tr,style: Cons.blueFont,))),
                       ),
                       // SizedBox(width: 10,),
                       FlatButton(
@@ -199,7 +199,7 @@ void _modalBottomSheetMenu(BuildContext context){
                         },
                         child: Container(
                             width: width *0.4,
-                            height: 50,child: Center(child: Text('Cancel All',style: Cons.blueFont,))),
+                            height: 50,child: Center(child: Text('cancel_all'.tr,style: Cons.blueFont,))),
                       )
                     ],
                   )
@@ -238,7 +238,7 @@ void showConfirmDeleteMessageDialog(BuildContext context){
                     ),
                     onPressed: (){
                       deleteSelectedMessages(context);
-                    },child: Text('Delete',style: Cons.whiteFont,),),
+                    },child: Text('delete'.tr,style: Cons.whiteFont,),),
                 ),
                 Container(
                   width: width *0.3,
@@ -251,7 +251,7 @@ void showConfirmDeleteMessageDialog(BuildContext context){
                       Navigator.of(context).pop();
                       _messageController.changeVisibleCheckBox(false);
                       _messageController.changeCheckedMessageAll(false);
-                    },child: Text('Cancel',style: Cons.whiteFont,),
+                    },child: Text('cancel'.tr,style: Cons.whiteFont,),
                   ),
                 ),
               ],

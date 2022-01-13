@@ -37,7 +37,7 @@ class HomeScreenState extends State<HomeScreen> {
     CarouselController buttonCarouselController = CarouselController();
     return Scaffold(
       appBar: AppBar(
-          title: Text('Home Page',style: Cons.greyFont,),
+          title: Text('main_page'.tr,style: Cons.greyFont,),
         ),
       body: Column(
         children: [
@@ -79,9 +79,9 @@ class HomeScreenState extends State<HomeScreen> {
                   child: Image.asset('assets/images/home_photo.png',fit: BoxFit.contain,)),
               Column(
                 children: [
-                buildCardItem('Stores',context),
-                  buildCardItem('Watches',context),
-                  buildCardItem('Braclets',context),
+                buildCardItem('stores'.tr,context),
+                  buildCardItem('watches'.tr,context),
+                  buildCardItem('bracletes'.tr,context),
 
                 ],
               )

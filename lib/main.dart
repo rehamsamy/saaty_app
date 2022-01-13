@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saaty_app/LocalString.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/fav_ads_controller.dart';
@@ -27,6 +28,7 @@ import 'package:saaty_app/view/screens/stores_screen.dart';
 import 'providers/products_controller.dart';
 import 'view/screens/register_screen.dart';
 
+
 void main() {
   runApp(MyApp());
 }
@@ -42,11 +44,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final List locale =[
+      {'name':'ENGLISH','locale': Locale('us')},
+      {'name':'العربية','locale': Locale('ar')},
+
+    ];
+
     //int x=5;
     Cons.buildColors(context);
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+      translations: LocaleString(),
+      locale: Locale('en'),
+      textDirection: TextDirection.rtl,
       theme: ThemeData(
         primaryColor: Color.fromARGB(255,213,177,57),
          unselectedWidgetColor: Color.fromARGB(255,123,196,229),
@@ -66,7 +77,7 @@ class MyApp extends StatelessWidget {
     ),
       home: LoginScreen(),
       routes: {
-         LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>LoginScreen(),
+         LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>GetBuilder<LangController>(builder:(_)=> LoginScreen()),
         RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),
         HomeScreen.HOME_SCREEN_RIUTE:(_)=>HomeScreen(),
         CreateProductScreen.CREATE_PRODUCT_ROUTE:(_)=>CreateProductScreen(),

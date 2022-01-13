@@ -34,7 +34,7 @@ String creator_id;
     return GetBuilder<MessageController>(
         builder:(_)=> Scaffold(
         appBar: AppBar(
-          title: Text('Send Message'),
+          title: Text('send_message'.tr),
         ),
         body: SingleChildScrollView(
           child: Form(
@@ -43,20 +43,20 @@ String creator_id;
             padding: const EdgeInsets.symmetric(horizontal: 17.0,vertical: 20),
             child: Column(
               children: [
-                buidTextForm('name', 'Enter Name', Icons.person, map,
+                buidTextForm('name', 'name'.tr, Icons.person, map,
                     TextInputType.text),
                 SizedBox(height: 12,),
-                buidTextForm('email', 'Enter Email', Icons.email, map,
+                buidTextForm('email', 'email'.tr, Icons.email, map,
                     TextInputType.emailAddress),
                 SizedBox(height: 12,),
                 buidTextForm(
-                    'phone', 'Enter Phone', Icons.phone_android_sharp, map,
+                    'phone', 'phone'.tr, Icons.phone_android_sharp, map,
                     TextInputType.number),
                 SizedBox(height: 12,),
-                buidTextForm('title', 'Enter Message Title', Icons.message_sharp, map,
+                buidTextForm('title', 'message_title'.tr, Icons.message_sharp, map,
                     TextInputType.text),
                 SizedBox(height: MediaQuery.of(context).size.height*0.25,),
-                buidTextForm('content', 'Enter Message Content', Icons.email_outlined, map,
+                buidTextForm('content', 'message_content'.tr, Icons.email_outlined, map,
                     TextInputType.text),
                 SizedBox(height: MediaQuery.of(context).size.height*0.06,),
                 SizedBox(
@@ -72,7 +72,7 @@ String creator_id;
                     ),
                     onPressed: () {
                       submitSendMessage(context);
-                    }, child: Text('Send', style: Cons.whiteFont,),),
+                    }, child: Text('send'.tr, style: Cons.whiteFont,),),
                 ),
               ],
             ),
@@ -158,7 +158,7 @@ String creator_id;
        _messageController.changeLoadingMessage(false);
        Navigator.of(context).pop();
        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-         content: Text("Sending Message Sucessfully"),
+         content: Text("send_message_sucessfully".tr),
        ));
 
 
@@ -174,7 +174,7 @@ String creator_id;
   void showAlertMessageSend(BuildContext context) {
     showDialog(context: context, builder: (_)=>
     AlertDialog(
-      title: Text('Send Message'),
+      title: Text('send_message'.tr),
       content: Container(
           width:100,
           height:100,

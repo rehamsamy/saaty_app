@@ -19,7 +19,7 @@ class AccountScreen extends StatelessWidget {
     _userModel=AuthController.model;
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Account',style: Cons.greyFont,),
+        title: Text('my_account'.tr,style: Cons.greyFont,),
         centerTitle: true,
         leading: IconButton(icon: Icon(Icons.home,color: Cons.accent_color,),
           onPressed:() =>Navigator.of(context).pushReplacementNamed(MainPageScreen.MAIN_PRAGE_ROUTE),),
@@ -49,22 +49,22 @@ class AccountScreen extends StatelessWidget {
                               children: [
                                 ListTile(
                                   leading: Icon(Icons.person,color: Cons.primary_color,),
-                                  title: Text('User Name',style: Cons.blackFont,),
+                                  title: Text('user_name'.tr,style: Cons.blackFont,),
                                   subtitle: Text(_userModel.name),
                                 ),
                                 ListTile(
                                   leading: Icon(Icons.phone_android,color: Cons.primary_color,),
-                                  title: Text('Phone Number',style: Cons.blackFont,),
+                                  title: Text('phone'.tr,style: Cons.blackFont,),
                                   subtitle: Text(_userModel.mobile),
                                 ),
                                 ListTile(
                                   leading: Icon(Icons.email,color: Cons.primary_color,),
-                                  title: Text('Email',style: Cons.blackFont,),
+                                  title: Text('email'.tr,style: Cons.blackFont,),
                                   subtitle: Text(_userModel.email),
                                 ),
                                 ListTile(
                                   leading: Icon(Icons.password_rounded,color: Cons.primary_color,),
-                                  title: Text('Password',style: Cons.blackFont,),
+                                  title: Text('password'.tr,style: Cons.blackFont,),
                                   subtitle: Text(_authController.visiblePassword==true?_userModel.password: '********'),
                                   trailing:SizedBox(
                                     width: 150,

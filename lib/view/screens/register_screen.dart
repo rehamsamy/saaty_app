@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/view/widget/register_widget.dart';
-
+import 'package:get/get.dart';
 class RegisterScreen extends StatefulWidget{
   static String REGISTER_SCREEN_ROUTE='/2';
   @override
@@ -64,10 +64,10 @@ class RegisterScreenState extends State<RegisterScreen>  with SingleTickerProvid
                           labelStyle: Cons.greyFont,
                           tabs: [
                             Tab(
-                              text:'User',
+                              text:'register_as_user'.tr,
                             ),
                             Tab(
-                              text:'Trader',
+                              text:'register_as_trader'.tr,
                             )
                           ],
                           controller: _tabController,

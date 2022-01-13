@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:saaty_app/providers/lang_controller.dart';
 
 import 'model/product_model.dart';
 
 class Cons {
   static Color primary_color=Colors.white;
   static Color accent_color=Colors.white;
+  static LangController _langController=Get.find();
 
   static var whiteFont=TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold );
   static var blackFont=TextStyle(color: Colors.black,fontSize: 15,fontStyle: FontStyle.italic);
@@ -66,6 +69,12 @@ class Cons {
 
    return prods;
 
+  }
+
+
+  static String getText(String x){
+    print('vvvvvv  '+_langController.isEn.toString());
+    return  _langController.isEn?_langController.getEnText[x]:_langController.getArText[x];
   }
 
 

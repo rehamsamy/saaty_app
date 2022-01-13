@@ -44,7 +44,7 @@ class AdsScreen extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 1,
-                  child: AppBar(title: Text(flag=='ads'?'My Own Ads':'My Favorites', style: Cons.greyFont),
+                  child: AppBar(title: Text(flag=='ads'.tr?'My Own Ads':'favorites'.tr, style: Cons.greyFont),
                     elevation: 8,
                     actions: [
                       IconButton(icon: Icon(
@@ -62,7 +62,7 @@ class AdsScreen extends StatelessWidget {
                         controller: _searcController,
                         onChanged: onTextChange,
                         decoration: InputDecoration(
-                            hintText: 'search',
+                            hintText: 'search'.tr,
                             prefixIcon: Icon(
                               Icons.search, color: Cons.accent_color, size: 25,),
                             enabledBorder: UnderlineInputBorder(
@@ -97,7 +97,7 @@ class AdsScreen extends StatelessWidget {
         List<Product> finalProds = _favsAdsController.filteredList;
         return _favsAdsController.isLoading ?
         Center(child: CircularProgressIndicator(),) :
-        finalProds.length == 0 ? Center(child: Text('Empty Data')) :
+        finalProds.length == 0 ? Center(child: Text('empty_data'.tr)) :
         GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 mainAxisSpacing: 0,
