@@ -1,11 +1,8 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/providers/lang_controller.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
-
 import '../../cons.dart';
 
 class SettingScreen extends StatelessWidget {

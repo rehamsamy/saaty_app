@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
+import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 import 'package:saaty_app/view/widget/store_item_widget.dart';
@@ -180,6 +181,9 @@ class _MainPageScreenState extends State<MainPageScreen>
             ],
           ),
           drawer: MyDrawer(),
+             bottomNavigationBar:  _bottomNav(),
+             floatingActionButton: _fab,
+             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked
         ),
       ),
     );
@@ -397,4 +401,66 @@ class _MainPageScreenState extends State<MainPageScreen>
           return StoreItemWidget(_productController.allStores[inx],inx);
         });
   }
+
+
+  _bottomNav(){
+  return  Container(
+      height: 70,
+      child: BottomAppBar(
+          color: Cons.primary_color,
+          child: new Theme(
+            data: Theme.of(context).copyWith(
+                canvasColor: Colors.blueGrey,
+                primaryColor: Colors.red,
+                textTheme: Theme
+                    .of(context)
+                    .textTheme
+                    .copyWith(caption: new TextStyle(color: Colors.yellow))), // sets the inactive color of the `BottomNavigationBar`
+            child: new BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              currentIndex: _productController.selectedTabIndex,
+              selectedItemColor: Cons.primary_color,
+              onTap: (ind){
+                _productController.changeSelectedTab(ind);
+              },
+              items: [
+                new BottomNavigationBarItem(
+                  icon: new Icon(Icons.add,),
+                  title: new Text("Add"),
+                ),
+                new BottomNavigationBarItem(
+                  icon: new Icon(Icons.delete),
+                  title: new Text("Delete"),
+                ),
+                new BottomNavigationBarItem(
+                  icon: new Icon(Icons.add),
+                  title: new Text("Add"),
+                ),
+                new BottomNavigationBarItem(
+                  icon: new Icon(Icons.delete),
+                  title: new Text("Delete"),
+                )
+              ],
+            ),
+          ),
+
+          shape:CircularNotchedRectangle(),
+        clipBehavior: Clip.antiAlias,
+        notchMargin: 6.0,
+      ),
+    );
+  }
+
+
+
+  final _fab = FloatingActionButton(
+    child: Icon(Icons.add,color: Colors.white,),
+    backgroundColor: Cons.accent_color,
+    onPressed: () {},
+  );
+
+
+
+
+
 }
