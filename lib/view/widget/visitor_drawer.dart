@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../cons.dart';
 
@@ -18,7 +19,7 @@ class VisitorDrawer extends StatelessWidget {
                   onPressed: () { Navigator.pop(context); }),
             ),
             SizedBox(height: 50,),
-           Text('Welcome To Saaty As Visitor',style: TextStyle(color: Cons.accent_color,fontSize: 18),),
+           Text('welcome_as_visitor'.tr,style: TextStyle(color: Cons.accent_color,fontSize: 18),),
             SizedBox(height: 20,),
             Divider(color: Cons.primary_color,thickness: 1.5,),
             SizedBox(height: 15,),
@@ -27,7 +28,7 @@ class VisitorDrawer extends StatelessWidget {
                 Icons.home,
                 color: Cons.primary_color,
               ),
-              title: Text('Main Page'),
+              title: Text('main_page'.tr),
             ),
 
             ListTile(
@@ -35,35 +36,35 @@ class VisitorDrawer extends StatelessWidget {
                 Icons.settings,
                 color: Cons.primary_color,
               ),
-              title: Text('Setting'),
+              title: Text('setting'.tr),
             ),
             ListTile(
               leading: Icon(
                 Icons.info,
                 color: Cons.primary_color,
               ),
-              title: Text('About App'),
+              title: Text('about_pp'.tr),
             ),
             ListTile(
               leading: Icon(
                 Icons.help_rounded,
                 color: Cons.primary_color,
               ),
-              title: Text('Who Are We'),
+              title: Text('about_us'.tr),
             ),
             ListTile(
               leading: Icon(
                 Icons.phone,
                 color: Cons.primary_color,
               ),
-              title: Text('Call Us'),
+              title: Text('call_us'.tr),
             ),
             ListTile(
               leading: Icon(
                 Icons.logout,
                 color: Cons.primary_color,
               ),
-              title: Text('Log Out'),
+              title: Text('logout'.tr),
             ),
           ],
         ),

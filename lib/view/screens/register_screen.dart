@@ -27,7 +27,7 @@ class RegisterScreenState extends State<RegisterScreen>  with SingleTickerProvid
     return Scaffold(
       resizeToAvoidBottomInset: false,
      appBar: AppBar(
-       title: Text('Create New Account',style: Cons.greyFont,),
+       title: Text('create_new_account'.tr,style: Cons.greyFont,),
      ),
       body: Column(
         children: [

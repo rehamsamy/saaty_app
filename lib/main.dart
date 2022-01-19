@@ -8,6 +8,7 @@ import 'package:saaty_app/providers/lang_controller.dart';
 import 'package:saaty_app/providers/message_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/status_product_controller.dart';
+import 'package:saaty_app/view/screens/SplashScreen.dart';
 import 'package:saaty_app/view/screens/account_screen.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
 import 'package:saaty_app/view/screens/change_password_screen.dart';
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       translations: LocaleString(),
       locale: Locale('en'),
-      textDirection: TextDirection.rtl,
+      textDirection: TextDirection.ltr,
       theme: ThemeData(
         primaryColor: Color.fromARGB(255,213,177,57),
          unselectedWidgetColor: Color.fromARGB(255,123,196,229),
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
         )
 
     ),
-      home: LoginScreen(),
+      home: SplashScreen(),
       routes: {
          LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>GetBuilder<LangController>(builder:(_)=> LoginScreen()),
         RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),
@@ -93,7 +94,8 @@ class MyApp extends StatelessWidget {
         EditAccountScreen.EDIT_ACCOUNT_SCREEN_ROUTE:(_)=>EditAccountScreen(),
         ChangePasswordScreen.CHANGE_PASSWORD_SCREEN_ROUTE:(_)=>ChangePasswordScreen(),
         ForgetPasswordScreen.FORGET_PASSWORD_SCREEN_ROUTE:(_)=>ForgetPasswordScreen(),
-        ResetPasswordScreen.RESET_PASSWORD_SCREEN_ROUTE:(_)=>ResetPasswordScreen()
+        ResetPasswordScreen.RESET_PASSWORD_SCREEN_ROUTE:(_)=>ResetPasswordScreen(),
+        SplashScreen.SPLASH_SCREEN_ROUTE:(_)=>SplashScreen()
       },
     );
   }

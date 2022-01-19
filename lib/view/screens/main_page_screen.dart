@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
+import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
@@ -56,7 +57,7 @@ class _MainPageScreenState extends State<MainPageScreen>
         builder: (_)=>
          Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(height *0.25),
+            preferredSize: Size.fromHeight(height *0.18),
             child: Container(
               child: Column(
                 children: [
@@ -88,80 +89,38 @@ class _MainPageScreenState extends State<MainPageScreen>
                     child: Card(
                       margin: EdgeInsets.all(2),
                       elevation: 5,
-                      child: Padding(
-                        padding: EdgeInsets.all(5),
-                        child: TextFormField(
-                          controller: _searcController,
-                          focusNode: _textFocus,
-                          onChanged: onTextChange,
-                          decoration: InputDecoration(
-                              hintText: 'search'.tr,
-                              prefixIcon: Icon(
-                                Icons.search,
+                      child: TextFormField(
+                        controller: _searcController,
+                        focusNode: _textFocus,
+                        onChanged: onTextChange,
+                        decoration: InputDecoration(
+                            hintText: 'search'.tr,
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Cons.accent_color,
+                              size: 25,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                Icons.filter_list_alt,
                                 color: Cons.accent_color,
                                 size: 25,
                               ),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  Icons.filter_list_alt,
-                                  color: Cons.accent_color,
-                                  size: 25,
-                                ),
-                                onPressed: () {
-                                  buildFilterDialogWidget(context);
-                                },
+                              onPressed: () {
+                                buildFilterDialogWidget(context);
+                              },
+                            ),
+                            // SizedBox(
+                            //     width:10,
+                            //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Cons.accent_color,
+                                width: 1.0,
                               ),
-                              // SizedBox(
-                              //     width:10,
-                              //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Cons.accent_color,
-                                  width: 1.0,
-                                ),
-                              )
-                              //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
-                              ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Card(
-                      elevation: 4,
-                      child: TabBar(
-                        onTap: (ind) {
-                          _productController.changeSelectedTab(ind);
-                          _productController.update();
-                        } ,
-                        controller: _tabController,
-                        tabs: [
-                          Tab(
-                            child: Text(
-                              'stores'.tr,
-                              style: _tabController.index == 0
-                                  ? Cons.blueFont
-                                  :Cons.greyFont ,
+                            )
+                            //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
                             ),
-                          ),
-                          Tab(
-                            child: Text(
-                              'watches'.tr,
-                              style: _tabController.index == 1
-                                  ? Cons.blueFont
-                                  :Cons.greyFont ,
-                            ),
-                          ),
-                          Tab(
-                            child: Text(
-                              'bracletes'.tr,
-                              style: _tabController.index == 2
-                                  ? Cons.blueFont
-                                  :Cons.greyFont ,
-                            ),
-                          ),
-                        ],
                       ),
                     ),
                   ),
@@ -172,17 +131,20 @@ class _MainPageScreenState extends State<MainPageScreen>
               ),
             ),
           ),
-          body: TabBarView(
-            controller: _tabController,
-            children: [
-             buildStoreGrid(),
+          body:
+          IndexedStack(
+            index: _productController.selectedTabIndex,
+            children:[
               buildGrid(),
-              buildGrid()
-            ],
+              buildGrid(),
+              buildGrid(),
+              buildStoreGrid(),
+            ] ,
           ),
+
           drawer: MyDrawer(),
              bottomNavigationBar:  _bottomNav(),
-             floatingActionButton: _fab,
+             floatingActionButton: _fab(),
              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked
         ),
       ),
@@ -190,7 +152,7 @@ class _MainPageScreenState extends State<MainPageScreen>
   }
 
   Widget buildGrid() {
-    print('9999      '+_productController.filteredList.length.toString());
+  //  print('9999      '+_productController.filteredList.length.toString());
     _productController.txt = _searcController.text;
     return _isLoading == true
         ? Center(
@@ -404,62 +366,73 @@ class _MainPageScreenState extends State<MainPageScreen>
 
 
   _bottomNav(){
-  return  Container(
-      height: 70,
-      child: BottomAppBar(
-          color: Cons.primary_color,
-          child: new Theme(
-            data: Theme.of(context).copyWith(
-                canvasColor: Colors.blueGrey,
-                primaryColor: Colors.red,
-                textTheme: Theme
-                    .of(context)
-                    .textTheme
-                    .copyWith(caption: new TextStyle(color: Colors.yellow))), // sets the inactive color of the `BottomNavigationBar`
-            child: new BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              currentIndex: _productController.selectedTabIndex,
-              selectedItemColor: Cons.primary_color,
-              onTap: (ind){
-                _productController.changeSelectedTab(ind);
-              },
-              items: [
-                new BottomNavigationBarItem(
-                  icon: new Icon(Icons.add,),
-                  title: new Text("Add"),
-                ),
-                new BottomNavigationBarItem(
-                  icon: new Icon(Icons.delete),
-                  title: new Text("Delete"),
-                ),
-                new BottomNavigationBarItem(
-                  icon: new Icon(Icons.add),
-                  title: new Text("Add"),
-                ),
-                new BottomNavigationBarItem(
-                  icon: new Icon(Icons.delete),
-                  title: new Text("Delete"),
-                )
-              ],
+  return   GetBuilder<ProductController>(
+    builder: (_)=>
+    Container(
+        height: 65,
+        child: BottomAppBar(
+            color: Cons.primary_color,
+            child: new Theme(
+              data: Theme.of(context).copyWith(
+                  canvasColor: Colors.blueGrey.shade500,
+                  primaryColor: Colors.red,
+                  textTheme: Theme
+                      .of(context)
+                      .textTheme
+                      .copyWith(caption: new TextStyle(color: Colors.yellow))), // sets the inactive color of the `BottomNavigationBar`
+              child: new BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                currentIndex: _productController.selectedTabIndex,
+                selectedItemColor: Cons.primary_color,
+                onTap: (ind){
+                  _productController.changeSelectedTab(ind);
+                  _productController.update();
+                  print('.....   '+_productController.selectedTabIndex.toString());
+                },
+                items: [
+                  new BottomNavigationBarItem(
+                    icon: new Icon(Icons.home,color: checkBottomColor(0),),
+                    title: new Text('all'.tr,style: TextStyle(color:checkBottomColor(0),))
+                  ),
+                  new BottomNavigationBarItem(
+                    icon: new Icon(Icons.face,color: checkBottomColor(1)),
+                    title: new Text('watch'.tr,style: TextStyle(color:checkBottomColor(1))),
+                  ),
+                  new BottomNavigationBarItem(
+                    icon: new Icon(Icons.delete,color: checkBottomColor(2)),
+                    title: new Text('braclete'.tr,style: TextStyle(color:checkBottomColor(2))),
+                  ),
+                  new BottomNavigationBarItem(
+                    icon: new Icon(Icons.shop,color: checkBottomColor(3)),
+                    title: new Text('stores'.tr,style: TextStyle(color:checkBottomColor(3))),
+                  ),
+                ],
+              ),
             ),
-          ),
 
-          shape:CircularNotchedRectangle(),
-        clipBehavior: Clip.antiAlias,
-        notchMargin: 6.0,
+            shape:CircularNotchedRectangle(),
+          clipBehavior: Clip.antiAlias,
+          notchMargin: 6.0,
+        ),
       ),
-    );
+  );
   }
 
 
 
-  final _fab = FloatingActionButton(
-    child: Icon(Icons.add,color: Colors.white,),
-    backgroundColor: Cons.accent_color,
-    onPressed: () {},
+   _fab() {
+  return FloatingActionButton(
+  child: Icon(Icons.add,color: Colors.white,),
+  backgroundColor: Cons.accent_color,
+  onPressed: () {
+  Navigator.of(context).pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE);
+  },
   );
+  }
 
-
+checkBottomColor(int index){
+ return _productController.selectedTabIndex==index?Cons.primary_color:Colors.white;
+}
 
 
 

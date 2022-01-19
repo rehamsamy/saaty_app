@@ -26,15 +26,18 @@ class SendMessageScreen extends StatelessWidget {
 
   MessageModel messageModel;
 String creator_id;
+double width,height;
 
   @override
   Widget build(BuildContext context) {
     creator_id=ModalRoute.of(context).settings.arguments.toString();
+    width=MediaQuery.of(context).size.width;
+    height=MediaQuery.of(context).size.height;
     print('createdd  '+creator_id);
     return GetBuilder<MessageController>(
         builder:(_)=> Scaffold(
         appBar: AppBar(
-          title: Text('send_message'.tr),
+          title: Text('send_message'.tr,style: Cons.greyFont1,),
         ),
         body: SingleChildScrollView(
           child: Form(
@@ -55,7 +58,7 @@ String creator_id;
                 SizedBox(height: 12,),
                 buidTextForm('title', 'message_title'.tr, Icons.message_sharp, map,
                     TextInputType.text),
-                SizedBox(height: MediaQuery.of(context).size.height*0.25,),
+                SizedBox(height: height>600?MediaQuery.of(context).size.height*0.25:70,),
                 buidTextForm('content', 'message_content'.tr, Icons.email_outlined, map,
                     TextInputType.text),
                 SizedBox(height: MediaQuery.of(context).size.height*0.06,),

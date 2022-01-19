@@ -40,30 +40,30 @@ class _RegisterWidgetState extends State<RegisterWidget> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                buidTextForm('name', Cons.getText('user_name'), Icons.person, map,
+                buidTextForm('name', 'user_name'.tr, Icons.person, map,
                     TextInputType.text),
                 SizedBox(height: 10,),
-                buidTextForm('email', Cons.getText('email'), Icons.email, map,
+                buidTextForm('email','email'.tr, Icons.email, map,
                     TextInputType.emailAddress),
                 widget.userType==1?
                     Column(
                       children: [
                         SizedBox(height: 10,),
                         buidTextForm(
-                            'store_name', Cons.getText('store_name'), Icons.store_mall_directory_outlined, map,
+                            'store_name', 'store_name'.tr, Icons.store_mall_directory_outlined, map,
                             TextInputType.text),
                       ],
                     ):
                 SizedBox(height: 10,),
                 buidTextForm(
-                    'phone', Cons.getText('phone'), Icons.phone_android_sharp, map,
+                    'phone','phone'.tr, Icons.phone_android_sharp, map,
                     TextInputType.number),
                 SizedBox(height: 10,),
-                buidTextForm('password', Cons.getText('password'), Icons.work, map,
+                buidTextForm('password','password'.tr, Icons.work, map,
                     TextInputType.text),
                 SizedBox(height: 10,),
                 buidTextForm(
-                    'confirm_password', Cons.getText('confirm_password'), Icons.work,
+                    'confirm_password', 'confirm_password'.tr, Icons.work,
                     map, TextInputType.text),
                 SizedBox(height: 20,),
                _isLoading?Center(child:CircularProgressIndicator()) :SizedBox(
@@ -79,7 +79,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                     onPressed: () {
                       registerUser();
-                    }, child: Text(Cons.getText('register'), style: Cons.whiteFont,),),
+                    }, child: Text('register'.tr, style: Cons.whiteFont,),),
                 ),
               ],
             )),
@@ -108,18 +108,18 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       ),
       validator: (value) {
         if (value.isEmpty) {
-          return Cons.getText('password');
+          return 'password'.tr;
         }
         if (value.length < 6 &&
             (flag == 'password' || flag == 'confirm_password')) {
-          return Cons.getText('weak_password');
+          return 'weak_password'.tr;
         }
         if (flag == 'confirm_password' && value != password_controller.text) {
           print('pppppp ${value}');
-          return 'password not match';
+          return 'password_not_match'.tr;
         }
         if (!value.contains('.com') && flag == 'email') {
-          return 'enter valid email';
+          return 'inavlid_email'.tr;
         }
       },
       onSaved: (value) {

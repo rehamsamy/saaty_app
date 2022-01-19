@@ -55,17 +55,25 @@ class ProductItemWidget extends StatelessWidget {
                   Positioned(
                       bottom: 1,
                       right: 1,
-                      child: Text(
-                        product.name,
-                        style: Cons.greyFont1,
+                      child: Container(
+                        width: 50,
+                        child: Text(
+                          product.name,
+                            overflow: TextOverflow.ellipsis,
+                          style:  TextStyle(color: Colors.black54, fontSize: 15,)
+                        ),
                       )),
                   Positioned(
                     bottom: 1,
                     left: 1,
-                    child: Text(
-                      '${product.price}  PSD',
-                      style:
-                          TextStyle(color: Colors.green.shade600, fontSize: 15),
+                    child: Container(
+                      width: 55,
+                      child: Text(
+                        '${product.price}${'currency'.tr}',
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            TextStyle(color: Colors.green.shade600, fontSize: 15,),
+                      ),
                     ),
                   ),
                   Positioned(

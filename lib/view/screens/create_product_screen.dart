@@ -58,7 +58,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
   @override
   Widget build(BuildContext context) {
      product =ModalRoute.of(context).settings.arguments as Product;
-
+     print(MediaQuery.of(context).size.width);
     if(product !=null){
       inialializeValuesFromProduct(product);
       print(';;;;;;;;;;;;;;;;;;;;;;;;   ${product.id}');
@@ -66,7 +66,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
     Cons.buildColors(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('create_product'.tr),
+        title: Text('create_product'.tr,style:  Cons.greyFont,),
       ),
       body:
       Form(
@@ -80,16 +80,18 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               buildProductType(),
               SizedBox(height: 15,),
                Column(
-                 mainAxisAlignment: MainAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                 crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
-                   Align(alignment:Alignment.topLeft,child: Text('prod_name'.tr,style: Cons.blackFont,)),
+                   Text('prod_name'.tr,style: Cons.blackFont,),
                       buildTextFormProductData('name', 'prod_name'.tr, Icons.info_sharp, TextInputType.text),
                  ],
                ),
               SizedBox(height: 15,),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(alignment:Alignment.topLeft,child: Text('prod_price'.tr,style: Cons.blackFont,)),
+                  Text('prod_price'.tr,style: Cons.blackFont,),
                   Row(
                     children: [
                       Flexible(child: buildTextFormProductData('price','prod_price'.tr, Icons.monetization_on_rounded, TextInputType.number)),
@@ -100,22 +102,25 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               ),
               SizedBox(height: 15,),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(alignment:Alignment.topLeft,child: Text('phone_conn'.tr,style: Cons.blackFont,)),
+                  Text('phone_conn'.tr,style: Cons.blackFont,),
                   buildTextFormProductData('phone', 'phone_conn'.tr, Icons.phone_android_sharp,  TextInputType.number),
                 ],
               ),
               SizedBox(height: 15,),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(alignment:Alignment.topLeft,child: Text('email_conn'.tr,style: Cons.blackFont,)),
+                  Text('email_conn'.tr,style: Cons.blackFont,),
                   buildTextFormProductData('email', 'email_conn'.tr, Icons.email,  TextInputType.emailAddress),
                 ],
               ),
               SizedBox(height: 15,),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(alignment:Alignment.topLeft,child: Text('conn_type'.tr,style: Cons.blackFont,)),
+                  Text('conn_type'.tr,style: Cons.blackFont,),
                  buildConnectionTypeRadio(),
                 ],
               ),
@@ -125,12 +130,14 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               ),
               SizedBox(height: 15,),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Align(alignment:Alignment.topLeft,child: Text('prod_desc'.tr,style: Cons.blackFont,)),
+                  Text('prod_desc'.tr,style: Cons.blackFont,),
                   buildTextFormProductData('desc', 'Enter Description', Icons.comment, TextInputType.text,),
                 ],
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                 Visibility(
                   visible: product==null?true:false,
@@ -277,7 +284,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
        Column(
         children: [
           Row(
-           // mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Radio(value: 0, groupValue: _radValContact, onChanged: (value){
                 setState(() {print('nnnnnnnnnnnn');}) ;
@@ -287,7 +294,8 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               },
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 activeColor:Cons.primary_color ,),
-              Text('phone'.tr),
+              Container(
+                  width: 50,child: Text('phone'.tr)),
              // SizedBox(width: 10,),
               Radio(value: 1, groupValue: _radValContact, onChanged: (value){
                 setState(() {
@@ -296,7 +304,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               },
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 activeColor:Cons.primary_color ,),
-              Text('email'.tr),
+              Container(width:55,child: Text('email'.tr,)),
               //SizedBox(width: 10,),
               Radio(value: 2, groupValue: _radValContact, onChanged: (value){
                 setState(() {
@@ -305,7 +313,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
               },
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 activeColor:Cons.primary_color ,),
-              Text('private_messages'.tr),
+              Container(width:50,child: Text('private_messages'.tr)),
              // SizedBox(width: 10,),
             ],
           ),
@@ -378,7 +386,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
      Row(
      // mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Type:'),
+        Text('status'.tr),
         SizedBox(width: 30,),
         Radio(value: 0, groupValue: _radValType, onChanged: (value){
           setState(() {
@@ -389,7 +397,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
         },
             materialTapTargetSize: MaterialTapTargetSize.padded,
           activeColor:Cons.primary_color ,),
-       Text('old_prods'.tr),
+       Container(width:50,child: Text('old'.tr)),
         Radio(value: 1, groupValue: _radValType, onChanged: (value){
           setState(() {
             print(value);
@@ -398,7 +406,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
         },
           materialTapTargetSize: MaterialTapTargetSize.padded,
           activeColor:Cons.primary_color ,),
-        Text('new_prods'.tr),
+        Container(width:50,child: Text('new'.tr)),
 
       ],
     )

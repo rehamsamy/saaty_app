@@ -108,7 +108,8 @@ class ProductItemDetailScreen extends StatelessWidget {
                           ),
 
                           ListTile(title: Text('user_name'.tr),contentPadding: EdgeInsets.all(0)),
-                          ListTile(title: Text('Status:${product.status==0?'old_prods'.tr:'new_prods'.tr}'),contentPadding: EdgeInsets.all(0)),
+                          ListTile(title: Text('${'status'.tr}${product.status==0?'old_prods'.tr:'new_prods'.tr}')
+                              ,contentPadding: EdgeInsets.all(0)),
                           ListTile(leading: Icon(Icons.phone_android_sharp,color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
                           ListTile(leading: Icon(Icons.email,color: Cons.primary_color,),title: Text(product.email),contentPadding: EdgeInsets.all(0)),
                           SizedBox(height: 50,),
@@ -276,7 +277,7 @@ class ProductItemDetailScreen extends StatelessWidget {
             ), background: Hero(
           tag: product.id,
           child: FadeInImage(
-            image: NetworkImage(product.images[0],scale: 3),
+            image: NetworkImage(product.images[0]),
            // Image.network(product.images[0],),
             placeholder: AssetImage('assets/images/watch_item1.png'),
             fit: BoxFit.cover,

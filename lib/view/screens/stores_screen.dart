@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/user_model.dart';
 import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/providers/status_product_controller.dart';
+import 'package:saaty_app/view/screens/send_message_screen.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 
 import '../../cons.dart';
@@ -114,57 +115,49 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                          width: cons.maxWidth,
                          child:
                          Center(
-                           child: ListTile(
-                                       title: Text(model.name),
-                                       leading:
-                                            Hero(
-                                              tag: model.userId,
-                                              child: CircleAvatar(
-                                               radius: 50,
-                                               backgroundImage: AssetImage('assets/images/store${index.toString()}.png'),
-                                           ),
-                                            ),
-                                       trailing: IconButton(icon: Icon(Icons.message,color: Cons.accent_color,),),
-                           )
 
+                           child:
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                               children: [
+                                                  Hero(
+                                                    tag: model.userId,
+                                                    child: CircleAvatar(
+                                                     radius: 35,
+                                                     backgroundImage: AssetImage('assets/images/store${index.toString()}.png'),
+                                                 ),
+                                                  ),
+                                 Text(model.name),
+
+                               ],
+                             )
                                  ),
                      )
                    ] )
                ),
-               bottom: TabBar(
-                 onTap: (ind)=>_statusController.changeSelectedTab(ind),
-                 controller: _tabController,
-                 tabs: [
-                   Tab(
-                     child: Text('old'.tr,style: _tabController.index==0?Cons.blueFont:Cons.greyFont,),
-                   ),
-                   Tab(
-                     child:  Text('new'.tr,style: _tabController.index==1?Cons.blueFont:Cons.greyFont,),
-                   ),
-                 ],
-               ),
+
               ),
            ),
            SliverFillRemaining(
              child: Scaffold(
-               body:  TabBarView(
-                 controller: _tabController,
-                 children: <Widget>[
-                   Scaffold(
-                     body: buildGrid(0),
-                   ),
-                   Scaffold(
-                     body:  buildGrid(1),
-                   ),
-                 ],
+               body:   IndexedStack(
+                 index: _statusController.selectedTabIndex,
+                 children:[
+                   buildGrid(0),
+                   buildGrid(1),
+
+                 ] ,
                ),
              ),
            )
 
          ],
        ),
+            bottomNavigationBar:  _bottomNav(),
+            floatingActionButton: _fab(),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked
 
-        )
+        ),
       ),
     );
   }
@@ -326,6 +319,69 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
         .then((value) => setState(() => _isLoading = false))
         .catchError((err) => print('=>>>>>  $err'));
     print('length 44444444  => ${_statusController.allProducts.length}');
+  }
+
+
+
+  _bottomNav(){
+    return   GetBuilder<StatusProductController>(
+      builder: (_)=>
+          Container(
+            height: 65,
+            child: BottomAppBar(
+              color: Cons.primary_color,
+              child: new Theme(
+                data: Theme.of(context).copyWith(
+                    canvasColor: Colors.blueGrey.shade500,
+                    primaryColor: Colors.red,
+                    textTheme: Theme
+                        .of(context)
+                        .textTheme
+                        .copyWith(caption: new TextStyle(color: Colors.yellow))), // sets the inactive color of the `BottomNavigationBar`
+                child: new BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  currentIndex: _statusController.selectedTabIndex,
+                  selectedItemColor: Cons.primary_color,
+                  onTap: (ind){
+                    _statusController.changeSelectedTab(ind);
+                    _statusController.update();
+                  },
+                  items: [
+                    new BottomNavigationBarItem(
+                        icon: new Icon(Icons.home,color: checkBottomColor(0),),
+                        title: new Text('old'.tr,style: TextStyle(color:checkBottomColor(0),))
+                    ),
+                    new BottomNavigationBarItem(
+                      icon: new Icon(Icons.face,color: checkBottomColor(1)),
+                      title: new Text('new'.tr,style: TextStyle(color:checkBottomColor(1))),
+                    ),
+
+                  ],
+                ),
+              ),
+
+              shape:CircularNotchedRectangle(),
+              clipBehavior: Clip.antiAlias,
+              notchMargin: 6.0,
+            ),
+          ),
+    );
+  }
+
+
+  _fab() {
+  //  return IconButton(onPressed: (){}, icon: Image.asset('assets/images/send_message.png',scale: 1,));
+return    FloatingActionButton(
+      child:Image.asset('assets/images/send_message.png',scale: 1,),
+      backgroundColor: Cons.accent_color,
+      onPressed: () {
+        Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE);
+      },
+    );
+  }
+
+  checkBottomColor(int index){
+    return _statusController.selectedTabIndex==index?Cons.primary_color:Colors.white;
   }
 
 

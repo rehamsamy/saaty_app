@@ -29,10 +29,13 @@ class HomeScreenState extends State<HomeScreen> {
 
   int _index=0;
   AuthController _authController=Get.find();
+  double width,height;
 
 
   @override
   Widget build(BuildContext context) {
+    width=MediaQuery.of(context).size.width;
+    height=MediaQuery.of(context).size.height;
     Cons.buildColors(context);
     CarouselController buttonCarouselController = CarouselController();
     return Scaffold(
@@ -41,52 +44,73 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       body: Column(
         children: [
-         Expanded(flex:5, child: CarouselSlider(
-         carouselController: buttonCarouselController,
-         options: CarouselOptions(
-           onPageChanged: (ind,x){
-             setState(() {
-               _index=ind;
-             });
-           },
-           initialPage: 1,
-          autoPlayAnimationDuration: Duration(milliseconds: 400),
-           autoPlay: true,
-           enlargeCenterPage: true,
-           aspectRatio: 7/6,
-           viewportFraction: 0.97
-         ),
-         items: images.map((e) =>
-             Image.asset(e)
-         ).toList(),
-           ),),
+          Container(
+            height: height*0.44,
+            child: Stack(children: [
+              CarouselSlider(
+              carouselController: buttonCarouselController,
+              options: CarouselOptions(
+                  onPageChanged: (ind,x){
+                    setState(() {
+                      _index=ind;
+                    });
+                  },
+                  initialPage: 1,
+                  autoPlayAnimationDuration: Duration(milliseconds: 400),
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  aspectRatio: 6/4,
+                  viewportFraction:0.81
+              ),
+              items: images.map((e) =>
+                  Image.asset(e)
+              ).toList(),
+            ),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildCircleSlider(0),
-              buildCircleSlider(1),
-              buildCircleSlider(2),
-              buildCircleSlider(3),
-            ],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                buildCircleSlider(0),
+                buildCircleSlider(1),
+                buildCircleSlider(2),
+                buildCircleSlider(3),
+              ],
+            ),
           ),
-          SizedBox(height: 20,),
-          
-          Expanded(flex:5,child: Stack(
-            children: [
-              Align(
-                  alignment : Alignment.bottomCenter,
-                  child: Image.asset('assets/images/home_photo.png',fit: BoxFit.contain,)),
-              Column(
-                children: [
-                buildCardItem('stores'.tr,context),
-                  buildCardItem('watches'.tr,context),
-                  buildCardItem('bracletes'.tr,context),
+            ],),
+          ),
+          SizedBox(height: 5,)
+          ,
+          Container(
+            height: height*0.40,
+            child: Stack(
+              children: [
+                Align(
+                    alignment : Alignment.bottomCenter,
+                    child: Image.asset('assets/images/home_photo.png',fit: BoxFit.contain,)),
+                LayoutBuilder(
+                  builder:(_,cons)=> Align(
+                    alignment: Alignment.topCenter,
+                    child: Column(
+                      children: [
+                        buildCardItem('stores'.tr,context,cons),
+                      buildCardItem('watches'.tr,context,cons),
+                      buildCardItem('bracletes'.tr,context,cons),
 
-                ],
-              )
-            ],
-          )),
+                        // buildCardItem('watches'.tr,context),
+                        // buildCardItem('bracletes'.tr,context),
+
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+          
+        //  Expanded(flex:5,child: ),
         
         ],
       ),
@@ -95,22 +119,24 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
 
-  Widget buildCardItem(String title,BuildContext context){
-      return  Card(
-        margin: EdgeInsets.symmetric(horizontal: 12,vertical: 6),
-      elevation: 8,
-        child: Container(
-          padding: EdgeInsets.all(8),
-          height:60 ,
-          child: ListTile(
-            trailing: Icon(Icons.arrow_forward_ios_sharp,color:Theme.of(context).accentColor),
-            leading: Text(title,style: Cons.greyFont1,),
-            onTap: (){
-              Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
-            },
-          ),
+  Widget buildCardItem(String title,BuildContext context,BoxConstraints cons){
+      return  Container(
+        height:cons.maxHeight*0.215,
+        alignment: Alignment.center,
+        child: Center(
+          child: Card(
+          elevation: 10,
+              child: ListTile(
+                trailing: Icon(Icons.arrow_forward_ios_sharp,color:Theme.of(context).accentColor),
+                leading: Text(title,style: Cons.greyFont1,),
+                onTap: (){
+                  Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
+                },
+
+            ),
+    ),
         ),
-    );
+      );
   }
 
   Widget buildCircleSlider(int index){

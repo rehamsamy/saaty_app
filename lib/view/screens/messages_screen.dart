@@ -48,7 +48,7 @@ MessageController _messageController=Get.find();
                 Card(
                   elevation: 5,
                   child: AppBar(
-                    title: Text('messages'.tr,style: Cons.greyFont),
+                    title: Text('messages'.tr, style: Cons.greyFont1),
                   centerTitle: true,
                   actions: [
                     IconButton(onPressed: (){
@@ -74,11 +74,11 @@ MessageController _messageController=Get.find();
                     tabs: [
                       Tab(child: Text('message_receive'.tr,style:  _tabController.index == 0
                       ? Cons.blueFont
-                          :Cons.greyFont ,),
+                          :Cons.greyFont1,),
                       ),
                   Tab(child: Text('message_send'.tr,style:  _tabController.index == 1
                       ? Cons.blueFont
-                      :Cons.greyFont ,),
+                      :Cons.greyFont1 ,),
                   )
                     ],
                   ),
@@ -105,7 +105,7 @@ MessageController _messageController=Get.find();
       builder: (_)=>_messageController.isLoading==true?
           Center(child: CircularProgressIndicator(),):
       _messageController.newList.isEmpty?
-          Center(child: Text('empty_data.tr')):
+          Center(child: Text('empty_data'.tr)):
       ListView.builder(
         itemCount: _messageController.newList.length,
           itemBuilder: (_,index){
