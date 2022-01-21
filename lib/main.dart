@@ -24,6 +24,7 @@ import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 import 'package:saaty_app/view/screens/reset_password_screen.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
 import 'package:saaty_app/view/screens/setting_screen.dart';
+import 'package:saaty_app/view/screens/splah_language_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
 
 import 'providers/products_controller.dart';
@@ -95,7 +96,8 @@ class MyApp extends StatelessWidget {
         ChangePasswordScreen.CHANGE_PASSWORD_SCREEN_ROUTE:(_)=>ChangePasswordScreen(),
         ForgetPasswordScreen.FORGET_PASSWORD_SCREEN_ROUTE:(_)=>ForgetPasswordScreen(),
         ResetPasswordScreen.RESET_PASSWORD_SCREEN_ROUTE:(_)=>ResetPasswordScreen(),
-        SplashScreen.SPLASH_SCREEN_ROUTE:(_)=>SplashScreen()
+        SplashScreen.SPLASH_SCREEN_ROUTE:(_)=>SplashScreen(),
+        SplashLanguageScreen.SPLASH_LANGUAGE_SCREEN_ROUTE:(_)=>SplashLanguageScreen()
       },
     );
   }
