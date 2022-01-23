@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:saaty_app/model/splash_model.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../cons.dart';
 
 class SplashLanguageScreen extends StatelessWidget {
   static String SPLASH_LANGUAGE_SCREEN_ROUTE='/19';
+
   int _index;
 
   final List locale =[
@@ -55,6 +57,7 @@ class SplashLanguageScreen extends StatelessWidget {
                     color: Cons.accent_color,
                     onPressed: (){
                       updateLanguage(locale[1]['locale']);
+                      setLangInPref('ar');
                       Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                     },child: Text('العربية',style: Cons.whiteFont,),
                     shape: RoundedRectangleBorder(
@@ -72,8 +75,9 @@ class SplashLanguageScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)
                     ),
-                    onPressed: (){
+                    onPressed: ()async{
                       updateLanguage(locale[0]['locale']);
+                      setLangInPref('en');
                       Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                     },child: Text('English',style: Cons.whiteFont,),),
                 ),
@@ -88,6 +92,9 @@ class SplashLanguageScreen extends StatelessWidget {
     );
   }
 
-
+setLangInPref(String lang)async{
+  SharedPreferences prefs= await SharedPreferences.getInstance();
+  prefs.setString('lang', lang);
+}
 
 }

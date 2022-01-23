@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/model/splash_model.dart';
 import 'package:saaty_app/view/screens/splah_language_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../cons.dart';
 
@@ -17,6 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   int _index;
   @override
   Widget build(BuildContext context) {
+    Cons.buildColors(context);
     var width=MediaQuery.of(context).size.width;
     var height=MediaQuery.of(context).size.height;
     CarouselController buttonCarouselController = CarouselController();
@@ -42,16 +44,20 @@ class _SplashScreenState extends State<SplashScreen> {
             CarouselSlider(
               carouselController: buttonCarouselController,
               options: CarouselOptions(
-                  onPageChanged: (ind,x){
+                  onPageChanged: (ind,x)async{
                     setState(() {
                       _index=ind;
                     });
                     if(ind==2){
                       Navigator.of(context).pushNamed(SplashLanguageScreen.SPLASH_LANGUAGE_SCREEN_ROUTE);
+                        SharedPreferences prefs= await SharedPreferences.getInstance();
+                       await prefs.setString('splash_flag', 'yes');
+                         print('kkkk'+prefs.getString('splash_flag')) ;
+
                     }
                   },
                   initialPage: 1,
-                  autoPlayAnimationDuration: Duration(milliseconds: 400),
+                  autoPlayAnimationDuration: Duration(seconds: 5),
                   autoPlay: true,
                   enlargeCenterPage: true,
                   aspectRatio:6/6,

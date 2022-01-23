@@ -26,6 +26,7 @@ import 'package:saaty_app/view/screens/send_message_screen.dart';
 import 'package:saaty_app/view/screens/setting_screen.dart';
 import 'package:saaty_app/view/screens/splah_language_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'providers/products_controller.dart';
 import 'view/screens/register_screen.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
   final controller4=Get.put(FavsAdsController());
   final controller5=Get.put(MessageController());
   final controller6=Get.put(LangController());
+  String splash_flag;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,10 @@ class MyApp extends StatelessWidget {
       {'name':'العربية','locale': Locale('ar')},
 
     ];
+
+    SharedPreferences.setMockInitialValues({});
+
+    getPrefsData();
 
     //int x=5;
     Cons.buildColors(context);
@@ -77,7 +83,7 @@ class MyApp extends StatelessWidget {
         )
 
     ),
-      home: SplashScreen(),
+      home: splash_flag==null?SplashScreen():LoginScreen(),
       routes: {
          LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>GetBuilder<LangController>(builder:(_)=> LoginScreen()),
         RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),
@@ -100,5 +106,12 @@ class MyApp extends StatelessWidget {
         SplashLanguageScreen.SPLASH_LANGUAGE_SCREEN_ROUTE:(_)=>SplashLanguageScreen()
       },
     );
+  }
+
+  void getPrefsData() async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    splash_flag=prefs.getString('splash_flag');
+   String lang=prefs.getString('lang');
+    print('nnnn'+splash_flag.toString()+ '  '+lang.toString());
   }
 }
