@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:saaty_app/LocalString.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
@@ -8,6 +9,7 @@ import 'package:saaty_app/providers/lang_controller.dart';
 import 'package:saaty_app/providers/message_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/status_product_controller.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/SplashScreen.dart';
 import 'package:saaty_app/view/screens/account_screen.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
@@ -26,13 +28,14 @@ import 'package:saaty_app/view/screens/send_message_screen.dart';
 import 'package:saaty_app/view/screens/setting_screen.dart';
 import 'package:saaty_app/view/screens/splah_language_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 import 'providers/products_controller.dart';
 import 'view/screens/register_screen.dart';
 
 
-void main() {
+void main()async {
+  await GetStorage.init();
   runApp(MyApp());
 }
 
@@ -44,6 +47,7 @@ class MyApp extends StatelessWidget {
   final controller4=Get.put(FavsAdsController());
   final controller5=Get.put(MessageController());
   final controller6=Get.put(LangController());
+  final controller7=Get.put(StorageController());
   String splash_flag;
   // This widget is the root of your application.
   @override
@@ -54,9 +58,6 @@ class MyApp extends StatelessWidget {
 
     ];
 
-    SharedPreferences.setMockInitialValues({});
-
-    getPrefsData();
 
     //int x=5;
     Cons.buildColors(context);
@@ -83,7 +84,7 @@ class MyApp extends StatelessWidget {
         )
 
     ),
-      home: splash_flag==null?SplashScreen():LoginScreen(),
+      home: controller7.splash_flag==null?SplashScreen():controller7.authData==null?LoginScreen():HomeScreen(),
       routes: {
          LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>GetBuilder<LangController>(builder:(_)=> LoginScreen()),
         RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),
@@ -108,10 +109,5 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  void getPrefsData() async{
-    SharedPreferences prefs=await SharedPreferences.getInstance();
-    splash_flag=prefs.getString('splash_flag');
-   String lang=prefs.getString('lang');
-    print('nnnn'+splash_flag.toString()+ '  '+lang.toString());
-  }
+
 }

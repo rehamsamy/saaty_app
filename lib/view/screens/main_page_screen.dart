@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
@@ -30,16 +31,19 @@ class _MainPageScreenState extends State<MainPageScreen>
   ProductController _prod = Get.find();
   String productsType;
   var _searcController = TextEditingController();
+  var _storageontroller=Get.put(StorageController());
   FocusNode _textFocus = new FocusNode();
   TabController _tabController;
   var hintText;
   int filterRad = 0;
   bool flag = false;
+  Map<String,dynamic>  _userData;
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    _userData=_storageontroller.authData as Map<String,dynamic>;
+    fetchData(_userData['idToken']);
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -47,7 +51,6 @@ class _MainPageScreenState extends State<MainPageScreen>
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    //  print(_searcController.text);
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     // FocusManager.instance.primaryFocus.unfocus();
@@ -213,8 +216,9 @@ class _MainPageScreenState extends State<MainPageScreen>
   @override
   bool get wantKeepAlive => true;
 
-  Future fetchData() async {
-    await _productController.fetchStores().then((value) =>
+  Future fetchData(String token) async {
+    print('****  '+token);
+    await _productController.fetchStores(token).then((value) =>
         print('length 44444444  => '));
     await Future.delayed(Duration(milliseconds: 200));
     setState(() {

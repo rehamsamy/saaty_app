@@ -6,8 +6,10 @@ import 'package:saaty_app/model/http_exception.dart';
 import 'dart:convert';
 
 import 'package:saaty_app/model/user_model.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 
 class AuthController extends GetxController{
+  StorageController _storageController=Get.put(StorageController());
 static String userId;
  static String token;
  static UserModel model;
@@ -81,6 +83,8 @@ static String userId;
           userId=y['localId'];
           token = y['idToken'];
           print('user id idd $userId');
+          Map<String,dynamic> data={'localId':userId,'idToken':token};
+          _storageController.setAuthData(data);
       }else{
         print('step2');
       }

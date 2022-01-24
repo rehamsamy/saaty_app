@@ -2,13 +2,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/model/splash_model.dart';
 import 'package:get/get.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../cons.dart';
 
 class SplashLanguageScreen extends StatelessWidget {
   static String SPLASH_LANGUAGE_SCREEN_ROUTE='/19';
+  StorageController _storageController=Get.put(StorageController());
 
   int _index;
 
@@ -57,7 +58,7 @@ class SplashLanguageScreen extends StatelessWidget {
                     color: Cons.accent_color,
                     onPressed: (){
                       updateLanguage(locale[1]['locale']);
-                      setLangInPref('ar');
+                      _storageController.setSplashLang('ar');
                       Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                     },child: Text('العربية',style: Cons.whiteFont,),
                     shape: RoundedRectangleBorder(
@@ -77,7 +78,7 @@ class SplashLanguageScreen extends StatelessWidget {
                     ),
                     onPressed: ()async{
                       updateLanguage(locale[0]['locale']);
-                      setLangInPref('en');
+                      _storageController.setSplashLang('en');
                       Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                     },child: Text('English',style: Cons.whiteFont,),),
                 ),
@@ -92,9 +93,6 @@ class SplashLanguageScreen extends StatelessWidget {
     );
   }
 
-setLangInPref(String lang)async{
-  SharedPreferences prefs= await SharedPreferences.getInstance();
-  prefs.setString('lang', lang);
-}
+
 
 }

@@ -94,9 +94,10 @@ class ProductsController extends GetxController {
 
   }
 
-  Future fetchStores()async{
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${AuthController.token}';
-     print('vvv  '+AuthController.token);
+  Future fetchStores(String token)async{
+
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=$token';
+     //print('vvv  '+AuthController.token);
      _storesList.clear();
      try {
       var response = await http.get(Uri.parse(url));
