@@ -7,6 +7,7 @@ import 'dart:convert';
 
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'dart:async';
 import '../cons.dart';
 
@@ -27,8 +28,8 @@ class ProductsController extends GetxController {
 
   int selectedTabIndex =0;
 
-  String token = AuthController.token;
-  String userId = AuthController.userId;
+  String token = MainPageScreen.token;
+  String userId = MainPageScreen.userId;
 
   List<Product> get allProducts {
     return _allProds;
@@ -59,9 +60,9 @@ class ProductsController extends GetxController {
     allProducts.clear();
     favProducts.clear();
     addsProduct.clear();
-    String token = AuthController.token;
-    print('${AuthController.userId}');
-    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
+    String token = MainPageScreen.token;
+    print('-----  '+token);
+    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/$token.json?auth=$token';
   String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
     try {
       var favResponse=await http.get(Uri.parse(urlFav));
@@ -94,14 +95,13 @@ class ProductsController extends GetxController {
 
   }
 
-  Future fetchStores(String token)async{
-
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=$token';
-     //print('vvv  '+AuthController.token);
+  Future fetchStores()async{
+print(token);
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${MainPageScreen.token}';
      _storesList.clear();
      try {
       var response = await http.get(Uri.parse(url));
-      print('vvv  '+response.statusCode.toString());
+      print('vvv  vv     '+response.statusCode.toString());
       if (response.statusCode == 200) {
         var result =
         json.decode(response.body) as Map<String, dynamic>;
@@ -118,6 +118,7 @@ class ProductsController extends GetxController {
       }
    }
     catch(err){
+       print('0000  '+err);
     }
   }
 
@@ -254,15 +255,13 @@ class ProductsController extends GetxController {
   }
 
   Future toggleFav(String id, Map<String, dynamic> map) async {
-    String token = AuthController.token;
-    print(AuthController.userId);
     // print('favvvvvvvv  '+favProducts.length.toString());
     print(id);
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/$token.json?auth=$token';
     ;
     String url1 =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}/$id.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/$token/$id.json?auth=$token';
     int flag = 0;
     var response;
     int index = allProducts.indexWhere((element) => element.id == id);
@@ -302,8 +301,6 @@ class ProductsController extends GetxController {
     txt = text;
     getFinalProducts();
   }
-
-
 
 }
 

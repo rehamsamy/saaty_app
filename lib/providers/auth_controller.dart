@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -76,14 +78,23 @@ static String userId;
     'returnSecureToken': true };
     try{
       var x= await http.post(Uri.parse(url),body:json.encode(map));
-      print(x.body);
+
       if(x.statusCode==200){
           print('step1');
           var y=json.decode(x.body);
           userId=y['localId'];
           token = y['idToken'];
+          print('mmmmmmm   '+y['expiresIn']+ 'llll '+y['refreshToken']);
           print('user id idd $userId');
-          Map<String,dynamic> data={'localId':userId,'idToken':token};
+          DateTime expire=DateTime.now().add(Duration(seconds: int.parse(y['expiresIn'])));
+          DateTime xk=DateTime.now();
+          print(expire.toIso8601String() +'  vvv     '+DateTime.now().toString());
+          if( expire.isAfter(DateTime.now())){
+            print('yes');
+            print(expire.toIso8601String());
+          }
+          //.toIso8601String()
+          Map<String,dynamic> data={'localId':userId,'idToken':token,'expire':expire};
           _storageController.setAuthData(data);
       }else{
         print('step2');

@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
         )
 
     ),
-      home: controller7.splash_flag==null?SplashScreen():controller7.authData==null?LoginScreen():HomeScreen(),
+      home: controller7.splash_flag==null?SplashScreen():controller7.lang==null?SplashLanguageScreen():controller7.authData==null?LoginScreen():HomeScreen(),
       routes: {
          LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>GetBuilder<LangController>(builder:(_)=> LoginScreen()),
         RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),

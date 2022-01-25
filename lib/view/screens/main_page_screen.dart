@@ -8,6 +8,7 @@ import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
+import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 import 'package:saaty_app/view/widget/store_item_widget.dart';
@@ -16,6 +17,9 @@ import '../../cons.dart';
 
 class MainPageScreen extends StatefulWidget {
   static String MAIN_PRAGE_ROUTE = '/5';
+  static String token;
+  static String userId;
+  static DateTime expire;
 
   @override
   _MainPageScreenState createState() => _MainPageScreenState();
@@ -39,11 +43,22 @@ class _MainPageScreenState extends State<MainPageScreen>
   bool flag = false;
   Map<String,dynamic>  _userData;
 
+
   @override
   void initState() {
     super.initState();
     _userData=_storageontroller.authData as Map<String,dynamic>;
-    fetchData(_userData['idToken']);
+    MainPageScreen.expire=_userData['expire'];
+    print(MainPageScreen.expire.toString() + '      '+DateTime.now().toString() +'   '+ MainPageScreen.expire.isAfter(DateTime.now()).toString());
+   if( MainPageScreen.expire.isBefore(DateTime.now())){
+    Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+   }else{
+      MainPageScreen.token=_userData['idToken'];
+      MainPageScreen.userId=_userData['localId'];
+      print('88888  '+MainPageScreen.userId+'      ;fff   '+MainPageScreen.token);
+    }
+
+    fetchData();
     _tabController = TabController(length: 3, vsync: this);
   }
 
@@ -216,16 +231,15 @@ class _MainPageScreenState extends State<MainPageScreen>
   @override
   bool get wantKeepAlive => true;
 
-  Future fetchData(String token) async {
-    print('****  '+token);
-    await _productController.fetchStores(token).then((value) =>
+  Future fetchData() async {
+    await _productController.fetchStores().then((value) =>
         print('length 44444444  => '));
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 50));
     setState(() {
       _isLoading = true;
     });
 
-    await Future.delayed(Duration(milliseconds: 200));
+    await Future.delayed(Duration(milliseconds: 20));
     _productController
         .fetchProducts('all')
         .then((value) => setState(() => _isLoading = false))
