@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:saaty_app/model/http_exception.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 import 'package:saaty_app/model/user_model.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
@@ -87,20 +88,24 @@ static String userId;
           print('mmmmmmm   '+y['expiresIn']+ 'llll '+y['refreshToken']);
           print('user id idd $userId');
           DateTime expire=DateTime.now().add(Duration(seconds: int.parse(y['expiresIn'])));
-          DateTime xk=DateTime.now();
-          print(expire.toIso8601String() +'  vvv     '+DateTime.now().toString());
-          if( expire.isAfter(DateTime.now())){
-            print('yes');
-            print(expire.toIso8601String());
+          String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(expire);
+          String nowFormat=DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+          DateTime expireRes=DateTime.parse(formattedDate);
+          DateTime nowRes=DateTime.parse(nowFormat);
+          if( expireRes.isAfter(nowRes)){
+            print('     '+formattedDate+'    '+nowFormat);
+            _storageController.setExpireFlag(false);
+          }else{
+            _storageController.setExpireFlag(true);
           }
           //.toIso8601String()
-          Map<String,dynamic> data={'localId':userId,'idToken':token,'expire':expire};
+          Map<String,dynamic> data={'localId':userId,'idToken':token};
           _storageController.setAuthData(data);
       }else{
         print('step2');
       }
       update();
-     var response_data=json.decode(x.body);
+     dynamic response_data=json.decode(x.body);
       if(response_data['error'] !=null){
         throw HttpError(response_data['error']['message']);
       }

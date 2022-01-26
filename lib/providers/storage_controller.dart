@@ -6,10 +6,19 @@ class StorageController extends GetxController {
   final box = GetStorage();
 String get splash_flag=>box.read('splash_flag')?? null;
 String get lang=>box.read('lang') ?? null;
-dynamic get authData=>box.read('data');
+bool get expire=>box.read('expire');
+
+  dynamic get authData=>box.read('data');
+
   void setSplashFlag(String flag)=>box.write('splash_flag', 'yes');
 
   void setSplashLang(String flag)=>box.write('lang', 'en');
+
   void setAuthData(dynamic data)=>box.write('data', data);
+
+
+void setExpireFlag(bool val){
+  box.write('expire', val);
+}
 
 }

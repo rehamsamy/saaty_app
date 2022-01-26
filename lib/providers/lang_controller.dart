@@ -4,6 +4,7 @@ class LangController extends GetxController{
   bool isEn=false;
 
   Map<String,String> getArText={
+    'catgory':'الاقسام',
     'email' :'البريد الالكتروني',
     'password' :'كلمه المرور',
     'save_login_data':'حفظ معلومات التسجيل',
@@ -80,6 +81,7 @@ class LangController extends GetxController{
     'not_valid_mail':'بريد الكتروني غير صحيح'
   };
   Map<String,String> getEnText={
+    'catgory':'Category',
     'email' :'Email',
     'password' :'Password',
     'save_login_data':'Save Login Data',

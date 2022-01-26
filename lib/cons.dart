@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/providers/lang_controller.dart';
 
+import 'model/category_model.dart';
 import 'model/product_model.dart';
 
 class Cons {
@@ -76,8 +77,14 @@ class Cons {
     print('vvvvvv  '+_langController.isEn.toString());
     return  _langController.isEn?_langController.getEnText[x]:_langController.getArText[x];
   }
+  static List<CategoryModel> categoriesList = [
+    new CategoryModel(  'https://mediaaws.almasryalyoum.com/news/large/2021/03/13/1486052_0.jpg', 'all'.tr),
+    new CategoryModel('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgBE25ULYTVSc5bJGSuJlohY6bkmA99UzDYtympbebiCpnXhHlnqZUrQAbdxtdzvVZ67Q&usqp=CAU', 'watches'.tr),
+    new CategoryModel('https://www.aljamila.com/sites/default/files/styles/1100x732/public/2019/02/27/2550806-1516587346.jpg', 'bracletes'.tr),
+    new CategoryModel( 'https://www.almaal.org/wp-content/uploads/2020/02/%D9%83%D9%8A%D9%81-%D8%AA%D8%A8%D8%AF%D8%A3-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-%D8%A7%D9%84%D8%B9%D9%82%D8%A7%D8%B1%D9%8A-%D8%A8%D8%B1%D8%A3%D8%B3-%D9%85%D8%A7%D9%84-%D8%B5%D8%BA%D9%8A%D8%B1-2021-%D9%83%D9%8A%D9%81-%D8%AA%D8%A8%D8%AF%D8%A3-%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-%D8%A7%D9%84%D8%B9%D9%82%D8%A7%D8%B1%D9%8A-%D8%A8%D8%B1%D8%A3%D8%B3-%D9%85%D8%A7%D9%84-%D8%B5%D8%BA%D9%8A%D8%B1-2021-2.jpg'
+        , 'stores'.tr),
 
-
+  ];
 
 
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
@@ -42,17 +43,18 @@ class _MainPageScreenState extends State<MainPageScreen>
   int filterRad = 0;
   bool flag = false;
   Map<String,dynamic>  _userData;
+  int pos;
 
 
   @override
   void initState() {
     super.initState();
     _userData=_storageontroller.authData as Map<String,dynamic>;
-    MainPageScreen.expire=_userData['expire'];
-    print(MainPageScreen.expire.toString() + '      '+DateTime.now().toString() +'   '+ MainPageScreen.expire.isAfter(DateTime.now()).toString());
-   if( MainPageScreen.expire.isBefore(DateTime.now())){
-    Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
-   }else{
+    if( _storageontroller.expire){
+      Future.delayed(Duration.zero, () {
+        Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+      });
+    }else{
       MainPageScreen.token=_userData['idToken'];
       MainPageScreen.userId=_userData['localId'];
       print('88888  '+MainPageScreen.userId+'      ;fff   '+MainPageScreen.token);
@@ -66,8 +68,10 @@ class _MainPageScreenState extends State<MainPageScreen>
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    pos=ModalRoute.of(context).settings.arguments as int;
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
+    _productController.changeSelectedTab(pos);
     // FocusManager.instance.primaryFocus.unfocus();
     return DefaultTabController(
       length: 3,
