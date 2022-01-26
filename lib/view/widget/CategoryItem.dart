@@ -37,7 +37,7 @@ int pos;
              ),
            ),
          // SizedBox(height: 5,),
-          Center(child: Text(model.name,style: TextStyle(fontSize: 15,color: Colors.black),),)
+          Center(child: Text(model.name,style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600,),))
         ],
 
       ),

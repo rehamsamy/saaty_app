@@ -136,15 +136,6 @@ class HomeScreenState extends State<HomeScreen> {
                     ),
                           buildCatList(),
                          buildGridProducts(),
-                         //buildCarsolSliderProds(),
-                         // buildCardItem('all'.tr,context,cons,0),
-                          // buildCardItem('watches'.tr,context,cons,1),
-                          // buildCardItem('bracletes'.tr,context,cons,2),
-                          // buildCardItem('stores'.tr,context,cons,3),
-
-                          // buildCardItem('watches'.tr,context),
-                          // buildCardItem('bracletes'.tr,context),
-
                         ],
                       ),
                     ),
@@ -227,11 +218,25 @@ class HomeScreenState extends State<HomeScreen> {
         : GetBuilder<ProductsController>(
       builder: (_)=>
           Container(
-            height: 60,
+            alignment: Alignment.center,
+            height: 70,
             width: double.infinity-20,
             child: ListView.builder(itemBuilder: (_,inx)=>
-                  Image.network(_productController.filteredList[inx].images[0]),
+                  Card(
+                    elevation: 5,
+                      margin: EdgeInsets.all(5),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child:  Image.network(
+                          _productController.filteredList[inx].images[0]
+                            ,
+                            height: 60.0,
+                            width: 60.0,
+                            fit: BoxFit.cover
+                        ),
+                      ),),
               scrollDirection: Axis.horizontal,
+              itemCount:_productController.filteredList.length ,
             ),
             // GridView.builder(
             //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
