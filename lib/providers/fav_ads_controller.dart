@@ -5,12 +5,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:saaty_app/model/product_model.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'dart:convert';
 
 import 'auth_controller.dart';
 
 class FavsAdsController extends GetxController{
 
+  StorageController _storageController=Get.find();
   List<Product> _allProds = [];
   List<Product> filteredList = [];
 
@@ -35,8 +37,8 @@ class FavsAdsController extends GetxController{
     _allProds.clear();
     String token = AuthController.token;
     print('${AuthController.userId}');
-    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
+    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${_storageController.userId}.json?auth=${_storageController.token}';
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=${_storageController.token}';
     try {
       var favResponse=await http.get(Uri.parse(urlFav));
       var response = await http.get(Uri.parse(url));

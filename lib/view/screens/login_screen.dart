@@ -19,7 +19,7 @@ class LoginScreen extends StatefulWidget{
 }
 
 class LoginScreenState extends State<LoginScreen> {
-  var controller=Get.put(AuthController());
+  var _authController=Get.put(AuthController());
   bool _isLoading=false;
   var _formKey=GlobalKey<FormState>();
   Map<String,String> loginMap={
@@ -36,148 +36,153 @@ class LoginScreenState extends State<LoginScreen> {
     Color accent=Theme.of(context).accentColor;
 
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 20,),
-              Stack(
-                children: [
-                  Center(
-                    child: Container(width:width*0.6,
-                        margin: EdgeInsets.only(top: 30),
-                        height: height *0.4,child: Image.asset('assets/images/login_photo.png',)),
-                  ),
-                  Center(
-                    child: SizedBox(width:width*0.6,
-                    height: height *0.1,child: Image.asset('assets/images/color.png')),
-                  ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 20,),
+                Stack(
+                  children: [
+                    Center(
+                      child: Container(width:width*0.6,
+                          margin: EdgeInsets.only(top: 30),
+                          height: height *0.4,child: Image.asset('assets/images/login_photo.png',)),
+                    ),
+                    Center(
+                      child: SizedBox(width:width*0.6,
+                      height: height *0.1,child: Image.asset('assets/images/color.png')),
+                    ),
 
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 0),
-                child: GestureDetector(
-                  onTap: (){
-                    FocusScopeNode currentFocus = FocusScope.of(context);
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30,vertical: 0),
+                  child: GestureDetector(
+                    onTap: (){
+                      FocusScopeNode currentFocus = FocusScope.of(context);
 
-                    if (!currentFocus.hasPrimaryFocus) {
-                      currentFocus.unfocus();
-                    }
-                  },
-                  child: Form(
-                    key: _formKey,
-                      child: Column(
-                    children: [
-                      TextFormField(
-                        textAlign: TextAlign.start,
-                        decoration: InputDecoration(
-                          icon: Icon(Icons.email,color: primary,),
-                          hintText:'enter_email'.tr,
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            color: primary,
-                            width: 1.0,
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
+                      }
+                    },
+                    child: Form(
+                      key: _formKey,
+                        child: Column(
+                      children: [
+                        TextFormField(
+                          textAlign: TextAlign.start,
+                          decoration: InputDecoration(
+                            icon: Icon(Icons.email,color: primary,),
+                            hintText:'enter_email'.tr,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: primary,
+                              width: 1.0,
+                            ),
+                           )
+                           // hoverColor: Theme.of(context).primaryColor,focusColor: Colors.amber
                           ),
-                         )
-                         // hoverColor: Theme.of(context).primaryColor,focusColor: Colors.amber
+                          validator: (value){
+                            if(!value.contains('.com')||value.isEmpty) {
+                              return 'not_valid_mail'.tr;
+                            }
+                          },
+                          onSaved: (value){
+                            loginMap['email']=value;
+                          },
+                          keyboardType: TextInputType.emailAddress,
                         ),
-                        validator: (value){
-                          if(!value.contains('.com')||value.isEmpty) {
-                            return 'not_valid_mail'.tr;
-                          }
-                        },
-                        onSaved: (value){
-                          loginMap['email']=value;
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                      ),
 
-                      SizedBox(height: 20,),
-                      TextFormField(
-                        textAlign: TextAlign.start,
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.work,color: primary,),
-                            hintText:'password'.tr,
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: primary,
-                                width: 1.0,
-                              ),
-                            )
-                          // hoverColor: Theme.of(context).primaryColor,focusColor: Colors.amber
+                        SizedBox(height: 20,),
+                        TextFormField(
+                          textAlign: TextAlign.start,
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.work,color: primary,),
+                              hintText:'password'.tr,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: primary,
+                                  width: 1.0,
+                                ),
+                              )
+                            // hoverColor: Theme.of(context).primaryColor,focusColor: Colors.amber
+                          ),
+                          validator: (value){
+                            if(value.isEmpty) {
+                              return 'password'.tr;
+                            } if(value.length<6) {
+                              return  'weak_password'.tr;
+                            }
+                          },
+                          onSaved: (value){
+                            loginMap['password']=value;
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          obscureText: true,
                         ),
-                        validator: (value){
-                          if(value.isEmpty) {
-                            return 'password'.tr;
-                          } if(value.length<6) {
-                            return  'weak_password'.tr;
-                          }
-                        },
-                        onSaved: (value){
-                          loginMap['password']=value;
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                        obscureText: true,
-                      ),
 
 
-                    ],
-                  )),
-                ),
-              ),
-              SizedBox(height: 30,),
-              // CheckboxListTile(
-              //     title :Text('save'),value: true, onChanged: (val){}),
-              _isLoading?Center(child: CircularProgressIndicator(),):
-              SizedBox(
-                width: width*0.8,
-                height: 45,
-                child: RaisedButton(
-                  color: accent,
-                  onPressed: (){
-                    loginUser();
-                  },child: Text('login_user'.tr,style: Cons.whiteFont,),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)
+                      ],
+                    )),
                   ),
                 ),
+                SizedBox(height: 30,),
+                // CheckboxListTile(
+                //     title :Text('save'),value: true, onChanged: (val){}),
+                _isLoading?Center(child: CircularProgressIndicator(),):
+                SizedBox(
+                  width: width*0.8,
+                  height: 40,
+                  child: RaisedButton(
+                    color: accent,
+                    onPressed: (){
+                      loginUser();
+                    },child: Text('login_user'.tr,style: Cons.whiteFont,),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                    ),
+                  ),
 
-              ),
-              SizedBox(height: 15,),
-              SizedBox(
-                width: width*0.8,
-                height: 45,
-                child: RaisedButton(
-                  color: accent,
-                  shape: RoundedRectangleBorder(
-                   borderRadius: BorderRadius.circular(10)
-                  ),
-                  onPressed: (){
-
-                  },child: Text('login_as_visitor'.tr,style: Cons.whiteFont,),),
-              ),
-              SizedBox(height: 20,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  InkWell(
-                    onTap: (){
-                      Navigator.of(context).pushNamed(RegisterScreen.REGISTER_SCREEN_ROUTE);
-                    },
-                    child: Text('create_new_account'.tr,style: Cons.blackFont,),
-                  ),
-                  InkWell(
-                    onTap: (){
-                      print('jjjj');
-                      Navigator.of(context).pushNamed(ForgetPasswordScreen.FORGET_PASSWORD_SCREEN_ROUTE);
-                    },
-                    child: Text('forget_password'.tr,style: Cons.blackFont,),
-                  ),
-                ],
-              )
-            ],
+                ),
+                SizedBox(height: 15,),
+                SizedBox(
+                  width: width*0.8,
+                  height: 40,
+                  child: RaisedButton(
+                    color: accent,
+                    shape: RoundedRectangleBorder(
+                     borderRadius: BorderRadius.circular(10)
+                    ),
+                    onPressed: (){
+                     _authController.changeVisitorFlag(true);
+                     print('xxxxxxx  '+_authController.visitorFlag.toString());
+                     Navigator.of(context).pushReplacementNamed(HomeScreen.HOME_SCREEN_RIUTE);
+                    },child: Text('login_as_visitor'.tr,style: Cons.whiteFont,),),
+                ),
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        Navigator.of(context).pushNamed(RegisterScreen.REGISTER_SCREEN_ROUTE);
+                      },
+                      child: Text('create_new_account'.tr,style: Cons.blackFont,),
+                    ),
+                    InkWell(
+                      onTap: (){
+                        print('jjjj');
+                        Navigator.of(context).pushNamed(ForgetPasswordScreen.FORGET_PASSWORD_SCREEN_ROUTE);
+                      },
+                      child: Text('forget_password'.tr,style: Cons.blackFont,),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -194,7 +199,7 @@ class LoginScreenState extends State<LoginScreen> {
 
       try {
 
-        await controller.loginUser(loginMap).then((value) {
+        await _authController.loginUser(loginMap).then((value) {
           setState(() {
             _isLoading = false;
           });

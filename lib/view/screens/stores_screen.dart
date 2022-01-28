@@ -62,7 +62,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                      Container(
                        height: cons.maxHeight*0.25,
                        child:  Card(
-                         elevation: 8,
+                         elevation: 6,
                          child: Container(color: Colors.white,
                          child: Center(child: Text(model.name)),),
                        ),

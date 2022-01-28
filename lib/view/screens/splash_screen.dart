@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class SplashٍScreen extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
 static String SPLASH_SCREEN_ROUTE='/18';
   @override
-  _SplashٍScreenState createState() => _SplashٍScreenState();
+  _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashٍScreenState extends State<SplashٍScreen> {
+class _SplashScreenState extends State<SplashScreen> {
   double width,height;
 
   @override

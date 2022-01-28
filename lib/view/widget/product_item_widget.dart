@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
+import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
+import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 
 import '../../cons.dart';
@@ -11,6 +13,7 @@ class ProductItemWidget extends StatelessWidget {
   Product product;
   String flag;
   ProductController _productController = Get.find();
+  AuthController _authController=Get.find();
   ProductItemWidget(this.product, [this.flag]);
 
   @override
@@ -81,17 +84,20 @@ class ProductItemWidget extends StatelessWidget {
                       right: 1,
                       child: IconButton(
                           onPressed: () async {
+                           if(_authController.visitorFlag==true){
+                             Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+                           }else{
                              Map<String, dynamic> map = Product().toMap(product);
-                            if (product.isFav == 1) {
-                              print('case1');
-                              await toogleFav(0, Icons.favorite_border, map);
-                            } else {
-                              print('case2');
-                              await toogleFav(1, Icons.favorite, map);
-                            }
-                            _productController.changeFavoriteFlag(product.isFav);
-                           _productController.update();
-
+                             if (product.isFav == 1) {
+                               print('case1');
+                               await toogleFav(0, Icons.favorite_border, map);
+                             } else {
+                               print('case2');
+                               await toogleFav(1, Icons.favorite, map);
+                             }
+                             _productController.changeFavoriteFlag(product.isFav);
+                             _productController.update();
+                           }
                           },
                           icon: Icon(
                             product.isFav==1 ?Icons.favorite  : Icons.favorite_border,

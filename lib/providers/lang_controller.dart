@@ -4,6 +4,8 @@ class LangController extends GetxController{
   bool isEn=false;
 
   Map<String,String> getArText={
+    'address':'العنوان',
+    'website':'الموقع',
     'catgory':'الاقسام',
     'email' :'البريد الالكتروني',
     'password' :'كلمه المرور',
@@ -57,6 +59,7 @@ class LangController extends GetxController{
     'message_title':'عنوان الرساله',
     'message_content':'نص الرساله',
     'send':'ارسال',
+    'send_message':'ارسال رساله',
     'category':':القسم',
     'status':'الحاله:',
     'prod_name':'اسم المنتج :',
@@ -81,6 +84,9 @@ class LangController extends GetxController{
     'not_valid_mail':'بريد الكتروني غير صحيح'
   };
   Map<String,String> getEnText={
+    'address':'Address',
+    'website':'WebSite',
+  'send_message':'Send Message',
     'catgory':'Category',
     'email' :'Email',
     'password' :'Password',
@@ -135,7 +141,7 @@ class LangController extends GetxController{
     'message_title':'Message Title',
     'message_content':'Message Content',
     'send':'Send',
-    'category':'Category',
+    'catgory':'Category',
     'prod_name':'Name',
     'prod_price':'Price',
     'phone_conn':'Phone',

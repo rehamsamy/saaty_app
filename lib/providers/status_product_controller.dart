@@ -4,11 +4,14 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:saaty_app/providers/storage_controller.dart';
 
 import '../cons.dart';
 import 'auth_controller.dart';
 
 class StatusProductController extends GetxController{
+
+  StorageController _storageController=Get.find();
   List<Product> _allProds = [];
   List<Product> _favProducts = [];
   List<Product> filteredList = [];
@@ -45,7 +48,7 @@ class StatusProductController extends GetxController{
     favProducts.clear();
     String token = AuthController.token;
     print(AuthController.userId);
-    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${AuthController.userId}.json?auth=$token';
+    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${_storageController.userId}.json?auth=${_storageController.token}';
     String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
     try {
 

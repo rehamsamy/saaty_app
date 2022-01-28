@@ -4,6 +4,9 @@ class LocaleString extends Translations{
 
   Map<String ,Map<String,String>> get keys =>{
     'en': {
+      'address':'Address',
+      'website':'WebSite',
+      'send_message':'Send Message',
   'email' :'Email',
       'home':'Home',
   'password' :'Password',
@@ -92,9 +95,14 @@ class LocaleString extends Translations{
       'send_message':'Send Message',
       'send_message_sucessfully':'Sending Message Sucessfully',
       'inavlid_email':'enter valid email',
+      'catgory':'Category',
 
     },
-    'ar':{ 'email' :'البريد الالكتروني',
+    'ar':{
+      'address':'العنوان',
+      'website':'الموقع',
+      'catgory':'الاقسام',
+      'email' :'البريد الالكتروني',
   'password' :'كلمه المرور',
       'home':'الرئيسيه',
       'all':'الكل',

@@ -24,12 +24,12 @@ int pos;
                child: Card(
                  elevation: 10,
                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(20.0),
                   child:  Image.network(
                       model.image
                      ,
-                      height: 90.0,
-                      width: 90.0,
+                      height: 60.0,
+                      width: 60.0,
                         fit: BoxFit.cover
                     ),
                   ),

@@ -430,7 +430,6 @@ class CreateProductScreenState extends State<CreateProductScreen>{
       map['connType']=_radValContact;
       print('xx  $_radValCat cc    $_radValType vv    $_radValCat');
       try{
-
         if(prodImages.length==0){
           print('nnnnnnnnnnnnnn');
           for (int i=0;i<images.length;i++){
@@ -442,12 +441,22 @@ class CreateProductScreenState extends State<CreateProductScreen>{
           map['id']=AuthController.userId;
           map['creator_id']=AuthController.userId;
 
-          await controller.createProduct(map,images).catchError(()=>buildLoading(context))
+          await controller.createProduct(map,images)
               .then((value) {
+            Fluttertoast.showToast(
+                msg: "product uploaded suseccfully",
+                toastLength: Toast.LENGTH_LONG,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+            Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
             setState(() {
               _isLoading=false;
             });
-          });
+          }).catchError(()=>buildLoading(context));
 
         }else if(prodImages.length >0){
           print('mmmmmm');
@@ -455,6 +464,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
           await controller.editProduct(product.id,map).catchError(()=>buildLoading(context))
               .then((value) {
+            Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
             setState(() {
               _isLoading=false;
             });
@@ -465,6 +475,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
       }
       catch (err){
+        print('err       '+err.toString());
      buildLoading(context);
       }
 
@@ -476,19 +487,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
           gravity: ToastGravity.CENTER,
       );
     }
-     Fluttertoast.showToast(
-         msg: "product uploaded suseccfully",
-         toastLength: Toast.LENGTH_LONG,
-         gravity: ToastGravity.CENTER,
-         timeInSecForIosWeb: 1,
-         backgroundColor: Colors.red,
-         textColor: Colors.white,
-         fontSize: 16.0
-     );
-     Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
-     setState(() {
-       _isLoading=false;
-     });
+
    }
 
   void buildLoading(BuildContext ctx) {
@@ -499,6 +498,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
           actions: [
             FlatButton(onPressed: (){
               Navigator.of(ctx).pop();
+              Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
             }, child: Text('Ok'))
           ],
         )

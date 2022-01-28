@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:saaty_app/providers/auth_controller.dart';
+import 'package:saaty_app/providers/message_controller.dart';
+import 'package:saaty_app/view/screens/about_app.dart';
 import 'package:saaty_app/view/screens/account_screen.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
+import 'package:saaty_app/view/screens/call_us.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
@@ -13,6 +17,8 @@ import '../../cons.dart';
 import 'package:get/get.dart';
 
 class MyDrawer extends StatelessWidget {
+  MessageController _messageController=Get.find();
+  AuthController _authController=Get.find();
   @override
   Widget build(BuildContext context){
     String flag='all';
@@ -31,7 +37,7 @@ class MyDrawer extends StatelessWidget {
               SizedBox(height: 20,),
               ListTile(
                 leading: Image.asset('assets/images/sidemenu_photo.png',fit: BoxFit.cover,),
-                title: Text('user_name'.tr),
+                title: Text('AuthController.model.name'),
               ),
               SizedBox(height: 15,),
               SizedBox(
@@ -95,6 +101,15 @@ class MyDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('messages'.tr),
+                trailing:_messageController.receivedMessage.length>0? Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Cons.accent_color,
+                  ),
+                  child: Center(child: Text('ss',style: TextStyle(color: Colors.white),)),
+                ):null,
               ),
               ListTile(
                 leading: Icon(
@@ -105,21 +120,24 @@ class MyDrawer extends StatelessWidget {
                   onTap: ()=>Navigator.of(context).pushNamed(SettingScreen.SETTING_SCREEN_ROUTE)
               ),
               ListTile(
-                onTap:()=>  Navigator.of(context).pushNamed(StoresScreen.Stores_SCREEN_ROUTE,arguments:flag='all' ) ,
+                onTap: ()=>Navigator.of(context).pushNamed(AboutApp.ABOUT_APP_SCREEN_ROUTE),
                 leading: Icon(
                   Icons.info,
                   color: Cons.primary_color,
                 ),
                 title: Text('about_app'.tr),
+
               ),
+              // ListTile(
+              //   onTap: ()=>Navigator.of(context).pushNamed(CallUs.CALL_US_SCREEN_ROUTE),
+              //   leading: Icon(
+              //     Icons.help_rounded,
+              //     color: Cons.primary_color,
+              //   ),
+              //   title: Text('about_us'.tr),
+              // ),
               ListTile(
-                leading: Icon(
-                  Icons.help_rounded,
-                  color: Cons.primary_color,
-                ),
-                title: Text('about_us'.tr),
-              ),
-              ListTile(
+                onTap: ()=>Navigator.of(context).pushNamed(CallUs.CALL_US_SCREEN_ROUTE),
                 leading: Icon(
                   Icons.phone,
                   color: Cons.primary_color,
@@ -128,7 +146,7 @@ class MyDrawer extends StatelessWidget {
               ),
               ListTile(
                 onTap: (){
-                  Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+                  Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                 },
                 leading: Icon(
                   Icons.logout,

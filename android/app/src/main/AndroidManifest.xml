@@ -8,7 +8,7 @@
     <uses-sdk tools:overrideLibrary="android.support.v17.leanback"/>
 
    <application
-        android:label="saaty_app"
+        android:label="saaty"
         android:icon="@mipmap/ic_launcher">
         <activity
 

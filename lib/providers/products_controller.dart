@@ -16,6 +16,7 @@ class ProductsController extends GetxController {
   List<Product> _adsProducts = [];
   List<Product> _favProducts = [];
   List<UserModel> _storesList = [];
+  AuthController _authController=Get.find();
 
   int filterRad = 0;
   bool statusOldChecked = false;
@@ -61,33 +62,53 @@ class ProductsController extends GetxController {
     favProducts.clear();
     addsProduct.clear();
     String token = MainPageScreen.token;
-    print('-----  '+token);
+    print('-----  '+_authController.visitorFlag.toString());
     String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/$token.json?auth=$token';
-  String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
+  String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json';
+
     try {
-      var favResponse=await http.get(Uri.parse(urlFav));
-      var response = await http.get(Uri.parse(url));
+
+      if(!_authController.visitorFlag){
+        var favResponse=await http.get(Uri.parse(urlFav));
+        var response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
         Map<String, dynamic> result =
-            json.decode(response.body) as Map<String, dynamic>;
-        var favResult=  json.decode(favResponse.body) as Map<String, dynamic>;
+        json.decode(response.body) as Map<String, dynamic>;
+        var favResult = json.decode(favResponse.body) as Map<String, dynamic>;
         if (flag == 'all') {
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
-            if(favResponse.statusCode==200){
-              if(favResponse.body.isEmpty){
-                product.isFav=favResult[key];
-              }else{
-                product.isFav=0;
+            if (favResponse.statusCode == 200) {
+              if (favResponse.body.isEmpty) {
+                product.isFav = favResult[key];
+              } else {
+                product.isFav = 0;
               }
             }
-             print(product.isFav.toString() +"  " + product.id);
+            print(product.isFav.toString() + "  " + product.id);
             _allProds.add(product);
           });
         }
-        getFinalProducts();
       }
+      }else{
+        print('here ');
+        var response = await http.get(Uri.parse(url));
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          Map<String, dynamic> result =
+          json.decode(response.body) as Map<String, dynamic>;
+          result.forEach((key, value) async {
+            Product product = Product.fromJson(key, value);
+            print(product.isFav.toString() + "  " + product.id);
+            _allProds.add(product);
+          });
+
+        }
+
+      }
+        getFinalProducts();
+
 
     } catch (err) {
       print(err);
@@ -97,7 +118,7 @@ class ProductsController extends GetxController {
 
   Future fetchStores()async{
 print(token);
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${MainPageScreen.token}';
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json';
      _storesList.clear();
      try {
       var response = await http.get(Uri.parse(url));

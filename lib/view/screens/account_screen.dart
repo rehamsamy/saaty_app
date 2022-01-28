@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/user_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/change_password_screen.dart';
 import 'package:saaty_app/view/screens/edit_account_screen.dart';
 
@@ -10,11 +11,15 @@ import 'main_page_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   static String ACCOUNT_SCREEN_ROUTE='/13';
+  StorageController _storageController=Get.find();
   AuthController _authController=Get.find();
+  double width,height;
   UserModel _userModel;
 
   @override
   Widget build(BuildContext context) {
+    width=MediaQuery.of(context).size.width;
+    height=MediaQuery.of(context).size.height;
     fetchUserData();
     _userModel=AuthController.model;
     return Scaffold(
@@ -62,46 +67,56 @@ class AccountScreen extends StatelessWidget {
                                   title: Text('email'.tr,style: Cons.blackFont,),
                                   subtitle: Text(_userModel.email),
                                 ),
-                                ListTile(
-                                  leading: Icon(Icons.password_rounded,color: Cons.primary_color,),
-                                  title: Text('password'.tr,style: Cons.blackFont,),
-                                  subtitle: Text(_authController.visiblePassword==true?_userModel.password: '********'),
-                                  trailing:SizedBox(
-                                    width: 150,
-                                    child:  Row(
-                                        children: [
-                                                Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                    color: Cons.accent_color,
-                                                    shape: BoxShape.circle
-                                                  ),
-                                                  child: Center(
-                                                    child: IconButton(icon:Icon(Icons.edit),color: Colors.white,
-                                                    onPressed: ()=>Navigator.of(context).pushNamed(
-                                                      ChangePasswordScreen.CHANGE_PASSWORD_SCREEN_ROUTE,arguments:_userModel.password ),),
-                                                  ),
-                                                ),
-                                                SizedBox(width: 5,),
-                                                Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                      color: Cons.accent_color,
-                                                      shape: BoxShape.circle
-                                                  ),
-                                                  child: Center(
-                                                    child: IconButton(
-                                                      onPressed:()=>_authController.changeVisiblePassword(!_authController.visiblePassword),
-                                                        icon:Icon(Icons.remove_red_eye),color: Colors.white,),
-                                                  ),
-                                                )
-                                        ],
-                                      )
-
-                                  )
-
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                      width:width*0.5 ,
+                                      child: ListTile(
+                                        contentPadding: EdgeInsets.all(0),
+                                        leading: Icon(Icons.password_rounded,color: Cons.primary_color,),
+                                        title: Text('password'.tr,style: Cons.blackFont,),
+                                        subtitle: Text(_authController.visiblePassword==true?_userModel.password: '********'),
+                                      ),
+                                    ),
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      color: Cons.accent_color,
+                                      shape: BoxShape.circle),
+                                  child: Center(
+                                    child: IconButton(
+                                      icon: Icon(Icons.edit),
+                                      color: Colors.white,
+                                      onPressed: () => Navigator.of(context)
+                                          .pushNamed(
+                                              ChangePasswordScreen
+                                                  .CHANGE_PASSWORD_SCREEN_ROUTE,
+                                              arguments: _userModel.password),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      color: Cons.accent_color,
+                                      shape: BoxShape.circle),
+                                  child: Center(
+                                    child: IconButton(
+                                      onPressed: () =>
+                                          _authController.changeVisiblePassword(
+                                              !_authController.visiblePassword),
+                                      icon: Icon(Icons.remove_red_eye),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              ],
                                 )
                               ],
                             ) ,
@@ -109,7 +124,7 @@ class AccountScreen extends StatelessWidget {
                          ),
                       ),
                         Align(
-                          alignment: Alignment.topRight,
+                          alignment: _storageController.lang=='ar'?Alignment.topLeft:Alignment.topRight,
                           child: GestureDetector(
                             onTap: ()=>Navigator.of(context).pushNamed(EditAccountScreen.EDIT_ACCOUNT_SCREEN_ROUTE),
                             child: Container(

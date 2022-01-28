@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:saaty_app/model/product_model.dart';
+import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
@@ -13,14 +14,23 @@ import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 import 'package:saaty_app/view/widget/store_item_widget.dart';
+import 'package:saaty_app/view/widget/visitor_drawer.dart';
 
 import '../../cons.dart';
 
 class MainPageScreen extends StatefulWidget {
   static String MAIN_PRAGE_ROUTE = '/5';
+  StorageController _storageController=Get.find();
+
   static String token;
   static String userId;
   static DateTime expire;
+
+
+  buildStorage(){
+    token=_storageController.token;
+    userId=_storageController.userId;
+  }
 
   @override
   _MainPageScreenState createState() => _MainPageScreenState();
@@ -33,6 +43,7 @@ class _MainPageScreenState extends State<MainPageScreen>
   List<Product> allProducts = [];
   List<Product> filteredProducts = [];
   ProductsController _productController = Get.find();
+  AuthController _authController=Get.find();
   ProductController _prod = Get.find();
   String productsType;
   var _searcController = TextEditingController();
@@ -50,14 +61,20 @@ class _MainPageScreenState extends State<MainPageScreen>
   void initState() {
     super.initState();
     _userData=_storageontroller.authData as Map<String,dynamic>;
-    if( _storageontroller.expire){
-      Future.delayed(Duration.zero, () {
-        Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
-      });
-    }else{
-      MainPageScreen.token=_userData['idToken'];
-      MainPageScreen.userId=_userData['localId'];
-      print('88888  '+MainPageScreen.userId+'      ;fff   '+MainPageScreen.token);
+    MainPageScreen.expire=_storageontroller.expire_date;
+    String nowFormat=DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    DateTime nowRes=DateTime.parse(nowFormat);
+    if(MainPageScreen.expire !=null){
+      if( MainPageScreen.expire.isAfter(nowRes)){
+        MainPageScreen.token=_userData['idToken'];
+        MainPageScreen.userId=_userData['localId'];
+        print('88888  '+MainPageScreen.userId+'      ;fff   '+MainPageScreen.token);
+      }else{
+        Future.delayed(Duration.zero, () {
+          Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+        });
+      }
+
     }
 
     fetchData();
@@ -71,7 +88,10 @@ class _MainPageScreenState extends State<MainPageScreen>
     pos=ModalRoute.of(context).settings.arguments as int;
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    _productController.changeSelectedTab(pos);
+    if(pos !=null){
+      _productController.changeSelectedTab(pos);
+    }
+
     // FocusManager.instance.primaryFocus.unfocus();
     return DefaultTabController(
       length: 3,
@@ -164,7 +184,7 @@ class _MainPageScreenState extends State<MainPageScreen>
             ] ,
           ),
 
-          drawer: MyDrawer(),
+          drawer:  _authController.visitorFlag?VisitorDrawer():MyDrawer(),
              bottomNavigationBar:  _bottomNav(),
              floatingActionButton: _fab(),
              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked
@@ -265,9 +285,6 @@ class _MainPageScreenState extends State<MainPageScreen>
             content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) =>
                   Container(
-                padding: EdgeInsets.all(15),
-                // height: MediaQuery.of(context).size.height * 0.7,
-                width: MediaQuery.of(context).size.width * 0.95,
                 child: SingleChildScrollView(
                   child: GetBuilder<ProductsController>(
                     builder: (_) => Column(
@@ -413,15 +430,15 @@ class _MainPageScreenState extends State<MainPageScreen>
                 },
                 items: [
                   new BottomNavigationBarItem(
-                    icon: new Icon(Icons.home,color: checkBottomColor(0),),
+                    icon: new Icon(Icons.more_horiz,color: checkBottomColor(0),),
                     title: new Text('all'.tr,style: TextStyle(color:checkBottomColor(0),))
                   ),
                   new BottomNavigationBarItem(
-                    icon: new Icon(Icons.face,color: checkBottomColor(1)),
+                    icon: new Icon(Icons.watch_outlined,color: checkBottomColor(1)),
                     title: new Text('watch'.tr,style: TextStyle(color:checkBottomColor(1))),
                   ),
                   new BottomNavigationBarItem(
-                    icon: new Icon(Icons.delete,color: checkBottomColor(2)),
+                    icon: new Icon(Icons.stream,color: checkBottomColor(2)),
                     title: new Text('braclete'.tr,style: TextStyle(color:checkBottomColor(2))),
                   ),
                   new BottomNavigationBarItem(

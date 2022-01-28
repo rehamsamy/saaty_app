@@ -15,10 +15,12 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:saaty_app/providers/products_controller.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 
 class ProductController extends GetxController {
   IconData _icon = Icons.favorite_border;
+  StorageController _storageController=Get.find();
   int fav = 0;
 
   List<String> vv = [];
@@ -54,19 +56,21 @@ class ProductController extends GetxController {
   }
 
   Future createProduct(Map<String, dynamic> map, List<dynamic> images) async {
+    print('token    '+ MainPageScreen.token+ 'jjjj           '+userId.toString());
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=${_storageController.token}';
     try {
-      map['id'] = userId;
-      print('step1');
+      map['id'] = _storageController.userId;
+
       var response = await http.post(Uri.parse(url), body: json.encode(map));
-      Map<String, dynamic> result =
-          json.decode(response.body) as Map<String, dynamic>;
-      String idd;
-      result.forEach((key, value) {
-        idd = value;
-      });
       if (response.statusCode == 200) {
+        print('step1  '+response.statusCode.toString());
+        Map<String, dynamic> result =
+        json.decode(response.body) as Map<String, dynamic>;
+        String idd;
+        result.forEach((key, value) {
+          idd = value;
+        });
         imagesResult = await uploadFile(images, idd);
         print('**************   ${imagesResult.length}');
         setImagesToProduct(imagesResult, idd, map);
@@ -87,7 +91,7 @@ class ProductController extends GetxController {
     int index = adsProducts.indexWhere((element) => id == element.id);
 
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=${_storageController.token}';
     try {
       var response = await http.patch(Uri.parse(url), body: json.encode(map));
       print(response.statusCode);
@@ -114,7 +118,7 @@ class ProductController extends GetxController {
 
 
   Future<int> fetchFavByProdId(String id) async{
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/$userId/$favKey.json?auth=$token';
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${_storageController.userId}/$favKey.json?auth=${_storageController.token}';
     try {
       var response = await http.get(Uri.parse(url));
     }catch(err){
@@ -125,9 +129,11 @@ class ProductController extends GetxController {
 
 
   Future toggleFav(String id, int isFav) async {
-    print(userId+token);
+    print('hhhh    '+_storageController.token);
+    print(id);
+    print(userId.toString()+token.toString());
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${userId}/$id.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${_storageController.userId}/$id.json?auth=${_storageController.token}';
 
     var response;
 
@@ -177,11 +183,13 @@ class ProductController extends GetxController {
   Future setImagesToProduct(
       List<String> imageString, String id, Map<String, dynamic> map) async {
     String url1 =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=${_storageController.token}';
 
+    print('tokev      '+MainPageScreen.token.toString());
     map['images'] = imageString;
     var response = await http.patch(Uri.parse(url1), body: json.encode(map));
     print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       print(response.body);
     } else {

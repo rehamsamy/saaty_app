@@ -16,11 +16,17 @@ class AuthController extends GetxController{
 static String userId;
  static String token;
  static UserModel model;
+ bool visitorFlag =false;
  bool visiblePassword=true;
  bool isLoading=true;
 
  changeIsLoading(bool newVal){
    isLoading=newVal;
+   update();
+ }
+
+ changeVisitorFlag(bool val){
+   visitorFlag=val;
    update();
  }
 
@@ -41,6 +47,15 @@ static String userId;
          token = res['idToken'];
          print(userId);
 
+        _storageController.setToken(token);
+        _storageController.setUserId(userId);
+        DateTime expire=DateTime.now().add(Duration(seconds: int.parse(res['expiresIn'])));
+        String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(expire);
+        DateTime expireRes=DateTime.parse(formattedDate);
+        _storageController.setExpireDate(expireRes);
+        Map<String,dynamic> data={'localId':userId,'idToken':token};
+        _storageController.setAuthData(data);
+
         // UserModel model = UserModel(
         //     regMap['name'], regMap['email'], regMap['mobile'],
         //     regMap['password'], regMap['confirm_password'], userId);
@@ -50,6 +65,7 @@ static String userId;
         var y = await http.post(Uri.parse(url), body: json.encode(regMap));
         if (y.statusCode == 200) {
           print('step2');
+
         //   model=json.decode(y.body);
 
           print(y.statusCode);
@@ -85,19 +101,16 @@ static String userId;
           var y=json.decode(x.body);
           userId=y['localId'];
           token = y['idToken'];
+          _storageController.setToken(token);
+          _storageController.setUserId(userId);
           print('mmmmmmm   '+y['expiresIn']+ 'llll '+y['refreshToken']);
           print('user id idd $userId');
           DateTime expire=DateTime.now().add(Duration(seconds: int.parse(y['expiresIn'])));
           String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(expire);
-          String nowFormat=DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
           DateTime expireRes=DateTime.parse(formattedDate);
-          DateTime nowRes=DateTime.parse(nowFormat);
-          if( expireRes.isAfter(nowRes)){
-            print('     '+formattedDate+'    '+nowFormat);
-            _storageController.setExpireFlag(false);
-          }else{
-            _storageController.setExpireFlag(true);
-          }
+          _storageController.setExpireDate(expireRes);
+          print(_storageController.expire_date.toString()+'        00000');
+          print(_storageController.expire_date.toString()+'             xxxxxxxxxxxxxxxxxx');
           //.toIso8601String()
           Map<String,dynamic> data={'localId':userId,'idToken':token};
           _storageController.setAuthData(data);

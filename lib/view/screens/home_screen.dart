@@ -1,6 +1,8 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
@@ -40,6 +42,7 @@ class HomeScreenState extends State<HomeScreen> {
   double width,height;
   static String token;
   static String userId;
+  DateTime expire;
   Map<String,dynamic>  _userData;
   CarouselController buttonCarouselController = CarouselController();
 
@@ -47,15 +50,22 @@ class HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _userData=_storageontroller.authData as Map<String,dynamic>;
-    if( _storageontroller.expire){
-      Future.delayed(Duration.zero, () {
-        Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
-      });
-    }else{
-      MainPageScreen.token=_userData['idToken'];
-      MainPageScreen.userId=_userData['localId'];
-      print('88888  '+MainPageScreen.userId+'      ;fff   '+MainPageScreen.token);
+   DateTime expire=_storageontroller.expire_date;
+    String nowFormat=DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    DateTime nowRes=DateTime.parse(nowFormat);
+        print('    expire            '+expire.toString());
+    if(expire !=null){
+      if( expire.isAfter(nowRes)){
+        MainPageScreen.token=_userData['idToken'];
+        MainPageScreen.userId=_userData['localId'];
+        print('88888  '+MainPageScreen.userId+'      ;fff   '+MainPageScreen.token);
+      }else{
+        Future.delayed(Duration.zero, () {
+          Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+        });
+      }
     }
+
 
     fetchData();
   }
@@ -129,13 +139,13 @@ class HomeScreenState extends State<HomeScreen> {
                           leading: Icon(Icons.category_outlined),
                       title: Text(
                         'catgory'.tr,
-                        textDirection: TextDirection.rtl,
+                        //textDirection: TextDirection.rtl,
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                     ),
                           buildCatList(),
-                         buildGridProducts(),
+                         //buildGridProducts(),
                         ],
                       ),
                     ),
@@ -149,7 +159,7 @@ class HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      drawer: MyDrawer(),
+      drawer: _authController.visitorFlag?VisitorDrawer():MyDrawer(),
     );
   }
 

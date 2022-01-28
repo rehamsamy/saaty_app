@@ -5,8 +5,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
+import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
+import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
 
 import '../../cons.dart';
@@ -17,6 +19,7 @@ class ProductItemDetailScreen extends StatelessWidget {
 
   CarouselController _carouselController = CarouselController();
   ProductController _productController=Get.find();
+  AuthController _authController=Get.find();
   IconData _icon;
 
 
@@ -126,7 +129,8 @@ class ProductItemDetailScreen extends StatelessWidget {
 
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.email_rounded,color: Colors.white,),
-          onPressed: ()=>Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE,arguments: product.creator_id),
+          onPressed: ()=>_authController.visitorFlag?Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE):
+              Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE,arguments: product.creator_id),
         )
     );
   }
@@ -232,13 +236,18 @@ class ProductItemDetailScreen extends StatelessWidget {
                 }, icon: Icon(Icons.arrow_back,color: Cons.accent_color,size: 30)),
                 Text(product.name, style: Cons.greyFont1),
                 IconButton(onPressed: ()async{
-                  print('pppp');
-                  if(product.isFav==1){
-                  await  toogleFav(0, product.id,product);
-                  }else{
-                   await toogleFav(1, product.id,product);
-                  }
-                  _productController.changeFavoriteFlag(product.isFav);
+                 if(_authController.visitorFlag==true){
+                   Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+                 }else{
+                   print('pppp');
+                   if(product.isFav==1){
+                     await  toogleFav(0, product.id,product);
+                   }else{
+                     await toogleFav(1, product.id,product);
+                   }
+                   _productController.changeFavoriteFlag(product.isFav);
+                 }
+
                 }, icon: Icon(product.isFav==1?Icons.favorite:Icons.favorite_border,color: Colors.red,size: 30,)),
               ],
             ):
@@ -255,13 +264,17 @@ class ProductItemDetailScreen extends StatelessWidget {
                   flex: 1,
                   child: IconButton(onPressed: ()async{
                     print('ppppp');
-                    if(product.isFav==1){
-                     await toogleFav(0, product.id,product);
-                    }else{
-                     await toogleFav(1, product.id,product);
+                    if(_authController.visitorFlag==true){
+                    Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+                    }else {
+                      if (product.isFav == 1) {
+                        await toogleFav(0, product.id, product);
+                      } else {
+                        await toogleFav(1, product.id, product);
+                      }
+                      _productController.changeFavoriteFlag(product.isFav);
+                      _productController.update();
                     }
-                    _productController.changeFavoriteFlag(product.isFav);
-                    _productController.update();
                   }, icon: Icon(product.isFav==1?Icons.favorite:Icons.favorite_border,color: Colors.red,size: 25)),
                 ),
                 Padding(

@@ -87,18 +87,20 @@ class SettingScreen extends StatelessWidget {
         GetBuilder<LangController>(
           builder: (_)=>
            AlertDialog(
-            title: Text('change_lang'.tr,style: Cons.accentFont,),
+            title: Center(child: Text('change_lang'.tr,style: Cons.accentFont,)),
             content:Container(
               width:MediaQuery.of(context).size.width,
+              height: 120,
               child: LayoutBuilder(
                 builder: (_,cons)=>
                  GetBuilder<LangController>(
                    builder: (_)=>
-                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                   Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: cons.maxWidth*0.4,
+                        width: cons.maxWidth*0.8,
+                        height: 40,
                         child: RaisedButton(
                           color: Cons.accent_color,
                           shape: RoundedRectangleBorder(
@@ -106,11 +108,13 @@ class SettingScreen extends StatelessWidget {
                           ),
                           onPressed: (){
                             updateLanguage(locale[1]['locale']);
-                          },child: Text('العربيه',style: Cons.whiteFont,),),
+                          },child: Container(
+                            child: Text('العربيه',style: Cons.whiteFont,)),),
                       ),
-                      SizedBox(width: cons.maxWidth*0.05,),
+                      SizedBox(height: 15,),
                       SizedBox(
-                        width: cons.maxWidth*0.4,
+                        height: 40,
+                       width: cons.maxWidth*0.8,
                         child: RaisedButton(
                           color: Cons.accent_color,
                           shape: RoundedRectangleBorder(
