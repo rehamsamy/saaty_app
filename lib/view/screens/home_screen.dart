@@ -24,6 +24,8 @@ class HomeScreen extends StatefulWidget{
    return HomeScreenState();
   }
 
+
+
 }
 
 
@@ -86,40 +88,44 @@ class HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
               height: height*0.44,
-              child: Stack(children: [
-                CarouselSlider(
+              child: CarouselSlider(
                 carouselController: buttonCarouselController,
                 options: CarouselOptions(
-                    onPageChanged: (ind,x){
+                    onPageChanged: (ind, x) {
                       setState(() {
-                        _index=ind;
+                        _index = ind;
                       });
                     },
                     initialPage: 1,
                     autoPlayAnimationDuration: Duration(milliseconds: 400),
                     autoPlay: true,
                     enlargeCenterPage: true,
-                    aspectRatio: 6/4,
-                    viewportFraction:0.81
+                    aspectRatio: 6 / 4,
+                    //viewportFraction: 0.81,
+                    viewportFraction: 1
                 ),
-                items: images.map((e) =>
-                    Image.asset(e)
-                ).toList(),
+                items: images.map((e) => Stack(
+                    children:[
+                Center(child:
+                //Container(color: Colors.red,)),
+                Image.asset(e,fit: BoxFit.fill,)),
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 5,
+                       // alignment: Alignment.bottomCenter,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            buildCircleSlider(0),
+                            buildCircleSlider(1),
+                            buildCircleSlider(2),
+                            buildCircleSlider(3),
+                          ],
+                        ),
+                      ),
+                ] )).toList(),
               ),
-
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  buildCircleSlider(0),
-                  buildCircleSlider(1),
-                  buildCircleSlider(2),
-                  buildCircleSlider(3),
-                ],
-              ),
-            ),
-              ],),
             ),
             SizedBox(height: 5,)
             ,

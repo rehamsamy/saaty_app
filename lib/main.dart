@@ -40,6 +40,7 @@ import 'view/screens/register_screen.dart';
 void main()async {
   await GetStorage.init();
   runApp(MyApp());
+
 }
 
 class MyApp extends StatelessWidget {

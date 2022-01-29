@@ -61,6 +61,7 @@ class ProductController extends GetxController {
         'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=${_storageController.token}';
     try {
       map['id'] = _storageController.userId;
+      map['dateTime']=DateTime.now().toString();
 
       var response = await http.post(Uri.parse(url), body: json.encode(map));
       if (response.statusCode == 200) {
@@ -89,7 +90,7 @@ class ProductController extends GetxController {
   Future editProduct(String id, Map<String, Object> map) async {
     print('step 1');
     int index = adsProducts.indexWhere((element) => id == element.id);
-
+    map['dateTime']=DateTime.now().toString();
     String url =
         'https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=${_storageController.token}';
     try {

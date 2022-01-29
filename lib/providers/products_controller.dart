@@ -48,6 +48,29 @@ class ProductsController extends GetxController {
     return _adsProducts;
   }
 
+  List<Product> get homeProducts{
+
+    List products = [
+      "2019-11-25 00:00:00.000",
+      "2019-11-22 00:00:00.000",
+      "2019-11-22 00:00:00.000",
+      "2019-11-24 00:00:00.000",
+      "2019-11-23 00:00:00.000"
+    ];
+    List<DateTime> newProducts = [];
+    DateFormat format = DateFormat("yyyy-MM-dd");
+
+    for (int i = 0; i < 5; i++) {
+      newProducts.add(format.parse(products[i]));
+    }
+    newProducts.sort((a,b) => a.compareTo(b));
+
+    for (int i = 0; i < 5; i++) {
+      print(newProducts[i]);
+    }
+    return _allProds.sort((a,b)=>a.compareTo(b))
+  }
+
   List<Product> get watchProductsList {
     return _allProds.where((element) => element.cat == 0).toList();
   }
