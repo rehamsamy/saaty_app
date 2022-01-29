@@ -51,24 +51,6 @@ class ProductsController extends GetxController {
 
   List<Product> get homeProducts{
 
-    List products = [
-      "2019-11-25 00:00:00.000",
-      "2019-11-22 00:00:00.000",
-      "2019-11-22 00:00:00.000",
-      "2019-11-24 00:00:00.000",
-      "2019-11-23 00:00:00.000"
-    ];
-    List<DateTime> newProducts = [];
-    DateFormat format = DateFormat("yyyy-MM-dd");
-
-    for (int i = 0; i < 5; i++) {
-      newProducts.add(format.parse(products[i]));
-    }
-    newProducts.sort((a,b) => a.compareTo(b));
-
-    for (int i = 0; i < 5; i++) {
-      print(newProducts[i]);
-    }
     return _allProds.sort((a,b)=>a.compareTo(b))
   }
 
@@ -347,6 +329,14 @@ print(token);
     getFinalProducts();
   }
 
+
+  void fetchHomeProducts(){
+    curl 'https://dinosaur-facts.firebaseio.com/dinosaurs.json?orderBy="$key"&startAt="a"&endAt="m"&print=pretty'
+
+
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?orderBy='&dateTime';
+
+  }
 }
 
 
