@@ -17,6 +17,7 @@ class ProductsController extends GetxController {
   List<Product> _adsProducts = [];
   List<Product> _favProducts = [];
   List<UserModel> _storesList = [];
+  List<Product> _homeList = [];
   AuthController _authController=Get.find();
 
   int filterRad = 0;
@@ -50,8 +51,7 @@ class ProductsController extends GetxController {
   }
 
   List<Product> get homeProducts{
-
-    return _allProds.sort((a,b)=>a.compareTo(b))
+    return _homeList;
   }
 
   List<Product> get watchProductsList {
@@ -330,11 +330,20 @@ print(token);
   }
 
 
-  void fetchHomeProducts(){
-    curl 'https://dinosaur-facts.firebaseio.com/dinosaurs.json?orderBy="$key"&startAt="a"&endAt="m"&print=pretty'
-
-
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?orderBy='&dateTime';
+  void fetchHomeProducts()async{
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?orderBy="dateTime"&desc';
+    try{
+      var response = await http.get(Uri.parse(url));
+      if(response.statusCode==200){
+       var x=json.decode(response.body) as Map<String,dynamic>;
+        x.forEach((key, value) {
+          Product product = Product.fromJson(key, value);
+          _homeList.add(product);
+        });
+      }
+    }catch(err){
+      print(err);
+    }
 
   }
 }

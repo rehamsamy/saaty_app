@@ -194,7 +194,6 @@ class _MainPageScreenState extends State<MainPageScreen>
   }
 
   Widget buildGrid() {
-  //  print('9999      '+_productController.filteredList.length.toString());
     _productController.txt = _searcController.text;
     return _isLoading == true
         ? Center(

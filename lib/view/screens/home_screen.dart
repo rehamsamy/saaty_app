@@ -8,6 +8,7 @@ import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/widget/CategoryItem.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
+import 'package:saaty_app/view/widget/new_product_widget.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 import 'package:saaty_app/view/widget/visitor_drawer.dart';
 
@@ -107,13 +108,11 @@ class HomeScreenState extends State<HomeScreen> {
                 items: images.map((e) => Stack(
                     children:[
                 Center(child:
-                //Container(color: Colors.red,)),
                 Image.asset(e,fit: BoxFit.fill,)),
                       Positioned(
                         left: 0,
                         right: 0,
                         bottom: 5,
-                       // alignment: Alignment.bottomCenter,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -158,7 +157,8 @@ class HomeScreenState extends State<HomeScreen> {
                   )
                 ],
               ),
-            )
+            ),
+         buildHomeProductsGrid()
             
           //  Expanded(flex:5,child: ),
           
@@ -279,6 +279,31 @@ class HomeScreenState extends State<HomeScreen> {
         .then((value) => setState(() => _isLoading = false))
         .catchError((err) => print('=>>>>>  $err'));
 
+  }
+
+  buildHomeProductsGrid() {
+    return _isLoading == true
+        ? Center(
+      child: CircularProgressIndicator(),
+    )
+        : _productController.homeProducts.isEmpty
+        ? Center(
+      child: Text('empty_data'.tr),
+    )
+        : GetBuilder<ProductsController>(
+      builder: (_)=>
+          GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 0,
+                  crossAxisSpacing: 0,
+                  childAspectRatio: 8 / 9,
+                  crossAxisCount: 2),
+              itemCount:1,
+              itemBuilder: (ctx, inx) {
+                return HomeProductWidget(
+                    _productController.homeProducts[inx]);
+              }),
+    );
   }
 
 
