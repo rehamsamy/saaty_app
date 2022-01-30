@@ -163,7 +163,7 @@ class HomeScreenState extends State<HomeScreen> {
             ),
          Container(
            child:  buildHomeProductsGrid(),
-           height: 300,
+           height: 150,
          )
 
             
@@ -299,17 +299,34 @@ class HomeScreenState extends State<HomeScreen> {
     )
         : GetBuilder<ProductsController>(
       builder: (_)=>
-          GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: 0,
-                  crossAxisSpacing: 0,
-                  childAspectRatio: 6 / 5,
-                  crossAxisCount: 2),
-              itemCount:2,
-              itemBuilder: (ctx, inx) {
-                return HomeProductWidget(
-                    _productController.homeProducts[inx]);
-              }),
+          ListView.builder(
+            itemCount: _productController.homeProducts.length,
+              scrollDirection: Axis.horizontal,
+                itemBuilder: (ctx, inx) {
+
+              return Container(
+                margin: EdgeInsets.all(8),
+                width: width*0.8,
+                height: 20,
+                color: Colors.grey.shade200,
+                child: HomeProductWidget(
+                      _productController.homeProducts[inx]),
+              );
+                  // return HomeProductWidget(
+                  //     _productController.homeProducts[inx]);
+                }),
+          // GridView.builder(
+          //   scrollDirection: Axis.horizontal,
+          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //         mainAxisSpacing: 0,
+          //         crossAxisSpacing: 0,
+          //         childAspectRatio:1 /5,
+          //         crossAxisCount: 1),
+          //     itemCount:2,
+          //     itemBuilder: (ctx, inx) {
+          //       return HomeProductWidget(
+          //           _productController.homeProducts[inx]);
+          //     }),
     );
   }
 
