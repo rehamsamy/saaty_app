@@ -32,7 +32,7 @@ class HomeProductWidget extends StatelessWidget {
               child: Card(
                 color: Colors.white,
                 shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
                 elevation: 8,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
@@ -81,8 +81,8 @@ class HomeProductWidget extends StatelessWidget {
                       ),
                       Positioned(
                           top: 0,
-                          left: 1,
-                          child: Image.asset('assets/images/new.png')
+                          right: 1,
+                          child: Image.asset('assets/images/new.png',width: 40,height: 30,)
                              )
                     ],
                   ),

@@ -70,6 +70,9 @@ class HomeScreenState extends State<HomeScreen> {
     }
 
 
+    _productController.fetchHomeProducts();
+
+
     fetchData();
   }
 
@@ -158,7 +161,11 @@ class HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-         buildHomeProductsGrid()
+         Container(
+           child:  buildHomeProductsGrid(),
+           height: 300,
+         )
+
             
           //  Expanded(flex:5,child: ),
           
@@ -296,9 +303,9 @@ class HomeScreenState extends State<HomeScreen> {
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   mainAxisSpacing: 0,
                   crossAxisSpacing: 0,
-                  childAspectRatio: 8 / 9,
+                  childAspectRatio: 6 / 5,
                   crossAxisCount: 2),
-              itemCount:1,
+              itemCount:2,
               itemBuilder: (ctx, inx) {
                 return HomeProductWidget(
                     _productController.homeProducts[inx]);
