@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/user_model.dart';
@@ -22,7 +24,7 @@ class AccountScreen extends StatelessWidget {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     fetchUserData();
-    _userModel = _storageController.UserModelData;
+    _userModel = jsonDecode(StorageController.getString(StorageController.loginUserModel))['data'];
     print('888888888      ' + _userModel.email);
     return Scaffold(
       appBar: AppBar(

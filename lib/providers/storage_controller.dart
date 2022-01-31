@@ -18,6 +18,10 @@ class StorageController extends GetxController {
 
   static const String loginDataKey = 'loginDataKey';
 
+  static const String loginUserModel = 'loginUserModel';
+
+
+
   static Future init() async {
     await GetStorage.init();
     if (GetStorage().read(languageKey) == null) {
@@ -68,16 +72,6 @@ class StorageController extends GetxController {
     return GetStorage().read(key) ?? 0;
   }
 
-  ///===============================================
-
-//   String get splash_flag => box.read('splash_flag') ?? null;
-//
-//   String get lang => box.read('lang') ?? null;
-//
-// //bool get expire=>box.read('expire');
-//   DateTime get expire_date => box.read('expire') ?? null;
-//
-//   dynamic get authData => box.read('data');
 
   UserModel get UserModelData => box.read('user_model');
 

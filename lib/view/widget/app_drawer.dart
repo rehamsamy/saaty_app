@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
@@ -40,7 +42,7 @@ class MyDrawer extends StatelessWidget {
               SizedBox(height: 20,),
               ListTile(
                 leading: Image.asset('assets/images/sidemenu_photo.png',fit: BoxFit.cover,),
-                title: Text(_storageController.UserModelData.name),
+                title: Text('jjj'),
               ),
               SizedBox(height: 15,),
               SizedBox(
