@@ -37,8 +37,8 @@ class FavsAdsController extends GetxController{
     _allProds.clear();
     String token = AuthController.token;
     print('${AuthController.userId}');
-    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${_storageController.userId}.json?auth=${_storageController.token}';
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=${_storageController.token}';
+    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${StorageController.getString(StorageController.userId)}.json?auth=${StorageController.getString(StorageController.apiToken)}';
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=${StorageController.getString(StorageController.apiToken)}';
     try {
       var favResponse=await http.get(Uri.parse(urlFav));
       var response = await http.get(Uri.parse(url));

@@ -10,75 +10,113 @@ import '../../cons.dart';
 import 'main_page_screen.dart';
 
 class AccountScreen extends StatelessWidget {
-  static String ACCOUNT_SCREEN_ROUTE='/13';
-  StorageController _storageController=Get.find();
-  AuthController _authController=Get.find();
-  double width,height;
+  static String ACCOUNT_SCREEN_ROUTE = '/13';
+  StorageController _storageController = Get.find();
+  AuthController _authController = Get.find();
+  double width, height;
   UserModel _userModel;
 
   @override
   Widget build(BuildContext context) {
-    width=MediaQuery.of(context).size.width;
-    height=MediaQuery.of(context).size.height;
+    WidgetsFlutterBinding.ensureInitialized();
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
     fetchUserData();
-    _userModel=AuthController.model;
+    _userModel = _storageController.UserModelData;
+    print('888888888      ' + _userModel.email);
     return Scaffold(
       appBar: AppBar(
-        title: Text('my_account'.tr,style: Cons.greyFont,),
+        title: Text(
+          'my_account'.tr,
+          style: Cons.greyFont,
+        ),
         centerTitle: true,
-        leading: IconButton(icon: Icon(Icons.home,color: Cons.accent_color,),
-          onPressed:() =>Navigator.of(context).pushReplacementNamed(MainPageScreen.MAIN_PRAGE_ROUTE),),
+        leading: IconButton(
+          icon: Icon(
+            Icons.home,
+            color: Cons.accent_color,
+          ),
+          onPressed: () => Navigator.of(context)
+              .pushReplacementNamed(MainPageScreen.MAIN_PRAGE_ROUTE),
+        ),
       ),
       body: GetBuilder<AuthController>(
-        builder: (_)=>
-         Center(
+        builder: (_) => Center(
           child: SingleChildScrollView(
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child:
-                      Image.asset('assets/images/sidemenu_photo.png',width: 120,height: 120,),
-                  ) ,
-
-                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-                    padding: EdgeInsets.all(5),
-                    child: Stack(
-                      children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 20),
-                        child: Card(
-                            elevation: 12,
-                            child:Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Image.asset(
+                    'assets/images/sidemenu_photo.png',
+                    width: 120,
+                    height: 120,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  padding: EdgeInsets.all(5),
+                  child: Stack(children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Card(
+                        elevation: 12,
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: Icon(
+                                Icons.person,
+                                color: Cons.primary_color,
+                              ),
+                              title: Text(
+                                'user_name'.tr,
+                                style: Cons.blackFont,
+                              ),
+                              subtitle: Text(_userModel.name),
+                            ),
+                            ListTile(
+                              leading: Icon(
+                                Icons.phone_android,
+                                color: Cons.primary_color,
+                              ),
+                              title: Text(
+                                'phone'.tr,
+                                style: Cons.blackFont,
+                              ),
+                              subtitle: Text(_userModel.mobile),
+                            ),
+                            ListTile(
+                              leading: Icon(
+                                Icons.email,
+                                color: Cons.primary_color,
+                              ),
+                              title: Text(
+                                'email'.tr,
+                                style: Cons.blackFont,
+                              ),
+                              subtitle: Text(_userModel.email),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                ListTile(
-                                  leading: Icon(Icons.person,color: Cons.primary_color,),
-                                  title: Text('user_name'.tr,style: Cons.blackFont,),
-                                  subtitle: Text(_userModel.name),
-                                ),
-                                ListTile(
-                                  leading: Icon(Icons.phone_android,color: Cons.primary_color,),
-                                  title: Text('phone'.tr,style: Cons.blackFont,),
-                                  subtitle: Text(_userModel.mobile),
-                                ),
-                                ListTile(
-                                  leading: Icon(Icons.email,color: Cons.primary_color,),
-                                  title: Text('email'.tr,style: Cons.blackFont,),
-                                  subtitle: Text(_userModel.email),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Container(
-                                      width:width*0.5 ,
-                                      child: ListTile(
-                                        contentPadding: EdgeInsets.all(0),
-                                        leading: Icon(Icons.password_rounded,color: Cons.primary_color,),
-                                        title: Text('password'.tr,style: Cons.blackFont,),
-                                        subtitle: Text(_authController.visiblePassword==true?_userModel.password: '********'),
-                                      ),
+                                Container(
+                                  width: width * 0.5,
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.all(0),
+                                    leading: Icon(
+                                      Icons.password_rounded,
+                                      color: Cons.primary_color,
                                     ),
+                                    title: Text(
+                                      'password'.tr,
+                                      style: Cons.blackFont,
+                                    ),
+                                    subtitle: Text(
+                                        _authController.visiblePassword == true
+                                            ? _userModel.password
+                                            : '********'),
+                                  ),
+                                ),
                                 Container(
                                   width: 40,
                                   height: 40,
@@ -117,42 +155,42 @@ class AccountScreen extends StatelessWidget {
                                   ),
                                 )
                               ],
-                                )
-                              ],
-                            ) ,
-
-                         ),
+                            )
+                          ],
+                        ),
                       ),
-                        Align(
-                          alignment: _storageController.lang=='ar'?Alignment.topLeft:Alignment.topRight,
-                          child: GestureDetector(
-                            onTap: ()=>Navigator.of(context).pushNamed(EditAccountScreen.EDIT_ACCOUNT_SCREEN_ROUTE),
-                            child: Container(
-                              width: 55,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Cons.accent_color
-                              ),
-                              child:Icon(Icons.edit,color: Colors.white,size: 30,)
-                              ,
-                            ),
-                          ),
-                        )
-
-    ]
                     ),
-                  ),
-                ],
-              ),
+                    Align(
+                      alignment: StorageController.isArabicLanguage
+                          ? Alignment.topLeft
+                          : Alignment.topRight,
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pushNamed(
+                            EditAccountScreen.EDIT_ACCOUNT_SCREEN_ROUTE),
+                        child: Container(
+                          width: 55,
+                          height: 55,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle, color: Cons.accent_color),
+                          child: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                    )
+                  ]),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-
     );
   }
 
-  void fetchUserData() async{
+  void fetchUserData() async {
     await _authController.getUserDate();
   }
 }

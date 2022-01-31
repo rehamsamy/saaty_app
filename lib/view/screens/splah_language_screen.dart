@@ -56,9 +56,9 @@ class SplashLanguageScreen extends StatelessWidget {
                   height: 40,
                   child: RaisedButton(
                     color: Cons.accent_color,
-                    onPressed: (){
+                    onPressed: ()async{
                       updateLanguage(locale[1]['locale']);
-                      _storageController.setSplashLang('ar');
+                    await  StorageController.setString(StorageController.languageKey,'ar');
                       Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                     },child: Text('العربية',style: Cons.whiteFont,),
                     shape: RoundedRectangleBorder(
@@ -78,7 +78,7 @@ class SplashLanguageScreen extends StatelessWidget {
                     ),
                     onPressed: ()async{
                       updateLanguage(locale[0]['locale']);
-                      _storageController.setSplashLang('en');
+                    await  StorageController.setString(StorageController.languageKey,'en');
                       Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                     },child: Text('English',style: Cons.whiteFont,),),
                 ),

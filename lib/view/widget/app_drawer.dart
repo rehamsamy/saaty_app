@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/message_controller.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/about_app.dart';
 import 'package:saaty_app/view/screens/account_screen.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
 import 'package:saaty_app/view/screens/call_us.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
+import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'package:saaty_app/view/screens/messages_screen.dart';
@@ -19,6 +21,7 @@ import 'package:get/get.dart';
 class MyDrawer extends StatelessWidget {
   MessageController _messageController=Get.find();
   AuthController _authController=Get.find();
+  StorageController _storageController=Get.find();
   @override
   Widget build(BuildContext context){
     String flag='all';
@@ -37,7 +40,7 @@ class MyDrawer extends StatelessWidget {
               SizedBox(height: 20,),
               ListTile(
                 leading: Image.asset('assets/images/sidemenu_photo.png',fit: BoxFit.cover,),
-                title: Text('AuthController.model.name'),
+                title: Text(_storageController.UserModelData.name),
               ),
               SizedBox(height: 15,),
               SizedBox(
@@ -63,7 +66,7 @@ class MyDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('main_page'.tr),
-                onTap: ()=>Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE),
+                onTap: ()=>Navigator.of(context).pushNamed(HomeScreen.HOME_SCREEN_RIUTE),
               ),
               ListTile(
                 leading: Icon(

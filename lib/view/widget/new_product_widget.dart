@@ -21,42 +21,45 @@ class HomeProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<ProductController>(
       builder: (_)=>
-          Container(
-            height: 100,
-            width: double.infinity-40,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed(
-                    ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE,
-                    arguments: {'prod': product, 'flag': flag});
-              },
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(
+                  ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE,
+                  arguments: {'prod': product, 'flag': flag});
+            },
+            child: Container(
+              //width: 500,
               child: Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: Card(
-                  color: Colors.white,
+                //  color: Colors.white,
                   shape:
                   RoundedRectangleBorder(borderRadius: BorderRadius.circular(10),),
                   elevation: 8,
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
                     child: Stack(
                       // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                            Align(
                              alignment: Alignment.centerRight,
                              child: Column(
+                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Image.asset('assets/images/new1.jpeg',width: 50,height: 50,),
+                                Image.asset('assets/images/new1.jpeg',width: 35,height: 35,),
+                                SizedBox(height: 5,),
                                 Hero(
                                   tag: product.id,
                                   child: Container(
-                                    width: 70,height: 40,
-                                    decoration: BoxDecoration(
-
-                                    ),
+                                    width: 130,height: 90,
                                     child: FadeInImage(
                                          fit: BoxFit.fill,
-                                      image: NetworkImage(product.images[0],),
+                                      image:
+                                          product.cat==0?
+                                      AssetImage('assets/images/watch_item1.png'):
+                                          AssetImage('assets/images/bracelets_item2.png')
+                                      ,
+                                     // NetworkImage(product.images[0],),
                                       placeholder:
                                       AssetImage('assets/images/watch_item1.png'),
                                     ),
@@ -65,53 +68,85 @@ class HomeProductWidget extends StatelessWidget {
                               ],
                           ),
                            ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child:
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(10),
+                                    width: 50,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft:Radius.circular(20.0),
+                                        bottomRight: Radius.circular(20.0),
+                                      ),
+                                      border: Border.all(color: Colors.red)
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                          product.price,
+                                          overflow: TextOverflow.ellipsis,
+                                          style:  TextStyle(color: Colors.black, fontSize: 14,)
+                                      ),
+                                    ),
+                                  ),
+                            Container(
+                              margin: EdgeInsets.all(10),
+                              width: 80,
+                              height: 30,
+                              child: Center(
+                                child: Text(
+                                    product.name,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:  TextStyle(color: Colors.black, fontSize: 14,)
+                                ),
+                              ),
+                            ),
 
-                        // Positioned(
-                        //     left: 0,
-                        //     right: 1,
-                        //     top: 0,
-                        //     bottom: 0,
-                        //     child: Hero(
-                        //       tag: product.id,
-                        //       child: FadeInImage(
-                        //      //   fit: BoxFit.cover,
-                        //         image: NetworkImage(product.images[0], scale: 1,),
-                        //         placeholder:
-                        //         AssetImage('assets/images/watch_item1.png'),
-                        //       ),
-                        //     )),
-                        // SizedBox(
-                        //   height: 10,
-                        // ),
-                        // Positioned(
-                        //     bottom: 1,
-                        //     left: 1,
-                        //     child: Container(
-                        //       width: 50,
-                        //       child: Text(
-                        //           product.name,
-                        //           overflow: TextOverflow.ellipsis,
-                        //           style:  TextStyle(color: Colors.black54, fontSize: 15,)
-                        //       ),
-                        //     )),
-                        // Positioned(
-                        //   bottom: 1,
-                        //   left: 1,
+                            Container(
+                              width: 70,
+                              height: 25,
+                              child: RaisedButton(
+                                color: Cons.accent_color,
+                                onPressed: (){
+                                  Navigator.of(context).pushNamed(
+                                      ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE,
+                                      arguments: {'prod': product, 'flag': flag});
+                                },
+                                child: Text('view'.tr,style:
+                                TextStyle(color: Colors.white),),
+                                shape:RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        )
+                    ),
+                        // Align(
+                        //   alignment: Alignment.bottomCenter,
                         //   child: Container(
-                        //     width: 55,
-                        //     child: Text(
-                        //       '${product.price}${'currency'.tr}',
-                        //       overflow: TextOverflow.ellipsis,
-                        //       style:
-                        //       TextStyle(color: Colors.green.shade600, fontSize: 15,),
+                        //     width: 70,
+                        //     height: 25,
+                        //     child: RaisedButton(
+                        //       color: Cons.accent_color,
+                        //       onPressed: (){
+                        //         Navigator.of(context).pushNamed(
+                        //             ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE,
+                        //             arguments: {'prod': product, 'flag': flag});
+                        //       },
+                        //       child: Text('view'.tr,style:
+                        //       TextStyle(color: Colors.white),),
+                        //       shape:RoundedRectangleBorder(
+                        //      borderRadius: BorderRadius.circular(20)
+                        //       ),
                         //     ),
                         //   ),
-                        // ),
-                        // Positioned(
-                        //     top: 0,
-                        //     right: 1,
-                        //     child: Image.asset('assets/images/new1.jpeg',width: 50,height: 50,)
-                        //        )
+                        // )
                       ],
                     ),
                   ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/view/screens/about_app.dart';
 import 'package:saaty_app/view/screens/call_us.dart';
+import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/setting_screen.dart';
 
@@ -34,6 +35,7 @@ class VisitorDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('main_page'.tr),
+                onTap: ()=>Navigator.of(context).pushNamed(HomeScreen.HOME_SCREEN_RIUTE),
               ),
 
               ListTile(
@@ -52,14 +54,7 @@ class VisitorDrawer extends StatelessWidget {
                 title: Text('about_app'.tr),
                   onTap: ()=>Navigator.of(context).pushNamed(AboutApp.ABOUT_APP_SCREEN_ROUTE)
               ),
-              // ListTile(
-              //   onTap: ()=>Navigator.of(context).pushNamed(CallUs.CALL_US_SCREEN_ROUTE),
-              //   leading: Icon(
-              //     Icons.help_rounded,
-              //     color: Cons.primary_color,
-              //   ),
-              //   title: Text('about_us'.tr),
-              // ),
+
               ListTile(
                 leading: Icon(
                   Icons.phone,

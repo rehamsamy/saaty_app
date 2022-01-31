@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,8 +30,8 @@ class MainPageScreen extends StatefulWidget {
 
 
   buildStorage(){
-    token=_storageController.token;
-    userId=_storageController.userId;
+    token=StorageController.getString(StorageController.apiToken);
+    userId=StorageController.getString(StorageController.userId);
   }
 
   @override
@@ -60,8 +62,8 @@ class _MainPageScreenState extends State<MainPageScreen>
   @override
   void initState() {
     super.initState();
-    _userData=_storageontroller.authData as Map<String,dynamic>;
-    MainPageScreen.expire=_storageontroller.expire_date;
+    _userData= jsonDecode(StorageController.getString(StorageController.loginDataKey));
+    MainPageScreen.expire=DateTime.parse(StorageController.getString(StorageController.expireDate));
     String nowFormat=DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
     DateTime nowRes=DateTime.parse(nowFormat);
     if(MainPageScreen.expire !=null){

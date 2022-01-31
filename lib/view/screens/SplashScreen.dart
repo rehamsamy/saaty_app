@@ -1,3 +1,4 @@
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -53,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     });
                     if(ind==2){
                       Navigator.of(context).pushNamed(SplashLanguageScreen.SPLASH_LANGUAGE_SCREEN_ROUTE);
-                      _storageController.setSplashFlag('yes');
+                     await StorageController.setBool(StorageController.splashKey, true);
                     }
                   },
                   initialPage: 1,

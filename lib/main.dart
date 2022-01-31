@@ -32,15 +32,12 @@ import 'package:saaty_app/view/screens/setting_screen.dart';
 import 'package:saaty_app/view/screens/splah_language_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
 
-
 import 'providers/products_controller.dart';
 import 'view/screens/register_screen.dart';
 
-
-void main()async {
-  await GetStorage.init();
+void main() async {
+  await StorageController.init();
   runApp(MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
@@ -48,80 +45,80 @@ class MyApp extends StatelessWidget {
   final controller1 = Get.put(ProductController());
   final controller2 = Get.put(ProductsController());
   final controller3 = Get.put(StatusProductController());
-  final controller4=Get.put(FavsAdsController());
-  final controller5=Get.put(MessageController());
-  final controller6=Get.put(LangController());
-  final controller7=Get.put(StorageController());
+  final controller4 = Get.put(FavsAdsController());
+  final controller5 = Get.put(MessageController());
+  final controller6 = Get.put(LangController());
+  final controller7 = Get.put(StorageController());
   String splash_flag;
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
-    final List locale =[
-      {'name':'ENGLISH','locale': Locale('us')},
-      {'name':'العربية','locale': Locale('ar')},
-
+    final List locale = [
+      {'name': 'ENGLISH', 'locale': Locale('us')},
+      {'name': 'العربية', 'locale': Locale('ar')},
     ];
+
+    print('mmmmm '+StorageController.isSplashLogged.toString());
 
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    //print(_storageController.expire_date.toString()+'jjjj');
-    //int x=5;
     Cons.buildColors(context);
-    //MainPageScreen().buildStorage();
-   // print('tok   '+'id    '+MainPageScreen.userId+  MainPageScreen.token);
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       translations: LocaleString(),
-      locale: controller7.lang=='en'?Locale('en'):Locale('ar'),
-      textDirection: controller7.lang=='en'?TextDirection.ltr:TextDirection.rtl,
+      locale: StorageController.isArabicLanguage ? Locale('ar') : Locale('en'),
       theme: ThemeData(
-        primaryColor: Color.fromARGB(255,213,177,57),
-         unselectedWidgetColor: Color.fromARGB(255,123,196,229),
-         // rgba(228,190,55,255)
-        accentColor: Color.fromARGB(255,123,196,229),
-        canvasColor: Colors.white,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          foregroundColor: Colors.grey.shade300,
-          brightness: Brightness.light,
-          iconTheme: IconThemeData(
-            color: Theme.of(context).accentColor
-          )
-        )
-
-    ),
-      home: controller7.splash_flag==null?SplashScreen():controller7.lang==null?SplashLanguageScreen()
-          :controller7.expire_date==null?LoginScreen():HomeScreen(),
+          primaryColor: Color.fromARGB(255, 213, 177, 57),
+          unselectedWidgetColor: Color.fromARGB(255, 123, 196, 229),
+          // rgba(228,190,55,255)
+          accentColor: Color.fromARGB(255, 123, 196, 229),
+          canvasColor: Colors.white,
+          appBarTheme: AppBarTheme(
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              foregroundColor: Colors.grey.shade300,
+              brightness: Brightness.light,
+              iconTheme: IconThemeData(color: Theme.of(context).accentColor))),
+      home: !StorageController.isSplashLogged
+          ? SplashScreen()
+          : StorageController.getString(StorageController.expireDate) == null
+              ? LoginScreen()
+              : HomeScreen(),
       routes: {
-         LoginScreen.LOGIN_SCREEN_ROUTE:(_)=>GetBuilder<LangController>(builder:(_)=> LoginScreen()),
-        RegisterScreen.REGISTER_SCREEN_ROUTE:(_)=>RegisterScreen(),
-        HomeScreen.HOME_SCREEN_RIUTE:(_)=>HomeScreen(),
-        CreateProductScreen.CREATE_PRODUCT_ROUTE:(_)=>CreateProductScreen(),
-        MainPageScreen.MAIN_PRAGE_ROUTE:(_)=>MainPageScreen(),
-        ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE:(_)=>ProductItemDetailScreen(),
-        SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE:(_)=>SendMessageScreen(),
-        AdsScreen.ADS_SCREEN_ROUTE:(_)=>AdsScreen(),
-        SettingScreen.SETTING_SCREEN_ROUTE:(_)=>SettingScreen(),
-        StoresScreen.Stores_SCREEN_ROUTE:(_)=>StoresScreen(),
-        MessageScreen.MESSAGES_SCREEN_ROUTE:(_)=>MessageScreen(),
-        MessageDetailScreen.MESSAGES_Detail_SCREEN_ROUTE:(_)=>MessageDetailScreen(),
-        AccountScreen.ACCOUNT_SCREEN_ROUTE:(_)=>AccountScreen(),
-        EditAccountScreen.EDIT_ACCOUNT_SCREEN_ROUTE:(_)=>EditAccountScreen(),
-        ChangePasswordScreen.CHANGE_PASSWORD_SCREEN_ROUTE:(_)=>ChangePasswordScreen(),
-        ForgetPasswordScreen.FORGET_PASSWORD_SCREEN_ROUTE:(_)=>ForgetPasswordScreen(),
-        ResetPasswordScreen.RESET_PASSWORD_SCREEN_ROUTE:(_)=>ResetPasswordScreen(),
-        SplashScreen.SPLASH_SCREEN_ROUTE:(_)=>SplashScreen(),
-        SplashLanguageScreen.SPLASH_LANGUAGE_SCREEN_ROUTE:(_)=>SplashLanguageScreen(),
-        AboutApp.ABOUT_APP_SCREEN_ROUTE:(_)=>AboutApp(),
-        CallUs.CALL_US_SCREEN_ROUTE:(_)=>CallUs()
+        LoginScreen.LOGIN_SCREEN_ROUTE: (_) =>
+            GetBuilder<LangController>(builder: (_) => LoginScreen()),
+        RegisterScreen.REGISTER_SCREEN_ROUTE: (_) => RegisterScreen(),
+        HomeScreen.HOME_SCREEN_RIUTE: (_) => HomeScreen(),
+        CreateProductScreen.CREATE_PRODUCT_ROUTE: (_) => CreateProductScreen(),
+        MainPageScreen.MAIN_PRAGE_ROUTE: (_) => MainPageScreen(),
+        ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE: (_) =>
+            ProductItemDetailScreen(),
+        SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE: (_) => SendMessageScreen(),
+        AdsScreen.ADS_SCREEN_ROUTE: (_) => AdsScreen(),
+        SettingScreen.SETTING_SCREEN_ROUTE: (_) => SettingScreen(),
+        StoresScreen.Stores_SCREEN_ROUTE: (_) => StoresScreen(),
+        MessageScreen.MESSAGES_SCREEN_ROUTE: (_) => MessageScreen(),
+        MessageDetailScreen.MESSAGES_Detail_SCREEN_ROUTE: (_) =>
+            MessageDetailScreen(),
+        AccountScreen.ACCOUNT_SCREEN_ROUTE: (_) => AccountScreen(),
+        EditAccountScreen.EDIT_ACCOUNT_SCREEN_ROUTE: (_) => EditAccountScreen(),
+        ChangePasswordScreen.CHANGE_PASSWORD_SCREEN_ROUTE: (_) =>
+            ChangePasswordScreen(),
+        ForgetPasswordScreen.FORGET_PASSWORD_SCREEN_ROUTE: (_) =>
+            ForgetPasswordScreen(),
+        ResetPasswordScreen.RESET_PASSWORD_SCREEN_ROUTE: (_) =>
+            ResetPasswordScreen(),
+        SplashScreen.SPLASH_SCREEN_ROUTE: (_) => SplashScreen(),
+        SplashLanguageScreen.SPLASH_LANGUAGE_SCREEN_ROUTE: (_) =>
+            SplashLanguageScreen(),
+        AboutApp.ABOUT_APP_SCREEN_ROUTE: (_) => AboutApp(),
+        CallUs.CALL_US_SCREEN_ROUTE: (_) => CallUs()
       },
     );
   }
-
-
 }
