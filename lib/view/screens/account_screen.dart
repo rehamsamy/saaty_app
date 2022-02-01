@@ -23,11 +23,11 @@ class AccountScreen extends StatelessWidget {
     WidgetsFlutterBinding.ensureInitialized();
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    fetchUserData();
+  //  fetchUserData();
 
-    Map<String,dynamic> map= jsonDecode(StorageController.getString(StorageController.loginUserModel));
-
-    print(map['data'].name);
+    // Map<String,dynamic> map= jsonDecode(StorageController.getString(StorageController.loginUserModel));
+    //
+    // print(map['data'].name);
    // _userModel = jsonDecode(StorageController.getString(StorageController.loginUserModel))['data'];
    // print('888888888      ' + _userModel.email);
     return Scaffold(

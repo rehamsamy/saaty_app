@@ -76,6 +76,7 @@ class HomeScreenState extends State<HomeScreen> {
     }
 
     _productController.fetchHomeProducts();
+    fetchUserData();
 
     fetchData();
   }
@@ -343,4 +344,12 @@ class HomeScreenState extends State<HomeScreen> {
                     }),
               );
   }
+
+  void fetchUserData() async {
+    await _authController.getUserDate();
+  }
+
 }
+
+
+

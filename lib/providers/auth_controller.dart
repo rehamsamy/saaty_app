@@ -11,8 +11,8 @@ import 'package:saaty_app/providers/storage_controller.dart';
 
 class AuthController extends GetxController {
   StorageController _storageController = Get.put(StorageController());
-  static String userId;
-  static String token;
+  static String userId=StorageController.getString(StorageController.getString(StorageController.userId));
+  static String token=StorageController.getString(StorageController.getString(StorageController.apiToken));
   static UserModel model;
   bool visitorFlag = false;
   bool visiblePassword = true;
@@ -65,7 +65,7 @@ class AuthController extends GetxController {
         //     regMap['password'], regMap['confirm_password'], userId);
 
         String url =
-            'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=$token';
+            'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${StorageController.getString(StorageController.apiToken)}';
         regMap['localId'] = userId;
         var y = await http.post(Uri.parse(url), body: json.encode(regMap));
         if (y.statusCode == 200) {
@@ -165,11 +165,13 @@ class AuthController extends GetxController {
   }
 
   getUserDate() async {
+    print('tok    '+userId);
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${StorageController.getString(StorageController.apiToken)}';
     try {
       var response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
+        print('8888888'+userId);
         var res = json.decode(response.body) as Map<String, dynamic>;
         res.forEach((key, value) async {
           if (value['localId'] == userId) {
@@ -188,7 +190,9 @@ class AuthController extends GetxController {
       }
 
       update();
-    } catch (err) {}
+    } catch (err) {
+      print(err);
+    }
   }
 
   changeVisiblePassword(bool val) {
@@ -245,7 +249,6 @@ class AuthController extends GetxController {
           await http.post(Uri.parse(url1), body: json.encode(map_new));
       print('ssssssss  ' + response2.body.toString());
       if (response2.statusCode == 200) {
-        // enterNewResetPassword();
         print(response2.body.toString());
         getUserDate();
       } else {

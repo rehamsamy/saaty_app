@@ -36,10 +36,6 @@ class ProductController extends GetxController {
 
   List<String> imagesResult = [];
   int selectedTabIndex = 0;
-
-  String token = MainPageScreen.token;
-  String userId = MainPageScreen.userId;
-
   List<Product> get favProducts {
     return _favProducts;
   }
@@ -55,10 +51,6 @@ class ProductController extends GetxController {
   }
 
   Future createProduct(Map<String, dynamic> map, List<dynamic> images) async {
-    print('token    ' +
-        MainPageScreen.token +
-        'jjjj           ' +
-        userId.toString());
     String url =
         'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=${StorageController.getString(StorageController.apiToken)}';
     try {
@@ -125,8 +117,6 @@ class ProductController extends GetxController {
   }
 
   Future toggleFav(String id, int isFav) async {
-    print(id);
-    print(userId.toString() + token.toString());
     String url =
         'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${StorageController.getString(StorageController.userId)}/$id.json?auth=${StorageController.getString(StorageController.apiToken)}';
 
