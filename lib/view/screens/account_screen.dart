@@ -13,10 +13,10 @@ import 'main_page_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   static String ACCOUNT_SCREEN_ROUTE = '/13';
-  StorageController _storageController = Get.find();
   AuthController _authController = Get.find();
   double width, height;
   UserModel _userModel;
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,12 @@ class AccountScreen extends StatelessWidget {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     fetchUserData();
-    _userModel = jsonDecode(StorageController.getString(StorageController.loginUserModel))['data'];
-    print('888888888      ' + _userModel.email);
+
+    Map<String,dynamic> map= jsonDecode(StorageController.getString(StorageController.loginUserModel));
+
+    print(map['data'].name);
+   // _userModel = jsonDecode(StorageController.getString(StorageController.loginUserModel))['data'];
+   // print('888888888      ' + _userModel.email);
     return Scaffold(
       appBar: AppBar(
         title: Text(

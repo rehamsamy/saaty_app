@@ -174,13 +174,15 @@ class AuthController extends GetxController {
         res.forEach((key, value) async {
           if (value['localId'] == userId) {
             model = UserModel.fromJson(value, key);
+            print('step2');
             Map<String, dynamic> data = {'data':model};
             await StorageController.setString(
                 StorageController.loginUserModel, jsonEncode(data));
+            print('step1');
+            Map<String,dynamic> map= jsonDecode(StorageController.getString(StorageController.loginUserModel));
 
+            print(map['data'].name);
            // _storageController.setUserModelData(model);
-            print('user data      herrrrrrrrrrrrrrrrrr' +
-                _storageController.UserModelData.name);
           }
         });
       }

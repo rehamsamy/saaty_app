@@ -40,7 +40,6 @@ class HomeScreenState extends State<HomeScreen> {
 
   int _index = 0;
   AuthController _authController = Get.find();
-  var _storageontroller = Get.put(StorageController());
   double width, height;
   static String token;
   static String userId;
@@ -53,6 +52,8 @@ class HomeScreenState extends State<HomeScreen> {
     super.initState();
     _userData =
         jsonDecode(StorageController.getString(StorageController.loginDataKey));
+
+
 
     DateTime expire = DateTime.parse(StorageController.getString(StorageController.expireDate));
     String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
@@ -96,7 +97,8 @@ class HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Container(
-              height: height * 0.44,
+             // height: height * 0.44,
+              height: 250,
               child: CarouselSlider(
                 carouselController: buttonCarouselController,
                 options: CarouselOptions(
@@ -141,8 +143,9 @@ class HomeScreenState extends State<HomeScreen> {
               height: 5,
             ),
             Container(
-              height: height * 0.42,
+              height: 220,
               child: Stack(
+                alignment: Alignment.center,
                 children: [
                   Align(
                       alignment: Alignment.bottomCenter,
@@ -194,10 +197,11 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.all(10),
+              margin: EdgeInsets.all(2),
               child: buildHomeProductsGrid(),
-              height: 170,
-            )
+              height: 190,
+            ),
+            SizedBox(height: 20,)
           ],
         ),
       ),

@@ -15,9 +15,7 @@ class StorageController extends GetxController {
   static const String loginKey = 'loginKey';
   static const String splashKey = 'splashKey';
   static const String expireDate='expireDate';
-
   static const String loginDataKey = 'loginDataKey';
-
   static const String loginUserModel = 'loginUserModel';
 
 
