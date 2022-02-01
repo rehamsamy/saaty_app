@@ -26,7 +26,7 @@ class ChangePasswordScreen extends StatelessWidget {
     return GetBuilder<AuthController>(
       builder: (_)=> Scaffold(
           appBar: AppBar(
-            title: Text('my_account'.tr,style: Cons.greyFont,),
+            title: Text('change_password'.tr,style: Cons.greyFont,),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
@@ -45,17 +45,17 @@ class ChangePasswordScreen extends StatelessWidget {
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              buidTextForm('old'.tr, 'Enter Old Password', Icons.person, map,
+                              buidTextForm('old', 'old_password'.tr, Icons.person, map,
                                   TextInputType.text),
                               SizedBox(
                                 height: 20,
                               ),
-                              buidTextForm('new'.tr, 'Enter New Password', Icons.email, map,
+                              buidTextForm('new', 'new_password'.tr, Icons.email, map,
                                   TextInputType.text),
                               SizedBox(
                                 height: 20,
                               ),
-                              buidTextForm('confirm'.tr, 'Enter Confirm Password', Icons.phone_android_sharp, map,
+                              buidTextForm('confirm', 'confirm_password'.tr, Icons.phone_android_sharp, map,
                                   TextInputType.text),
                             ])
                     ),
@@ -73,7 +73,7 @@ class ChangePasswordScreen extends StatelessWidget {
                         ),
                         onPressed: () {
                           changePassword(context);
-                        }, child: Text('Save'.tr, style: Cons.whiteFont,),),
+                        }, child: Text('save'.tr, style: Cons.whiteFont,),),
                     ),]
               ),
             ),

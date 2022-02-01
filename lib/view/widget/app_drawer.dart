@@ -22,8 +22,6 @@ import 'package:get/get.dart';
 
 class MyDrawer extends StatelessWidget {
   MessageController _messageController=Get.find();
-  AuthController _authController=Get.find();
-  StorageController _storageController=Get.find();
   @override
   Widget build(BuildContext context){
     String flag='all';
@@ -42,7 +40,7 @@ class MyDrawer extends StatelessWidget {
               SizedBox(height: 20,),
               ListTile(
                 leading: Image.asset('assets/images/sidemenu_photo.png',fit: BoxFit.cover,),
-                title: Text('jjj'),
+                title: Text(jsonDecode(StorageController.getString(StorageController.loginUserModel))['name']),
               ),
               SizedBox(height: 15,),
               SizedBox(

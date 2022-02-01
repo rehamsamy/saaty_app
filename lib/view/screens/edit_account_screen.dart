@@ -23,7 +23,7 @@ class EditAccountScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(25.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -31,7 +31,7 @@ class EditAccountScreen extends StatelessWidget {
           child:
           Image.asset('assets/images/sidemenu_photo.png',width: 120,height: 120,),
     ),
-              SizedBox(height: 30,),
+              SizedBox(height: 20,),
               Form(
                 key: _formKey,
                   child: Column(
@@ -121,9 +121,11 @@ class EditAccountScreen extends StatelessWidget {
   void UpdateUserData(BuildContext context) {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      _authController.updateUserData(map).then(
+      _authController.updateUserData(map).printError((err)=>print(err)).then(
           ()=>Navigator.of(context).pushNamed(AccountScreen.ACCOUNT_SCREEN_ROUTE)
       );
+
+      Navigator.of(context).pushNamed(AccountScreen.ACCOUNT_SCREEN_ROUTE);
     }
   }
 

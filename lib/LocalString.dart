@@ -24,6 +24,7 @@ class LocaleString extends Translations{
   'register':'Register',
   'confirm':'Confirm',
   'user_name':'User Name',
+      'name':'Name',
       'user':'User',
   'phone':'Phone',
   'confirm_password':'Confirm Password',
@@ -96,9 +97,14 @@ class LocaleString extends Translations{
       'send_message_sucessfully':'Sending Message Sucessfully',
       'inavlid_email':'enter valid email',
       'catgory':'Category',
-
+      'new_password':'New Password',
+      'old_password':'Old Password',
+      'change_password':'Change Password'
     },
     'ar':{
+      'name':'الاسم',
+      'new_password':'كلمه المرور الجديده',
+  'old_password':'كلمه المرور القديمة',
       'address':'العنوان',
       'website':'الموقع',
       'catgory':'الاقسام',
@@ -192,6 +198,7 @@ class LocaleString extends Translations{
       'select_all':'تحديد الكل',
       'cancel_all':'الغاء الكل',
       'send_message_sucessfully':'تم ارسال الرساله بنجاح',
+      'change_password':'تغيير كلمه المرور'
     }
 
   };

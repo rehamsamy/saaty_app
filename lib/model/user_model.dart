@@ -16,4 +16,7 @@ class UserModel{
        regMap['type'],regMap['phone'],
        regMap['password'], regMap['confirm_password'],regMap['localId'],id) ;
   }
+
+
+
 }

@@ -52,9 +52,6 @@ class HomeScreenState extends State<HomeScreen> {
     super.initState();
     _userData =
         jsonDecode(StorageController.getString(StorageController.loginDataKey));
-
-
-
     DateTime expire = DateTime.parse(StorageController.getString(StorageController.expireDate));
     String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
     DateTime nowRes = DateTime.parse(nowFormat);
@@ -63,10 +60,6 @@ class HomeScreenState extends State<HomeScreen> {
       if (expire.isAfter(nowRes)) {
         MainPageScreen.token = _userData['idToken'];
         MainPageScreen.userId = _userData['localId'];
-        print('88888  ' +
-            MainPageScreen.userId +
-            '      ;fff   ' +
-            MainPageScreen.token);
       } else {
         Future.delayed(Duration.zero, () {
           Navigator.of(context)

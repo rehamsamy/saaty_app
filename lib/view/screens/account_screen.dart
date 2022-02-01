@@ -15,7 +15,7 @@ class AccountScreen extends StatelessWidget {
   static String ACCOUNT_SCREEN_ROUTE = '/13';
   AuthController _authController = Get.find();
   double width, height;
-  UserModel _userModel;
+  Map<String,dynamic> _userDate;
 
 
   @override
@@ -25,11 +25,7 @@ class AccountScreen extends StatelessWidget {
     height = MediaQuery.of(context).size.height;
   //  fetchUserData();
 
-    // Map<String,dynamic> map= jsonDecode(StorageController.getString(StorageController.loginUserModel));
-    //
-    // print(map['data'].name);
-   // _userModel = jsonDecode(StorageController.getString(StorageController.loginUserModel))['data'];
-   // print('888888888      ' + _userModel.email);
+    _userDate= jsonDecode(StorageController.getString(StorageController.loginUserModel));
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -78,7 +74,7 @@ class AccountScreen extends StatelessWidget {
                                 'user_name'.tr,
                                 style: Cons.blackFont,
                               ),
-                              subtitle: Text(_userModel.name),
+                              subtitle: Text(_userDate['name']),
                             ),
                             ListTile(
                               leading: Icon(
@@ -89,7 +85,7 @@ class AccountScreen extends StatelessWidget {
                                 'phone'.tr,
                                 style: Cons.blackFont,
                               ),
-                              subtitle: Text(_userModel.mobile),
+                              subtitle: Text(_userDate['phone']),
                             ),
                             ListTile(
                               leading: Icon(
@@ -100,7 +96,7 @@ class AccountScreen extends StatelessWidget {
                                 'email'.tr,
                                 style: Cons.blackFont,
                               ),
-                              subtitle: Text(_userModel.email),
+                              subtitle: Text(_userDate['email']),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -119,7 +115,7 @@ class AccountScreen extends StatelessWidget {
                                     ),
                                     subtitle: Text(
                                         _authController.visiblePassword == true
-                                            ? _userModel.password
+                                            ?_userDate['password']
                                             : '********'),
                                   ),
                                 ),
@@ -137,7 +133,7 @@ class AccountScreen extends StatelessWidget {
                                           .pushNamed(
                                               ChangePasswordScreen
                                                   .CHANGE_PASSWORD_SCREEN_ROUTE,
-                                              arguments: _userModel.password),
+                                              arguments: _userDate['password']),
                                     ),
                                   ),
                                 ),

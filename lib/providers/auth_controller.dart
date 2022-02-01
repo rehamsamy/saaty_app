@@ -11,8 +11,8 @@ import 'package:saaty_app/providers/storage_controller.dart';
 
 class AuthController extends GetxController {
   StorageController _storageController = Get.put(StorageController());
-  static String userId=StorageController.getString(StorageController.getString(StorageController.userId));
-  static String token=StorageController.getString(StorageController.getString(StorageController.apiToken));
+  static String userId = StorageController.getString(StorageController.userId);
+  static String token = StorageController.getString(StorageController.apiToken);
   static UserModel model;
   bool visitorFlag = false;
   bool visiblePassword = true;
@@ -45,10 +45,10 @@ class AuthController extends GetxController {
         token = res['idToken'];
         print(userId);
 
-       await StorageController.setString(StorageController.apiToken, token);
-        await   StorageController.setString(StorageController.userId, userId);
+        await StorageController.setString(StorageController.apiToken, token);
+        await StorageController.setString(StorageController.userId, userId);
         DateTime expire =
-            DateTime.now().add(Duration(seconds: int.parse(res['expiresIn'])));
+        DateTime.now().add(Duration(seconds: int.parse(res['expiresIn'])));
         String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(expire);
         DateTime expireRes = DateTime.parse(formattedDate);
 
@@ -65,7 +65,8 @@ class AuthController extends GetxController {
         //     regMap['password'], regMap['confirm_password'], userId);
 
         String url =
-            'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${StorageController.getString(StorageController.apiToken)}';
+            'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${StorageController
+            .getString(StorageController.apiToken)}';
         regMap['localId'] = userId;
         var y = await http.post(Uri.parse(url), body: json.encode(regMap));
         if (y.statusCode == 200) {
@@ -106,19 +107,19 @@ class AuthController extends GetxController {
         var y = json.decode(x.body);
         userId = y['localId'];
         token = y['idToken'];
-      await  StorageController.setString(StorageController.apiToken, token);
-        await   StorageController.setString(StorageController.userId, userId);
+        await StorageController.setString(StorageController.apiToken, token);
+        await StorageController.setString(StorageController.userId, userId);
         print('mmmmmmm   ' + y['expiresIn'] + 'llll ' + y['refreshToken']);
         print('user id idd $userId');
         DateTime expire =
-            DateTime.now().add(Duration(seconds: int.parse(y['expiresIn'])));
+        DateTime.now().add(Duration(seconds: int.parse(y['expiresIn'])));
         String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(expire);
         DateTime expireRes = DateTime.parse(formattedDate);
         await StorageController.setString(
             StorageController.expireDate, formattedDate);
         //.toIso8601String()
         Map<String, dynamic> data = {'localId': userId, 'idToken': token};
-        await     StorageController.setString(
+        await StorageController.setString(
             StorageController.loginDataKey, jsonEncode(data));
       } else {
         print('step2');
@@ -136,7 +137,8 @@ class AuthController extends GetxController {
 
   updateUserData(Map<String, String> map) async {
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${model.id}.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${model
+        .id}.json?auth=$token';
     String url1 =
         'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
 
@@ -147,7 +149,7 @@ class AuthController extends GetxController {
     };
     try {
       var response2 =
-          await http.post(Uri.parse(url1), body: json.encode(map_new));
+      await http.post(Uri.parse(url1), body: json.encode(map_new));
       print('ssssssss  ' + response2.body.toString());
       if (response2.statusCode == 200) {
         var response = await http.patch(Uri.parse(url), body: json.encode(map));
@@ -165,26 +167,29 @@ class AuthController extends GetxController {
   }
 
   getUserDate() async {
-    print('tok    '+userId);
+    print('tok    ' + userId.toString());
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${StorageController.getString(StorageController.apiToken)}';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${StorageController
+        .getString(StorageController.apiToken)}';
     try {
       var response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        print('8888888'+userId);
+        print('8888888' + userId);
         var res = json.decode(response.body) as Map<String, dynamic>;
         res.forEach((key, value) async {
           if (value['localId'] == userId) {
             model = UserModel.fromJson(value, key);
             print('step2');
-            Map<String, dynamic> data = {'data':model};
+            print(model.toString());
+            Map<String, dynamic> data = toMap(model, key);
+
             await StorageController.setString(
                 StorageController.loginUserModel, jsonEncode(data));
             print('step1');
-            Map<String,dynamic> map= jsonDecode(StorageController.getString(StorageController.loginUserModel));
+            //Map<String,dynamic> map= jsonDecode(StorageController.getString(StorageController.loginUserModel));
 
-            print(map['data'].name);
-           // _storageController.setUserModelData(model);
+            // print(map['data'].name);
+            // _storageController.setUserModelData(model);
           }
         });
       }
@@ -202,7 +207,8 @@ class AuthController extends GetxController {
 
   changePassword(Map<String, dynamic> map) async {
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${model.id}.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${model
+        .id}.json?auth=$token';
     String url1 =
         'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
 
@@ -218,11 +224,11 @@ class AuthController extends GetxController {
 
     try {
       var response2 =
-          await http.post(Uri.parse(url1), body: json.encode(map_new));
+      await http.post(Uri.parse(url1), body: json.encode(map_new));
       print('ssssssss  ' + response2.body.toString());
       if (response2.statusCode == 200) {
         var response =
-            await http.patch(Uri.parse(url), body: json.encode(map_new1));
+        await http.patch(Uri.parse(url), body: json.encode(map_new1));
         getUserDate();
       } else {
         Fluttertoast.showToast(
@@ -246,7 +252,7 @@ class AuthController extends GetxController {
 
     try {
       var response2 =
-          await http.post(Uri.parse(url1), body: json.encode(map_new));
+      await http.post(Uri.parse(url1), body: json.encode(map_new));
       print('ssssssss  ' + response2.body.toString());
       if (response2.statusCode == 200) {
         print(response2.body.toString());
@@ -271,4 +277,18 @@ class AuthController extends GetxController {
       print('sucesssssssssss');
     }
   }
+
+  Map<String, dynamic> toMap(UserModel model,String key) {
+    return {
+      'name': model.name,
+      'email': model.email,
+      'type': model.type,
+      'phone': model.mobile,
+      'password': model.password,
+      'confirm_password': model.confirm_password,
+      'localId': model.userId,
+      'id': key
+    };
+  }
+
 }
