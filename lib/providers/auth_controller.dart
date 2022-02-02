@@ -59,11 +59,6 @@ class AuthController extends GetxController {
             StorageController.loginDataKey, jsonEncode(data));
         Map<String, dynamic> loginData = jsonDecode(
             StorageController.getString(StorageController.loginDataKey));
-
-        // UserModel model = UserModel(
-        //     regMap['name'], regMap['email'], regMap['mobile'],
-        //     regMap['password'], regMap['confirm_password'], userId);
-
         String url =
             'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${StorageController
             .getString(StorageController.apiToken)}';
