@@ -18,6 +18,11 @@ class Cons {
   static var blueFont=TextStyle(color: Color.fromARGB(255,123,196,229),fontSize: 20,fontWeight: FontWeight.bold);
   static var greyFont1=TextStyle(color: Colors.black54,fontSize: 18);
   static var greenFont= TextStyle(color: Colors.lightGreen);
+ static var blackStyle1= TextStyle(
+  fontSize: 17,
+  fontWeight: FontWeight.bold,
+  color: Colors.white,
+  );
 
 
 
