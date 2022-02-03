@@ -8,6 +8,7 @@ class Product{
   String phone;
   String id;
   String creator_id;
+  String creator_name='tr';
   int cat;
   int status;
   int isFav;
@@ -17,7 +18,7 @@ class Product{
 
   Product({@required this.id,@ required this.name,@ required this.price,@ required this.desc, @ required this.email, @ required this.phone, @ required this.cat,
   @ required this.status,@ required  this.isFav, @ required this.images,@required this.connType,@required this.creator_id,
-  @ required this.dateTime});
+  @ required this.dateTime,@ required creator_name});
 
 
   factory Product.fromJson(String prodId,Map<String,dynamic> map){
@@ -34,7 +35,8 @@ class Product{
         images:map['images'],
         connType:map['connType'],
         creator_id:map['creator_id'],
-    dateTime: map['dataTime']);
+    dateTime: map['dataTime'],
+    creator_name: map['creator_name']);
   }
 
   Map<String, dynamic> toMap(Product p) {
@@ -50,7 +52,8 @@ class Product{
         'isFav': p. isFav,
         'images':p. images,
         'connType':p. connType,
-      'dateTime':p.dateTime
+      'dateTime':p.dateTime,
+      'creator_name':p.creator_name
     };
   }
 

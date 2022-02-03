@@ -4,6 +4,7 @@ class LocaleString extends Translations{
 
   Map<String ,Map<String,String>> get keys =>{
     'en': {
+      'add_to_cart':'ADD TO CART',
       'address':'Address',
       'website':'WebSite',
       'send_message':'Send Message',
@@ -101,7 +102,12 @@ class LocaleString extends Translations{
       'old_password':'Old Password',
       'change_password':'Change Password'
     },
+
+
+
+
     'ar':{
+      'add_to_cart':'اضافه للعربة',
       'name':'الاسم',
       'new_password':'كلمه المرور الجديده',
   'old_password':'كلمه المرور القديمة',
