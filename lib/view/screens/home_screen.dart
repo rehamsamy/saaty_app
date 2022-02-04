@@ -51,32 +51,37 @@ class HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    Future.delayed(Duration.zero, () {
-      Cons.buildColors(context);
-      _userData =
-          jsonDecode(StorageController.getString(StorageController.loginDataKey));
-      DateTime expire = DateTime.parse(StorageController.getString(StorageController.expireDate));
-      String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-      DateTime nowRes = DateTime.parse(nowFormat);
-      print('    expire            ' + expire.toString());
-      if (expire != null) {
-        if (expire.isAfter(nowRes)) {
-          MainPageScreen.token = _userData['idToken'];
-          MainPageScreen.userId = _userData['localId'];
-        } else {
-          Future.delayed(Duration.zero, () {
-            Navigator.of(context)
-                .pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
-          });
+    if(!StorageController.isGuest){
+      Future.delayed(Duration.zero, () {
+        Cons.buildColors(context);
+        _userData =
+            jsonDecode(StorageController.getString(StorageController.loginDataKey));
+        DateTime expire = DateTime.parse(StorageController.getString(StorageController.expireDate));
+        String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+        DateTime nowRes = DateTime.parse(nowFormat);
+        print('    expire            ' + expire.toString());
+        if (expire != null) {
+          if (expire.isAfter(nowRes)) {
+            MainPageScreen.token = _userData['idToken'];
+            MainPageScreen.userId = _userData['localId'];
+          } else {
+            Future.delayed(Duration.zero, () {
+              Navigator.of(context)
+                  .pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+            });
+          }
         }
-      }
 
+        _productController.fetchHomeProducts();
+        fetchUserData();
+
+        fetchData();
+      });
+
+    }else{
       _productController.fetchHomeProducts();
-      fetchUserData();
-
       fetchData();
-    });
-
+    }
   }
 
   @override

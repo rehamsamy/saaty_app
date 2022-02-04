@@ -383,17 +383,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:saaty_app/cons.dart';
+import 'package:saaty_app/model/cart.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
 
+import '../../cons.dart';
 import 'create_product_screen.dart';
 import 'login_screen.dart';
 
-
+int quantity=1;
 
 
 class ProductItemDetailScreen extends StatelessWidget {
@@ -402,6 +403,8 @@ class ProductItemDetailScreen extends StatelessWidget {
   double width,height;
   ProductController _productController=Get.find();
   AuthController _authController=Get.find();
+  int numOfItems=1;
+  Cart _cart=Get.find();
   Product product;
   @override
   Widget build(BuildContext context) {
@@ -435,29 +438,30 @@ class ProductItemDetailScreen extends StatelessWidget {
                       topRight: Radius.circular(24),
                     ),
 
-
                   ),
                   child: Column(
                     children: [
                       buildTypeStatusProduct(context),
-                      SizedBox(height: 10,),
+                      //SizedBox(height: 10,),
                       Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Text(
                           product.desc,
-                          style: Cons.blackStyle1
+                          style: TextStyle(color: Colors.black,fontSize: 16)
                           //TextStyle(fontSize: 13,),
                         ),
                       ),
                       SizedBox(height: 10,),
                       buildContainerProductImages(product,context),
                       SizedBox(height: 20,),
-                      ListTile(leading: Icon(Icons.phone_android_sharp,color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
+                      ListTile(
+                          leading: Icon(Icons.phone_android_sharp,
+                            color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
                       ListTile(leading: Icon(Icons.email,color: Cons.primary_color,),title: Text(product.email),contentPadding: EdgeInsets.all(0)),
                       SizedBox(height: 10,),
                       CounterWithFavBtn(),
                       SizedBox(height: 10,),
-                      AddToCart(product: product)
+                      AddToCart(product: product,cart:_cart,num:numOfItems)
                     ],
                   ),
                 ),
@@ -482,16 +486,16 @@ class ProductItemDetailScreen extends StatelessWidget {
         Expanded(child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('category'.tr,style:Theme.of(context).textTheme.headline6,),
-            Text(product.cat==0?'watch'.tr:'braclet'.tr,style: Cons.blackStyle1,)
+            Text('category'.tr,style:Theme.of(context).textTheme.subtitle1,),
+            Text(product.cat==0?'watch'.tr:'braclete'.tr,style: Theme.of(context).textTheme.subtitle2,)
           ],
         )),
         Expanded(child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('status'.tr,style:Theme.of(context).textTheme.headline6,),
+            Text('status'.tr,style:Theme.of(context).textTheme.subtitle1,),
             //Cons.blackStyle1,),
-            Text(product.status==0?'new'.tr:'old'.tr,style: Cons.blackStyle1)
+            Text(product.status==0?'new'.tr:'old'.tr,style:Theme.of(context).textTheme.subtitle2,)
           ],
         ))
       ],
@@ -510,7 +514,7 @@ class ProductItemDetailScreen extends StatelessWidget {
 
   buildContainerProductImages(Product product,BuildContext context){
     return Container(
-        height: 100,
+        height: 80,
         width: double.infinity,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -522,10 +526,10 @@ class ProductItemDetailScreen extends StatelessWidget {
                 itemCount: product.images.length,
                 itemBuilder: (_, indx) {
                   return Container(
-                      margin: EdgeInsets.all(5),
+                      margin: EdgeInsets.all(2),
                       child: SizedBox(
                           height: 65,
-                          width: 80,
+                          width: 55,
                           child: Image.network(
                             product.images[indx],
                             scale: 1,
@@ -535,30 +539,32 @@ class ProductItemDetailScreen extends StatelessWidget {
             Align(
               alignment:StorageController.isArabicLanguage? Alignment.centerLeft:Alignment.centerRight,
               child: Container(
-                height: 100,
-                width: 90,
+                height: 90,
+                width: 65,
                 color: Cons.accent_color,
-                child: Container(
-                  child: InkWell(
-                    onTap: () {
-                       showImageDialog(context, product);
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          product.images.length.toString(),
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                        Icon(
-                          Icons.photo_camera,
-                          color: Colors.white,
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.white,
-                        )
-                      ],
+                child: Center(
+                  child: Container(
+                    child: InkWell(
+                      onTap: () {
+                         showImageDialog(context, product);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            product.images.length.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          Icon(
+                            Icons.photo_camera,
+                            color: Colors.white,
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -656,7 +662,7 @@ Widget buildCarouselSlider(Product product,BuildContext context) {
         iconTheme: IconThemeData(
           color: Colors.white, //change your color here
         ),
-      backgroundColor: Cons.blueColor,
+        backgroundColor: Cons.blueColor,
         elevation: 0.0,
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -674,7 +680,7 @@ Widget buildCarouselSlider(Product product,BuildContext context) {
                       }, icon: Icon(Icons.arrow_back,color: Cons.accent_color,size: 30)),
                       Text(product.name, style: Cons.whiteFont),
                       IconButton(onPressed: ()async{
-                        if(_authController.visitorFlag==true){
+                        if(StorageController.isGuest){
                           Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                         }else{
                           print('pppp');
@@ -702,7 +708,7 @@ Widget buildCarouselSlider(Product product,BuildContext context) {
                         flex: 1,
                         child: IconButton(onPressed: ()async{
                           print('ppppp');
-                          if(_authController.visitorFlag==true){
+                          if(StorageController.isGuest==true){
                             Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                           }else {
                             if (product.isFav == 1) {
@@ -725,15 +731,16 @@ Widget buildCarouselSlider(Product product,BuildContext context) {
                       }, icon: Icon(Icons.edit,color: Cons.accent_color,size: 25))),
 
                     ],
-                  ), background: Hero(
-                tag: product.id,
-                child: FadeInImage(
-                  image: NetworkImage(product.images[0]),
-                  // Image.network(product.images[0],),
-                  placeholder: AssetImage('assets/images/watch_item1.png'),
-                  fit: BoxFit.cover,
-                ),
-              )
+                  ),
+              //     background: Hero(
+              //   tag: product.id,
+              //   child: FadeInImage(
+              //     image: NetworkImage(product.images[0]),
+              //     // Image.network(product.images[0],),
+              //     placeholder: AssetImage('assets/images/watch_item1.png'),
+              //     fit: BoxFit.cover,
+              //   ),
+              // )
               ),
         ));
 
@@ -750,6 +757,8 @@ Widget buildCarouselSlider(Product product,BuildContext context) {
 
 
 class CartCounter extends StatefulWidget {
+
+
   @override
   _CartCounterState createState() => _CartCounterState();
 }
@@ -766,6 +775,7 @@ class _CartCounterState extends State<CartCounter> {
             if (numOfItems > 1) {
               setState(() {
                 numOfItems--;
+                quantity=numOfItems;
               });
             }
           },
@@ -783,6 +793,7 @@ class _CartCounterState extends State<CartCounter> {
             press: () {
               setState(() {
                 numOfItems++;
+                quantity=numOfItems;
               });
             }),
       ],
@@ -811,9 +822,13 @@ class AddToCart extends StatelessWidget {
   const AddToCart({
     Key key,
     @required this.product,
+    @ required this.cart,
+    @ required this.num
   }) : super(key: key);
 
   final Product product;
+  final Cart cart;
+  final int num;
 
   @override
   Widget build(BuildContext context) {
@@ -831,7 +846,10 @@ class AddToCart extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18)),
                 color: Cons.blueColor,
-                onPressed: () {},
+                onPressed: () {
+                  print('id    '+product.id);
+               cart.addCartItem(product.id, double.parse(product.price)*quantity, product.name);
+                },
                 label: Text(
                   "add_to_cart".tr,
                   style: TextStyle(
@@ -856,9 +874,7 @@ class ProductTitleWithImage extends StatelessWidget {
     Key key,
     @required this.product,
   }) : super(key: key);
-
   final Product product;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -876,8 +892,7 @@ class ProductTitleWithImage extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .headline1
-                .copyWith(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 30),
-
+                .copyWith(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 20),
           ),
           SizedBox(height: 10),
           Row(
@@ -890,27 +905,30 @@ class ProductTitleWithImage extends StatelessWidget {
                     TextSpan(
                       text: "\$${product.price}",
                       style: Theme.of(context).textTheme.headline1.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.bold,fontSize: 30),
+                          color: Colors.white, fontWeight: FontWeight.bold,fontSize: 20),
                     ),
                   ],
                 ),
               ),
               SizedBox(width: 20),
               Container(
-                width: 200,
-                height: 140,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(30),
-                      topRight: Radius.circular(15)),
-                  child: Hero(
-                    tag: "${product.id}",
-                    child: Image.network(product.images[0],  fit: BoxFit.fill,)
-                  //child:Image.asset(
-                    //  'assets/images/watch_item1.png',
-                    //   fit: BoxFit.fill,
-                    // width: 50,
-                    // height: 100,
-                    // ),
+                width:150,
+                height: 100,
+                child: Visibility(
+                  visible: true,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(30),
+                        topRight: Radius.circular(15)),
+                    child: Hero(
+                      tag: "${product.id}",
+                      child: Image.network(product.images[0],  fit: BoxFit.fill,)
+                    //child:Image.asset(
+                      //  'assets/images/watch_item1.png',
+                      //   fit: BoxFit.fill,
+                      // width: 50,
+                      // height: 100,
+                      // ),
+                    ),
                   ),
                 ),
               )

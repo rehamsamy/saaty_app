@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:saaty_app/model/cart.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
@@ -14,11 +15,13 @@ import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
+import 'package:saaty_app/view/widget/badge.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 import 'package:saaty_app/view/widget/store_item_widget.dart';
 import 'package:saaty_app/view/widget/visitor_drawer.dart';
 
 import '../../cons.dart';
+import 'cart_screen.dart';
 
 class MainPageScreen extends StatefulWidget {
   static String MAIN_PRAGE_ROUTE = '/5';
@@ -45,6 +48,7 @@ class _MainPageScreenState extends State<MainPageScreen>
   List<Product> allProducts = [];
   List<Product> filteredProducts = [];
   ProductsController _productController = Get.find();
+  Cart _cart=Get.find();
   AuthController _authController=Get.find();
   ProductController _prod = Get.find();
   String productsType;
@@ -62,20 +66,28 @@ class _MainPageScreenState extends State<MainPageScreen>
   @override
   void initState() {
     super.initState();
-    _userData= jsonDecode(StorageController.getString(StorageController.loginDataKey));
-    MainPageScreen.expire=DateTime.parse(StorageController.getString(StorageController.expireDate));
-    String nowFormat=DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-    DateTime nowRes=DateTime.parse(nowFormat);
-    if(MainPageScreen.expire !=null){
-      if( MainPageScreen.expire.isAfter(nowRes)){
-        MainPageScreen.token=_userData['idToken'];
-        MainPageScreen.userId=_userData['localId'];
-        print('88888  '+MainPageScreen.userId+'      ;fff   '+MainPageScreen.token);
-      }else{
-        Future.delayed(Duration.zero, () {
-          Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
-        });
+    if(!StorageController.isGuest) {
+      _userData = jsonDecode(
+          StorageController.getString(StorageController.loginDataKey));
+      MainPageScreen.expire = DateTime.parse(
+          StorageController.getString(StorageController.expireDate));
+      String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(
+          DateTime.now());
+      DateTime nowRes = DateTime.parse(nowFormat);
+      if (MainPageScreen.expire != null) {
+        if (MainPageScreen.expire.isAfter(nowRes)) {
+          MainPageScreen.token = _userData['idToken'];
+          MainPageScreen.userId = _userData['localId'];
+          print('88888  ' + MainPageScreen.userId + '      ;fff   ' +
+              MainPageScreen.token);
+        } else {
+          Future.delayed(Duration.zero, () {
+            Navigator.of(context).pushReplacementNamed(
+                LoginScreen.LOGIN_SCREEN_ROUTE);
+          });
+        }
       }
+    }else{
 
     }
 
@@ -111,6 +123,9 @@ class _MainPageScreenState extends State<MainPageScreen>
                       title: Text('main_page'.tr, style: Cons.greyFont),
                       elevation: 6,
                       actions: [
+                        GetBuilder<Cart>(builder: (_)=> Badge (_cart.itemCount.toString(),Colors.red),
+                        ),
+
                         IconButton(
                           icon: Icon(
                             Icons.home,
@@ -122,7 +137,7 @@ class _MainPageScreenState extends State<MainPageScreen>
                                 .pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
                           },
                         ),
-                      ],
+            ],
                     ),
                   ),
                   SizedBox(

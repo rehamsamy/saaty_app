@@ -100,13 +100,22 @@ class LocaleString extends Translations{
       'catgory':'Category',
       'new_password':'New Password',
       'old_password':'Old Password',
-      'change_password':'Change Password'
+      'change_password':'Change Password',
+      'delete_item':'Delete Item',
+      'are_you_sure_delete':'Are you Sure Delete this Item',
+      'ok':'Ok',
+      'order_now':'Order Now',
+  'total':'Total:',
     },
 
 
 
 
     'ar':{
+      'order_now':'اطلب الان',
+      'total':' الاجمالي:',
+      'ok':'تم',
+  'are_you_sure_delete':'هل انت متاكد من حذف هذا العنصر',
       'add_to_cart':'اضافه للعربة',
       'name':'الاسم',
       'new_password':'كلمه المرور الجديده',
@@ -152,6 +161,7 @@ class LocaleString extends Translations{
   'welcome_as_visitor':'مرحبا بك كزائر لساعاتي',
   'watch':'ساعة',
   'braclete':'اسورة',
+      'delete_item':'حذف العنصر',
   'currency':'ريال',
   'new':'جديد',
   'old':'مستعمل',

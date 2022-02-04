@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/model/http_exception.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/forget_password_screen.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/register_screen.dart';
@@ -157,9 +158,9 @@ class LoginScreenState extends State<LoginScreen> {
                      borderRadius: BorderRadius.circular(10)
                     ),
                     onPressed: (){
-                     _authController.changeVisitorFlag(true);
-                     print('xxxxxxx  '+_authController.visitorFlag.toString());
-                     Navigator.of(context).pushReplacementNamed(HomeScreen.HOME_SCREEN_RIUTE);
+                    StorageController.isGuest==true;
+                     //print('xxxxxxx  '+_authController.visitorFlag.toString());
+                     Navigator.of(context).pushNamed(HomeScreen.HOME_SCREEN_RIUTE);
                     },child: Text('login_as_visitor'.tr,style: Cons.whiteFont,),),
                 ),
                 SizedBox(height: 20,),

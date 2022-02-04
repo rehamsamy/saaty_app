@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:saaty_app/LocalString.dart';
 import 'package:flutter/services.dart';
 import 'package:saaty_app/cons.dart';
+import 'package:saaty_app/providers/Orders.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/fav_ads_controller.dart';
 import 'package:saaty_app/providers/lang_controller.dart';
@@ -16,6 +17,7 @@ import 'package:saaty_app/view/screens/about_app.dart';
 import 'package:saaty_app/view/screens/account_screen.dart';
 import 'package:saaty_app/view/screens/ads_screen.dart';
 import 'package:saaty_app/view/screens/call_us.dart';
+import 'package:saaty_app/view/screens/cart_screen.dart';
 import 'package:saaty_app/view/screens/change_password_screen.dart';
 import 'package:saaty_app/view/screens/create_product_screen.dart';
 import 'package:saaty_app/view/screens/edit_account_screen.dart';
@@ -32,6 +34,7 @@ import 'package:saaty_app/view/screens/setting_screen.dart';
 import 'package:saaty_app/view/screens/splah_language_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
 
+import 'model/cart.dart';
 import 'providers/products_controller.dart';
 import 'view/screens/register_screen.dart';
 
@@ -49,6 +52,8 @@ class MyApp extends StatelessWidget {
   final controller5 = Get.put(MessageController());
   final controller6 = Get.put(LangController());
   final controller7 = Get.put(StorageController());
+  final controller8 = Get.put(Cart());
+  final controller9 = Get.put(Orders());
   String splash_flag;
 
   // This widget is the root of your application.
@@ -117,7 +122,8 @@ class MyApp extends StatelessWidget {
         SplashLanguageScreen.SPLASH_LANGUAGE_SCREEN_ROUTE: (_) =>
             SplashLanguageScreen(),
         AboutApp.ABOUT_APP_SCREEN_ROUTE: (_) => AboutApp(),
-        CallUs.CALL_US_SCREEN_ROUTE: (_) => CallUs()
+        CallUs.CALL_US_SCREEN_ROUTE: (_) => CallUs(),
+        CartScreen.Cart_Route:(_)=> CartScreen()
       },
     );
   }
