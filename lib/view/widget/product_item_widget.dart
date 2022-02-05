@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saaty_app/model/cart.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
@@ -13,6 +15,7 @@ class ProductItemWidget extends StatelessWidget {
   Product product;
   String flag;
   ProductController _productController = Get.find();
+  Cart _cart = Get.find();
   AuthController _authController=Get.find();
   ProductItemWidget(this.product, [this.flag]);
 
@@ -79,6 +82,19 @@ class ProductItemWidget extends StatelessWidget {
                       ),
                     ),
                   ),
+                  Positioned(
+                      top: 0,
+                      left: 1,
+                      child: IconButton(onPressed: (){
+                        _cart.addCartItem(product.id, double.parse(product.price), product.name);
+                        _cart.changeCartFlag(1);
+                        _cart.update();
+                      },
+                      icon: GetBuilder<Cart>(
+                        builder: (_)=> Icon(Icons.shopping_cart_outlined,
+                          color:_cart.isCart==1 ?Colors.red:Colors.grey,),
+                      ),),
+                     ),
                   Positioned(
                       top: 0,
                       right: 1,

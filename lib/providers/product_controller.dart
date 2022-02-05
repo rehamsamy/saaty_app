@@ -33,7 +33,7 @@ class ProductController extends GetxController {
   int isFavorite = 0;
   String favKey;
   int sliderIndex = 0;
-
+int isCart=0;
   List<String> imagesResult = [];
   int selectedTabIndex = 0;
   List<Product> get favProducts {
@@ -44,6 +44,7 @@ class ProductController extends GetxController {
     isFavorite = fav;
     update();
   }
+
 
   changeSliderImage(int index) async {
     sliderIndex = index;

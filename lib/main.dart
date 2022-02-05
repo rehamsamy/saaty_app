@@ -27,6 +27,7 @@ import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'package:saaty_app/view/screens/message_detail_screen.dart';
 import 'package:saaty_app/view/screens/messages_screen.dart';
+import 'package:saaty_app/view/screens/order_screen.dart';
 import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 import 'package:saaty_app/view/screens/reset_password_screen.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
@@ -123,7 +124,8 @@ class MyApp extends StatelessWidget {
             SplashLanguageScreen(),
         AboutApp.ABOUT_APP_SCREEN_ROUTE: (_) => AboutApp(),
         CallUs.CALL_US_SCREEN_ROUTE: (_) => CallUs(),
-        CartScreen.Cart_Route:(_)=> CartScreen()
+        CartScreen.Cart_Route:(_)=> CartScreen(),
+        OrderScreen.Order_Screen_Route:(_)=>OrderScreen()
       },
     );
   }

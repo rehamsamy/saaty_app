@@ -13,57 +13,59 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
-    var carts=cart.cartsList.values.toList();
-    print('ssssss     '+carts[0].id);
     return Scaffold(
       appBar: AppBar(
         title: Text('Your Cart'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Expanded(
-          child: Column(
-            children: [
-              Card(
-                margin: EdgeInsets.all(15),
-                elevation: 15,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('total'.tr,style: TextStyle(color: Colors.black87,fontSize: 20)),
-                      Spacer(),
-                      Container(
-                        width: 100,
-                        height: 50,
-                        child: Chip(label: Text('\$${cart.getTotal.toStringAsFixed(2)}'
-                          ,style: TextStyle(color: Colors.white),),
-                          backgroundColor: Theme.of(context).primaryColor,),
-                      ),
-                      OrderButton(cart)
+      body: GetBuilder<Cart>(
+        builder: (_)=> Column(
+          children: [
+            Card(
+              margin: EdgeInsets.all(15),
+              elevation: 15,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('total'.tr,style: TextStyle(color: Colors.black87,fontSize: 20)),
+                    Spacer(),
+                    Container(
+                      width: 100,
+                      height: 50,
+                      child: Chip(label: Text('\$${cart.getTotal.toStringAsFixed(2)}'
+                        ,style: TextStyle(color: Colors.white),),
+                        backgroundColor: Theme.of(context).primaryColor,),
+                    ),
+                    OrderButton(cart)
 
-                      // ${cart.getTotal.toStringAsFixed(2)
-                    ],
-                  ),
+                    // ${cart.getTotal.toStringAsFixed(2)
+                  ],
                 ),
               ),
-              SizedBox(height: 10,),
-              Expanded(
+            ),
+            SizedBox(height: 10,),
+            GetBuilder<Cart>(
+              builder: (_){
+                List<CartItem> carts= cart.cartsList.values.toList();
+                return Expanded(
                 child: ListView.builder(
                     itemCount: cart.cartsList.length,itemBuilder: (_,index){
                   return
                     CartItemWidget(
-                        carts[index].id,carts[index].title,carts[index].price,carts[index].quantity
+
+                        carts[0].id,carts[index].title,carts[index].price,carts[index].quantity
                     );
                 }),
-              )
-            ],
-          ),
+              );}
+            )
+          ],
         ),
       ),
     );
   }
+
 }
 
 class CartItemWidget  extends StatelessWidget{
@@ -79,6 +81,7 @@ class CartItemWidget  extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    print('111111  '+ id+'   '+_cart.cartsList.values.toList().length.toString());
     return GetBuilder<Cart>(
       builder: (_)=>
        Dismissible(key: ValueKey(id),
@@ -92,18 +95,18 @@ class CartItemWidget  extends StatelessWidget{
             showDialog(context: context, builder: (ctx)=>
                 AlertDialog(title:Text('delete_item'.tr),content: Text('are_you_sure_delete'.tr),
                   actions: [
-                    FlatButton(onPressed: (){
+                    FlatButton(onPressed: ()async{
                       Navigator.of(ctx).pop();
-                     _cart.removeItem(id);
+                    await _cart.removeItem(id).then((value) =>  print('hhh  v '+id +'    '+_cart.cartsList.values.toList()[0].id));
                      _cart.update();
-                     print('hhh  v'+id);
+                    // print('hhh  v '+id +'    '+_cart.cartsList.values.toList()[0].id);
                     }, child: Text('ok'.tr))
                   ],)
             );
           },
           onDismissed: (dir){
             print('disssssss');
-            _cart.removeItem(id);
+            _cart.removeSingleItem(id);
             _cart.update();
           },
           child:  Card(
@@ -118,13 +121,13 @@ class CartItemWidget  extends StatelessWidget{
                 leading: CircleAvatar(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: FittedBox(child: Text('\$${price}',style: TextStyle(color: Colors.white),)),
+                    child: FittedBox(child: Text('\$${price}',style: TextStyle(color: Colors.white,fontSize: 15),)),
                   ),
                   backgroundColor: Theme.of(context).accentColor,
                 ),
                 trailing: Text('${quantity} x'),
                 title: Text(title),
-                subtitle: Text('total\$${price* quantity}'),
+                subtitle: Text('total \$${price* quantity}'),
                  // ${'total'.tr}
               ),
             ),
@@ -152,23 +155,24 @@ class OrderButtonState extends State<OrderButton>{
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading?CircularProgressIndicator():
-    FlatButton(
-        onPressed:StorageController.isGuest?Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE):
-        widget.cart.cartsList.length<0||_isLoading?null:()async{
-          setState(() {
-            _isLoading=true;
-          });
-          await  _orders.addOrder(widget.cart.cartsList.values.toList(), widget.cart.getTotal)
-              .then((value) {
+    return
+      _isLoading?CircularProgressIndicator():
+      FlatButton(
+          onPressed:
+          widget.cart.cartsList.isEmpty?null:()async{
             setState(() {
-              _isLoading=false;
+              _isLoading=true;
             });
-            widget.cart.clearAll();
-          });
+            await  _orders.addOrder(widget.cart.cartsList.values.toList(), widget.cart.getTotal)
+                .then((value) {
+              setState(() {
+                _isLoading=false;
+              });
+              widget.cart.clearAll();
+            });
 
 
-        }, child: Text('order_now'.tr,style: TextStyle(color: Theme.of(context).primaryColor,
+          }, child: Text('order_now'.tr,style: TextStyle(color: Theme.of(context).primaryColor,
         fontSize: 15),));
   }
 

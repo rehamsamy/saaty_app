@@ -14,6 +14,7 @@ import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'package:saaty_app/view/screens/messages_screen.dart';
+import 'package:saaty_app/view/screens/order_screen.dart';
 import 'package:saaty_app/view/screens/setting_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
 
@@ -42,7 +43,7 @@ class MyDrawer extends StatelessWidget {
                 leading: Image.asset('assets/images/sidemenu_photo.png',fit: BoxFit.cover,),
                 title: Text(jsonDecode(StorageController.getString(StorageController.loginUserModel))['name']),
               ),
-              SizedBox(height: 15,),
+              SizedBox(height: 15),
               SizedBox(
                 width: double.infinity-20,
                 height: 45,
@@ -59,6 +60,13 @@ class MyDrawer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+              ),
+              ListTile(
+                leading: Image.asset('assets/images/sidemenu_photo.png',fit: BoxFit.cover,),
+                title: Text('orders'.tr),
+                onTap: (){
+                  Navigator.of(context).pushNamed(OrderScreen.Order_Screen_Route);
+                },
               ),
               ListTile(
                 leading: Icon(

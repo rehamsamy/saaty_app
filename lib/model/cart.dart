@@ -10,13 +10,22 @@ class CartItem{
   CartItem({@ required this.id,@ required this.title,@ required this.price, @ required this.quantity});
 }
 
+
 class Cart extends GetxController {
   Map<String,CartItem> _cartsList={};
   int quantity=0;
+  int isCart=0;
   Map<String, CartItem> get cartsList => _cartsList;
   int get itemCount{
     return _cartsList.length;
   }
+
+
+  changeCartFlag(int val){
+    isCart=val;
+    update();
+  }
+
 
   double get getTotal{
     double _total = 0.0;
@@ -27,8 +36,9 @@ class Cart extends GetxController {
   }
 
   void addCartItem(String id,double price,String title){
-
+print('kkkkv   '+id);
    if(_cartsList.containsKey(id)){
+     print('yes');
    _cartsList.update(id, (oldCart) =>
        CartItem(id: oldCart.id,
            title: oldCart.title,
@@ -36,16 +46,18 @@ class Cart extends GetxController {
            quantity: oldCart.quantity+1)
    );
    }else{
+     print('no');
      _cartsList.putIfAbsent(id, () =>
-         CartItem(id: DateTime.now().toString(), title: title, price: price.toString(), quantity: 1)
+         CartItem(id:id , title: title, price: price.toString(), quantity: 1)
+    // DateTime.now().toString()
      );
    }
    print('exit ${_cartsList.toString()}');
    update();
   }
 
-  void removeItem(String id){
-    _cartsList.remove(id);
+  Future removeItem(String id)async{
+   await _cartsList.remove(id);
     update();
   }
 
