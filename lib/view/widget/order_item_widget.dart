@@ -4,8 +4,6 @@ import 'package:saaty_app/providers/Orders.dart';
 
 class OrderItemWidget extends StatelessWidget {
   OrderItem item;
-
-
   OrderItemWidget(this.item);
 
   @override

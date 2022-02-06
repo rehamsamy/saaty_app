@@ -28,8 +28,6 @@ class OrderScreen extends StatelessWidget {
                       //Center(child: Text('ord.ordersList[index].id'));
                       OrderItemWidget(_orders.ordersList[index]);
                   });
-
-
           }
                 )
 

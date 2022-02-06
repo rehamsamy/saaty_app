@@ -62,7 +62,10 @@ class MyDrawer extends StatelessWidget {
                 ),
               ),
               ListTile(
-                leading: Image.asset('assets/images/sidemenu_photo.png',fit: BoxFit.cover,),
+                leading: Icon(
+                  Icons.add_shopping_cart,
+                  color: Cons.primary_color,
+                ),
                 title: Text('orders'.tr),
                 onTap: (){
                   Navigator.of(context).pushNamed(OrderScreen.Order_Screen_Route);

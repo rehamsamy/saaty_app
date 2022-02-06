@@ -14,10 +14,10 @@ class Badge extends StatelessWidget {
           onPressed: ()=>Navigator.of(context).pushNamed(CartScreen.Cart_Route),),
         Positioned(
          right: 5,
-          top: 3,
+          top: 4,
           child: Container(
-            width: 16,
-            height: 16,
+            width: 20,
+            height: 20,
             padding: EdgeInsets.all(3),
             decoration: BoxDecoration(
               color: color!=null?color:Theme.of(context).accentColor,

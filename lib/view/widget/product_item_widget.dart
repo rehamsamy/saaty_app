@@ -92,7 +92,8 @@ class ProductItemWidget extends StatelessWidget {
                       },
                       icon: GetBuilder<Cart>(
                         builder: (_)=> Icon(Icons.shopping_cart_outlined,
-                          color:_cart.isCart==1 ?Colors.red:Colors.grey,),
+                          color:Colors.grey,),
+                          //_cart.isCart==1 ?Colors.red:Colors.grey,),
                       ),),
                      ),
                   Positioned(
