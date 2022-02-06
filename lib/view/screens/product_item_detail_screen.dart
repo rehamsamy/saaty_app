@@ -420,6 +420,7 @@ class ProductItemDetailScreen extends StatelessWidget {
       appBar: buildAppBar(context, product, _prodType),
       body: SingleChildScrollView(
         child: Container(
+         // padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: Cons.blueColor
           ),

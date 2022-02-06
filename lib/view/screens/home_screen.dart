@@ -339,7 +339,7 @@ class HomeScreenState extends State<HomeScreen> {
                         mainAxisSpacing: 0,
                         crossAxisSpacing: 0,
                         childAspectRatio: 3 / 4,
-                        crossAxisCount: 2),
+                        crossAxisCount: 2,),
                     itemCount:_productController.homeProducts.length,
                     itemBuilder: (ctx, inx) {
                       return HomeProductWidget(

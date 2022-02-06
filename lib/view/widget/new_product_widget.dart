@@ -41,9 +41,9 @@ class HomeProductWidget extends StatelessWidget {
                       // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                            Align(
-                             alignment: Alignment.centerRight,
+                             alignment: Alignment.topRight,
                              child: Column(
-                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Image.asset('assets/images/new1.jpeg',width: 35,height: 35,),
                                 SizedBox(height: 5,),
@@ -71,7 +71,7 @@ class HomeProductWidget extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       child:
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Container(
                               margin: EdgeInsets.all(10),
