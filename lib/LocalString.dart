@@ -105,13 +105,18 @@ class LocaleString extends Translations{
       'are_you_sure_delete':'Are you Sure Delete this Item',
       'ok':'Ok',
       'order_now':'Order Now',
-  'total':'Total:',
+       'total':'Total:',
+      'orders':'Orders',
+      'price':'Price',
+      'quantity':'Quantity'
     },
 
 
 
 
     'ar':{
+  'price':'السعر',
+  'quantity':'الكميه',
       'order_now':'اطلب الان',
       'total':' الاجمالي:',
       'ok':'تم',
@@ -214,7 +219,8 @@ class LocaleString extends Translations{
       'select_all':'تحديد الكل',
       'cancel_all':'الغاء الكل',
       'send_message_sucessfully':'تم ارسال الرساله بنجاح',
-      'change_password':'تغيير كلمه المرور'
+      'change_password':'تغيير كلمه المرور',
+      'orders':'الطلبات'
     }
 
   };

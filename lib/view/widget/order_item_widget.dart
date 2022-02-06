@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:saaty_app/providers/Orders.dart';
-
+import 'package:get/get.dart';
 
 class OrderItemWidget extends StatelessWidget {
   OrderItem item;
@@ -22,11 +22,11 @@ class OrderItemWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Column(children:[
-                    Text(cart.title),
+                    Text(cart.title,style: TextStyle(fontSize: 16),),
                     Divider(color: Colors.green,),
-                    Text('Price = \$${cart.price}'),
+                    Text('${'price'.tr} = \$${cart.price}'),
                     Divider(color: Colors.green,),
-                    Text('quantity = ${cart.quantity.toString()} x')
+                    Text('${'quantity'.tr} = ${cart.quantity.toString()} x')
                   ],),
                 )
             ).toList()

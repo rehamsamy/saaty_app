@@ -187,6 +187,7 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ListTile(
+              contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 10),
               leading: Icon(
                 Icons.card_giftcard,
                 color: Cons.accent_color,
@@ -203,7 +204,7 @@ class HomeScreenState extends State<HomeScreen> {
             Container(
               margin: EdgeInsets.all(2),
               child: buildHomeProductsGrid(),
-              height: 190,
+              height: 270,
             ),
             SizedBox(height: 20,)
           ],
@@ -332,19 +333,33 @@ class HomeScreenState extends State<HomeScreen> {
                 child: Text('empty_data'.tr),
               )
             : GetBuilder<ProductsController>(
-                builder: (_) => ListView.builder(
-                    itemCount: _productController.homeProducts.length,
-                    scrollDirection: Axis.horizontal,
+                builder: (_) =>  GridView.builder(
+                  scrollDirection: Axis.vertical,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisSpacing: 0,
+                        crossAxisSpacing: 0,
+                        childAspectRatio: 3 / 4,
+                        crossAxisCount: 2),
+                    itemCount:_productController.homeProducts.length,
                     itemBuilder: (ctx, inx) {
-                      return Container(
-                        width: width * 0.8,
-                        height: 180,
-                        child: HomeProductWidget(
-                            _productController.homeProducts[inx]),
-                      );
-                      // return HomeProductWidget(
-                      //     _productController.homeProducts[inx]);
+                      return HomeProductWidget(
+                          _productController.homeProducts[inx]);
                     }),
+
+
+                    // ListView.builder(
+                    // itemCount: _productController.homeProducts.length,
+                    // scrollDirection: Axis.horizontal,
+                    // itemBuilder: (ctx, inx) {
+                    //   return Container(
+                    //     width: width * 0.8,
+                    //     height: 180,
+                    //     child: HomeProductWidget(
+                    //         _productController.homeProducts[inx]),
+                    //   );
+                    //   // return HomeProductWidget(
+                    //   //     _productController.homeProducts[inx]);
+                    // }),
               );
   }
 

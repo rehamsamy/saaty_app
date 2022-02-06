@@ -14,7 +14,7 @@ class OrderScreen extends StatelessWidget {
     fetchOrdersData();
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Orders'),
+        title: Text('orders'.tr),
         centerTitle: true,
       ),
       //drawer: AppDrawer(),

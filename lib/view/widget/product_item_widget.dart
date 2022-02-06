@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/cart.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
-import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 
@@ -128,10 +126,7 @@ class ProductItemWidget extends StatelessWidget {
       ),
     ),
         );
-
   }
-
-
 
   Future toogleFav(int fav, IconData iconData, Map<String, dynamic> map) async {
     map['isFav'] = fav;

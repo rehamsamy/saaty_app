@@ -380,6 +380,7 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -388,6 +389,7 @@ import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
+import 'package:saaty_app/view/screens/cart_screen.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';
 
 import '../../cons.dart';
@@ -659,9 +661,13 @@ Widget buildCarouselSlider(Product product,BuildContext context) {
 
   Widget buildAppBar(BuildContext context,Product product,String _prodType){
     return  AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.white, //change your color here
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
         ),
+        // iconTheme: IconThemeData(
+        //   color: Colors.white, //change your color here
+        // ),
         backgroundColor: Cons.blueColor,
         elevation: 0.0,
         centerTitle: true,
@@ -849,6 +855,14 @@ class AddToCart extends StatelessWidget {
                 onPressed: () {
                   print('id    '+product.id);
                cart.addCartItem(product.id, double.parse(product.price)*quantity, product.name);
+                  Fluttertoast.showToast(
+                      msg: "Add  to cart Sucessfully",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      backgroundColor: Colors.redAccent,
+                      textColor: Colors.white
+                  );
+                  Navigator.of(context).pushNamed(CartScreen.Cart_Route);
                 },
                 label: Text(
                   "add_to_cart".tr,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:saaty_app/LocalString.dart';
 import 'package:flutter/services.dart';
 import 'package:saaty_app/cons.dart';
@@ -61,13 +62,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
+
+    DateTime expire = DateTime.parse(StorageController.getString(StorageController.expireDate));
+    String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+    DateTime nowRes = DateTime.parse(nowFormat);
+
+
     final List locale = [
       {'name': 'ENGLISH', 'locale': Locale('us')},
       {'name': 'العربية', 'locale': Locale('ar')},
     ];
-
-    print('mmmmm '+StorageController.isSplashLogged.toString());
-
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -92,7 +96,7 @@ class MyApp extends StatelessWidget {
               iconTheme: IconThemeData(color: Theme.of(context).accentColor))),
       home: !StorageController.isSplashLogged
           ? SplashScreen()
-          : StorageController.getString(StorageController.expireDate) == null
+          : expire== null ||expire.isBefore(nowRes)
               ? LoginScreen()
               : HomeScreen(),
       routes: {
