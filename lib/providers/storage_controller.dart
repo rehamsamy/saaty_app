@@ -19,8 +19,6 @@ class StorageController extends GetxController {
   static const String loginDataKey = 'loginDataKey';
   static const String loginUserModel = 'loginUserModel';
 
-
-
   static Future init() async {
     await GetStorage.init();
     if (GetStorage().read(languageKey) == null) {
@@ -32,7 +30,7 @@ class StorageController extends GetxController {
 
   static bool get isClient => getString(type) == 'client';
 
-  static bool get isGuest => getString(type) == null;
+  static bool get isGuest => getString(type) == 'guest';
 
   static bool get isLogged => getBool(loginKey);
 
@@ -42,9 +40,6 @@ class StorageController extends GetxController {
 
   static String get getExpire => getString(expireDate);
 
-
-
-  //static UserModel get getUserModel=>g
 
   /// ============= ============== ===================  =================
   static Future setString(String key, String value) async {
@@ -76,13 +71,6 @@ class StorageController extends GetxController {
 
   UserModel get UserModelData => box.read('user_model');
 
-  // void setSplashFlag(String flag) => box.write('splash_flag', 'yes');
-  //
-  // void setSplashLang(String flag) => box.write('lang', flag);
-  //
-  // void setAuthData(dynamic data) => box.write('data', data);
-  //
-  // void setExpireDate(DateTime val) => box.write('expire', val);
 
   void setUserModelData(UserModel model) async{
   await  box.write('user_model', model);

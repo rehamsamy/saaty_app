@@ -210,7 +210,7 @@ class HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      drawer: _authController.visitorFlag ? VisitorDrawer() : MyDrawer(),
+      drawer: StorageController.getString(StorageController.type)=='guest' ? VisitorDrawer() : MyDrawer(),
     );
   }
 

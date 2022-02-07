@@ -158,7 +158,8 @@ class LoginScreenState extends State<LoginScreen> {
                      borderRadius: BorderRadius.circular(10)
                     ),
                     onPressed: (){
-                    StorageController.isGuest==true;
+                   // StorageController.isGuest==true;
+                    StorageController.setString(StorageController.type, 'guest');
                      //print('xxxxxxx  '+_authController.visitorFlag.toString());
                      Navigator.of(context).pushNamed(HomeScreen.HOME_SCREEN_RIUTE);
                     },child: Text('login_as_visitor'.tr,style: Cons.whiteFont,),),

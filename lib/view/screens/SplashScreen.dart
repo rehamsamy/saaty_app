@@ -68,20 +68,22 @@ class _SplashScreenState extends State<SplashScreen> {
                  Container(
                   height: height*.6,
                  //  color: Colors.red,
-                   child: Column(
-                     children: [
-                       SizedBox(height: 10,),
-                       ClipRRect(
-                         borderRadius: BorderRadius.all(Radius.circular(1.0)),
-                         child: Image.asset(e.img,
-                           fit: BoxFit.contain,
-                           width: 200.0,
-                           height: height*0.4,
+                   child: SingleChildScrollView(
+                     child: Column(
+                       children: [
+                         SizedBox(height: 10,),
+                         ClipRRect(
+                           borderRadius: BorderRadius.all(Radius.circular(1.0)),
+                           child: Image.asset(e.img,
+                             fit: BoxFit.contain,
+                             width: 200.0,
+                             height: height*0.4,
+                           ),
                          ),
-                       ),
-                       SizedBox(height: 20,),
-                       Text(e.txt,style: TextStyle(color: Colors.black,fontSize: 15,fontStyle: FontStyle.italic),)
-                     ],
+                         SizedBox(height: 20,),
+                         Text(e.txt,style: TextStyle(color: Colors.black,fontSize: 15,fontStyle: FontStyle.italic),)
+                       ],
+                     ),
                    ),
                  )
               ).toList(),

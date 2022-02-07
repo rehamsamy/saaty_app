@@ -155,11 +155,11 @@ class OrderButtonState extends State<OrderButton>{
 
   @override
   Widget build(BuildContext context) {
-    return
+        return
       _isLoading?CircularProgressIndicator():
       FlatButton(
           onPressed:
-          widget.cart.cartsList.isEmpty?null:()async{
+          widget.cart.cartsList.isEmpty||StorageController.getString(StorageController.type)=='guest'?null:()async{
             setState(() {
               _isLoading=true;
             });

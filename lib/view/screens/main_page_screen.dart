@@ -201,7 +201,7 @@ class _MainPageScreenState extends State<MainPageScreen>
             ] ,
           ),
 
-          drawer:  _authController.visitorFlag?VisitorDrawer():MyDrawer(),
+          drawer:  StorageController.getString(StorageController.type)=='guest'?VisitorDrawer():MyDrawer(),
              bottomNavigationBar:  _bottomNav(),
              floatingActionButton: _fab(),
              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked

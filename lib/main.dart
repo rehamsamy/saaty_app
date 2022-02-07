@@ -62,11 +62,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
-
-    DateTime expire = DateTime.parse(StorageController.getString(StorageController.expireDate));
+    DateTime expire;
+    DateTime nowRes;
+    if(StorageController.getString(StorageController.expireDate) !=null){
+     expire = DateTime.parse(StorageController.getString(StorageController.expireDate));
     String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-    DateTime nowRes = DateTime.parse(nowFormat);
-
+     nowRes = DateTime.parse(nowFormat);
+}
 
     final List locale = [
       {'name': 'ENGLISH', 'locale': Locale('us')},
@@ -94,7 +96,9 @@ class MyApp extends StatelessWidget {
               foregroundColor: Colors.grey.shade300,
               brightness: Brightness.light,
               iconTheme: IconThemeData(color: Theme.of(context).accentColor))),
-      home: !StorageController.isSplashLogged
+      home:
+      //SplashScreen(),
+      !StorageController.isSplashLogged
           ? SplashScreen()
           : expire== null ||expire.isBefore(nowRes)
               ? LoginScreen()
