@@ -426,50 +426,50 @@ class ProductItemDetailScreen extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(top: height * 0.3),
-                  padding: EdgeInsets.only(
-                    top: 20,  //height * 0.12,
-                    left: 20,
-                    right: 20,
+              Container(
+                margin: EdgeInsets.only(top: height * 0.3),
+                padding: EdgeInsets.only(
+                  top: 20,  //height * 0.12,
+                  left: 20,
+                  right: 20,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
                   ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
 
-                  ),
-                  child: Column(
-                    children: [
-                      buildTypeStatusProduct(context),
-                      //SizedBox(height: 10,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(
-                          product.desc,
-                          style: TextStyle(color: Colors.black,fontSize: 16)
-                          //TextStyle(fontSize: 13,),
-                        ),
+                ),
+                child: Column(
+                  children: [
+                    buildTypeStatusProduct(context),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(
+                        product.desc,
+                        style: Cons.accentFont
+                        //TextStyle(fontSize: 13,),
                       ),
-                      SizedBox(height: 10,),
-                      buildContainerProductImages(product,context),
-                      SizedBox(height: 20,),
-                      ListTile(
-                          leading: Icon(Icons.phone_android_sharp,
-                            color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
-                      ListTile(leading: Icon(Icons.email,color: Cons.primary_color,),title: Text(product.email),contentPadding: EdgeInsets.all(0)),
-                      SizedBox(height: 10,),
-                      CounterWithFavBtn(),
-                      SizedBox(height: 10,),
-                      AddToCart(product: product,cart:_cart,num:numOfItems)
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 10,),
+                    buildContainerProductImages(product,context),
+                    SizedBox(height: 20,),
+                            ListTile(
+                                leading: Icon(Icons.phone_android_sharp,
+                                  color: Cons.primary_color,),title: Text(product.phone),contentPadding: EdgeInsets.all(0)),
+                            ListTile(leading: Icon(Icons.email,color: Cons.primary_color,),title: Text(product.email),contentPadding: EdgeInsets.all(0)),
+
+
+                    SizedBox(height: 10,),
+                    CounterWithFavBtn(context),
+                    SizedBox(height: 10,),
+                    AddToCart(product: product,cart:_cart,num:numOfItems)
+                  ],
                 ),
               ),
-              ProductTitleWithImage(product: product)
+              buildImage(product,height),
+              ProductTitleWithImage(product: product,height: height,)
             ],
           ),
         ),
@@ -484,32 +484,52 @@ class ProductItemDetailScreen extends StatelessWidget {
   }
 
   buildTypeStatusProduct(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('category'.tr,style:Theme.of(context).textTheme.subtitle1,),
-            Text(product.cat==0?'watch'.tr:'braclete'.tr,style: Theme.of(context).textTheme.subtitle2,)
-          ],
-        )),
-        Expanded(child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('status'.tr,style:Theme.of(context).textTheme.subtitle1,),
-            //Cons.blackStyle1,),
-            Text(product.status==0?'new'.tr:'old'.tr,style:Theme.of(context).textTheme.subtitle2,)
-          ],
-        ))
-      ],
+    return Padding(
+      padding: EdgeInsets.only(top: 25),
+      child: Row(
+        children: [
+          Expanded(child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('category'.tr,style:Theme.of(context).textTheme.headline6,),
+              Text(product.cat==0?'watch'.tr:'braclete'.tr,style: Cons.accentFont)
+            ],
+          )),
+          Expanded(child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('status'.tr,style:Theme.of(context).textTheme.headline6,),
+              //Cons.blackStyle1,),
+              Text(product.status==0?'new'.tr:'old'.tr,style:Cons.accentFont,)
+            ],
+          ))
+        ],
+      ),
     );
   }
 
-  CounterWithFavBtn() {
+  CounterWithFavBtn(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
         CartCounter(),
+    IconButton(onPressed: () {
+      Colors.red;
+      _cart.addCartItem(
+          product.id, double.parse(product.price) * quantity, product.name);
+      Fluttertoast.showToast(
+          msg: "Add  to cart Sucessfully",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.redAccent,
+          textColor: Colors.white
+      );
+      Navigator.of(context).pushNamed(CartScreen.Cart_Route);
+    }
+
+    , icon: Icon(Icons.add_shopping_cart_outlined,size: 30,
+      color: Colors.black54,
+    ),),
       ],
     );
   }
@@ -887,13 +907,14 @@ class AddToCart extends StatelessWidget {
 class ProductTitleWithImage extends StatelessWidget {
   const ProductTitleWithImage({
     Key key,
-    @required this.product,
+    @required this.product, this.height,
   }) : super(key: key);
   final Product product;
+  final double height;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -907,48 +928,22 @@ class ProductTitleWithImage extends StatelessWidget {
             style: Theme.of(context)
                 .textTheme
                 .headline1
-                .copyWith(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 20),
+                .copyWith(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 22),
           ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(text: "Price\n"),
-                    TextSpan(
-                      text: "\$${product.price}",
-                      style: Theme.of(context).textTheme.headline1.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.bold,fontSize: 20),
-                    ),
-                  ],
+          SizedBox(height: height*0.15),
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(text: "Price\n"),
+                TextSpan(
+                  text: "\$${product.price}",
+                  style: Theme.of(context).textTheme.headline1.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.bold,fontSize: 22),
                 ),
-              ),
-              SizedBox(width: 20),
-              Container(
-                width:150,
-                height: 100,
-                child: Visibility(
-                  visible: true,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(30),
-                        topRight: Radius.circular(15)),
-                    child: Hero(
-                      tag: "${product.id}",
-                      child: Image.network(product.images[0],  fit: BoxFit.fill,)
-                    //child:Image.asset(
-                      //  'assets/images/watch_item1.png',
-                      //   fit: BoxFit.fill,
-                      // width: 50,
-                      // height: 100,
-                      // ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          )
+              ],
+            ),
+          ),
+          SizedBox(width: 20)
         ],
       ),
     );
@@ -957,5 +952,28 @@ class ProductTitleWithImage extends StatelessWidget {
 
 
 
-
+buildImage(Product product,double height){
+  return   Positioned(
+    left: 1,
+    child: Container(
+      margin: EdgeInsets.only(top:height *0.22 ),
+      width:150,
+      height: 100,
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(30),
+            topRight: Radius.circular(15)),
+        child: Hero(
+            tag: "${product.id}",
+            child: Image.network(product.images[0],  fit: BoxFit.fill,)
+          //child:Image.asset(
+          //  'assets/images/watch_item1.png',
+          //   fit: BoxFit.fill,
+          // width: 50,
+          // height: 100,
+          // ),
+        ),
+      ),
+    ),
+  );
+}
 
