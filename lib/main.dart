@@ -42,6 +42,7 @@ import 'view/screens/register_screen.dart';
 
 void main() async {
   await StorageController.init();
+  print(StorageController.getString(StorageController.type));
   runApp(MyApp());
 }
 
@@ -99,11 +100,16 @@ class MyApp extends StatelessWidget {
       home:
       //SplashScreen(),
       !StorageController.isSplashLogged
-          ? SplashScreen()
-          : expire== null ||expire.isBefore(nowRes)
-              ? LoginScreen()
-              : HomeScreen(),
-      routes: {
+          ? SplashScreen():
+      StorageController.getString(StorageController.type)=='user'&&expire.isBefore(nowRes)?
+          LoginScreen():
+      StorageController.getString(StorageController.type)=='guest'?
+       HomeScreen():LoginScreen()
+
+          // : expire== null ||expire.isBefore(nowRes)||StorageController.getString(StorageController.type)=='user'
+          //     ? LoginScreen()
+          //     : HomeScreen(),
+      ,routes: {
         LoginScreen.LOGIN_SCREEN_ROUTE: (_) =>
             GetBuilder<LangController>(builder: (_) => LoginScreen()),
         RegisterScreen.REGISTER_SCREEN_ROUTE: (_) => RegisterScreen(),
