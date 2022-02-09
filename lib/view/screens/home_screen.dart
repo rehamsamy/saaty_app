@@ -176,7 +176,6 @@ class HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                           buildCatList(),
-
                          // buildGridProducts(),
                         ],
                       ),
