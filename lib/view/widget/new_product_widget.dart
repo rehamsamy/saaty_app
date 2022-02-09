@@ -15,9 +15,12 @@ class HomeProductWidget extends StatelessWidget {
   ProductController _productController = Get.find();
   AuthController _authController=Get.find();
   HomeProductWidget(this.product, [this.flag]);
+  double width,height;
 
   @override
   Widget build(BuildContext context) {
+    width=MediaQuery.of(context).size.width;
+    height=MediaQuery.of(context).size.height;
     return GetBuilder<ProductController>(
       builder: (_)=>
           GestureDetector(
@@ -40,17 +43,18 @@ class HomeProductWidget extends StatelessWidget {
                     child: Stack(
                       // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                           Align(
-                             alignment: Alignment.topRight,
-                             child: Column(
-                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Image.asset('assets/images/new1.jpeg',width: 35,height: 35,),
-                                SizedBox(height: 5,),
+                           Container(
+                             padding: EdgeInsets.all(5),
+                             child: Align(
+                               alignment: Alignment.topRight,
+                          child: Image.asset('assets/images/new1.jpeg',width: 35,height: 35,),),),
+                        Align(
+                            alignment: Alignment.center,
+                            child:
                                 Hero(
                                   tag: product.id,
                                   child: Container(
-                                    width: 130,height: 90,
+                                    width: width*0.4,height: height*0.2,
                                     child: FadeInImage(
                                          fit: BoxFit.fill,
                                       image:
@@ -62,11 +66,24 @@ class HomeProductWidget extends StatelessWidget {
                                       placeholder:
                                       AssetImage('assets/images/watch_item1.png'),
                                     ),
-                                  ),
-                                )
-                              ],
+                                  ),)
                           ),
-                           ),
+                          Align(
+                              alignment: Alignment.bottomRight,
+                            child:  Container(
+                              margin: EdgeInsets.all(10),
+                              width: 80,
+                              height: 30,
+                              child: Center(
+                                child: Text(
+                                    product.name,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:  TextStyle(color: Colors.black, fontSize: 14,)
+                                ),
+                              ),
+                            ),
+
+                          ),
                     Align(
                       alignment: Alignment.topLeft,
                       child:
@@ -92,18 +109,6 @@ class HomeProductWidget extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                            Container(
-                              margin: EdgeInsets.all(10),
-                              width: 80,
-                              height: 30,
-                              child: Center(
-                                child: Text(
-                                    product.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style:  TextStyle(color: Colors.black, fontSize: 14,)
-                                ),
-                              ),
-                            ),
 
                             Container(
                               width: 70,
@@ -126,26 +131,6 @@ class HomeProductWidget extends StatelessWidget {
                           ],
                         )
                     ),
-                        // Align(
-                        //   alignment: Alignment.bottomCenter,
-                        //   child: Container(
-                        //     width: 70,
-                        //     height: 25,
-                        //     child: RaisedButton(
-                        //       color: Cons.accent_color,
-                        //       onPressed: (){
-                        //         Navigator.of(context).pushNamed(
-                        //             ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE,
-                        //             arguments: {'prod': product, 'flag': flag});
-                        //       },
-                        //       child: Text('view'.tr,style:
-                        //       TextStyle(color: Colors.white),),
-                        //       shape:RoundedRectangleBorder(
-                        //      borderRadius: BorderRadius.circular(20)
-                        //       ),
-                        //     ),
-                        //   ),
-                        // )
                       ],
                     ),
                   ),

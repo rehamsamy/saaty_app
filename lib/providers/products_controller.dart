@@ -331,7 +331,7 @@ print(token);
 
 
   void fetchHomeProducts()async{
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?orderBy="dateTime"&desc';
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?orderBy="dateTime"&asc';
     try{
       var response = await http.get(Uri.parse(url));
       if(response.statusCode==200){

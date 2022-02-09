@@ -58,18 +58,21 @@ class MyApp extends StatelessWidget {
   final controller8 = Get.put(Cart());
   final controller9 = Get.put(Orders());
   String splash_flag;
-
+  DateTime expire;
+  DateTime nowRes;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
-    DateTime expire;
-    DateTime nowRes;
+
     if(StorageController.getString(StorageController.expireDate) !=null){
-     expire = DateTime.parse(StorageController.getString(StorageController.expireDate));
-    String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-     nowRes = DateTime.parse(nowFormat);
-}
+      expire = DateTime.parse(StorageController.getString(StorageController.expireDate));
+      String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+      nowRes = DateTime.parse(nowFormat);
+      print ('exp '+expire.toString() +'  noe '+nowFormat.toString());
+      print(expire.isBefore(nowRes));
+    }
+
 
     final List locale = [
       {'name': 'ENGLISH', 'locale': Locale('us')},
@@ -97,19 +100,8 @@ class MyApp extends StatelessWidget {
               foregroundColor: Colors.grey.shade300,
               brightness: Brightness.light,
               iconTheme: IconThemeData(color: Theme.of(context).accentColor))),
-      home:
-      //SplashScreen(),
-      !StorageController.isSplashLogged
-          ? SplashScreen():
-      StorageController.getString(StorageController.type)=='user'&&expire.isBefore(nowRes)?
-          LoginScreen():
-      StorageController.getString(StorageController.type)=='guest'?
-       HomeScreen():LoginScreen()
-
-          // : expire== null ||expire.isBefore(nowRes)||StorageController.getString(StorageController.type)=='user'
-          //     ? LoginScreen()
-          //     : HomeScreen(),
-      ,routes: {
+      home:getInitialRoute(),
+      routes: {
         LoginScreen.LOGIN_SCREEN_ROUTE: (_) =>
             GetBuilder<LangController>(builder: (_) => LoginScreen()),
         RegisterScreen.REGISTER_SCREEN_ROUTE: (_) => RegisterScreen(),
@@ -142,5 +134,17 @@ class MyApp extends StatelessWidget {
         OrderScreen.Order_Screen_Route:(_)=>OrderScreen()
       },
     );
+  }
+
+  getInitialRoute() {
+    return   !StorageController.isSplashLogged
+        ? SplashScreen():
+    StorageController.getString(StorageController.type)=='user'&&expire.isBefore(nowRes)?
+    LoginScreen():
+    StorageController.getString(StorageController.type)=='guest'?
+    HomeScreen():
+    StorageController.getString(StorageController.type)=='user'&&expire.isAfter(nowRes)?
+    HomeScreen():LoginScreen();
+
   }
 }

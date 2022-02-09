@@ -84,7 +84,7 @@ class LocaleString extends Translations{
   'cancel':'Cancel',
   'change_lang':'Change To Preferred Language',
       'choose_lang':'Choose Language',
-  'lang':'English',
+      'lang':'English',
   'language':'Language',
   'setting':'ٍSetting',
   'enter_email' :'Enter Email',

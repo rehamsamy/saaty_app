@@ -19,7 +19,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   StorageController _storageController=Get.put(StorageController());
-  int _index;
+  int _index=0;
   @override
   Widget build(BuildContext context) {
     Cons.buildColors(context);
@@ -53,8 +53,11 @@ class _SplashScreenState extends State<SplashScreen> {
                       _index=ind;
                     });
                     if(ind==2){
+                      Future.delayed(Duration(seconds: 5)).then((value) async {
                       Navigator.of(context).pushNamed(SplashLanguageScreen.SPLASH_LANGUAGE_SCREEN_ROUTE);
-                     await StorageController.setBool(StorageController.splashKey, true);
+                          await StorageController.setBool(StorageController.splashKey, true);
+                      });
+
                     }
                   },
                   initialPage: 1,

@@ -59,6 +59,10 @@ class AuthController extends GetxController {
             StorageController.loginDataKey, jsonEncode(data));
         Map<String, dynamic> loginData = jsonDecode(
             StorageController.getString(StorageController.loginDataKey));
+
+        await StorageController.setString(
+            StorageController.type, 'user');
+
         String url =
             'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${StorageController
             .getString(StorageController.apiToken)}';
@@ -111,6 +115,9 @@ class AuthController extends GetxController {
         String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(expire);
         DateTime expireRes = DateTime.parse(formattedDate);
         await StorageController.setString(
+            StorageController.type, 'user');
+
+        await StorageController.setString(
             StorageController.expireDate, formattedDate);
         //.toIso8601String()
         Map<String, dynamic> data = {'localId': userId, 'idToken': token};
@@ -132,8 +139,7 @@ class AuthController extends GetxController {
 
   updateUserData(Map<String, String> map) async {
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${model
-        .id}.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${StorageController.getString(StorageController.userId)}.json?auth=$token';
     String url1 =
         'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
 
@@ -202,8 +208,8 @@ class AuthController extends GetxController {
 
   changePassword(Map<String, dynamic> map) async {
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${model
-        .id}.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${StorageController.getString(StorageController.userId)}'
+        '.json?auth=${StorageController.getString(StorageController.apiToken)}';
     String url1 =
         'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
 

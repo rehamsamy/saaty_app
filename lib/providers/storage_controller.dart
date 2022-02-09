@@ -28,7 +28,7 @@ class StorageController extends GetxController {
 
   static String getUserToken = getString(apiToken) ?? 'No Token';
 
-  static bool get isClient => getString(type) == 'client';
+  static bool get isClient => getString(type) == 'user';
 
   static bool get isGuest => getString(type) == 'guest';
 
@@ -66,6 +66,10 @@ class StorageController extends GetxController {
 
   static int getInt(String key) {
     return GetStorage().read(key) ?? 0;
+  }
+
+  static void removeStorage()async{
+    await GetStorage().erase();
   }
 
 

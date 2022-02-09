@@ -161,6 +161,7 @@ class MyDrawer extends StatelessWidget {
               ListTile(
                 onTap: (){
                   Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+                  StorageController.removeStorage();
                 },
                 leading: Icon(
                   Icons.logout,

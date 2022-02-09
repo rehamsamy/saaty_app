@@ -80,7 +80,7 @@ class CallUs extends StatelessWidget {
                         ),
                         onPressed: ()async{
                           Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
-                        },child: Text('send_message',style: Cons.whiteFont,),),
+                        },child: Text('send_message'.tr,style: Cons.whiteFont,),),
                     ),
                     SizedBox(height: 20,),
                     Row(

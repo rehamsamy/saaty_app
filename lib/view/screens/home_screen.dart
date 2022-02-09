@@ -178,7 +178,7 @@ class HomeScreenState extends State<HomeScreen> {
                           ),
                           buildCatList(),
 
-                          //buildGridProducts(),
+                         // buildGridProducts(),
                         ],
                       ),
                     ),
@@ -204,7 +204,7 @@ class HomeScreenState extends State<HomeScreen> {
             Container(
               margin: EdgeInsets.all(2),
               child: buildHomeProductsGrid(),
-              height: 270,
+              height: 500,
             ),
             SizedBox(height: 20,)
           ],
@@ -283,7 +283,8 @@ class HomeScreenState extends State<HomeScreen> {
                   alignment: Alignment.center,
                   height: 70,
                   width: double.infinity - 20,
-                  child: ListView.builder(
+                  child:
+                  ListView.builder(
                     itemBuilder: (_, inx) => Card(
                       elevation: 5,
                       margin: EdgeInsets.all(5),
