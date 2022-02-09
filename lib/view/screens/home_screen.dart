@@ -21,7 +21,6 @@ import 'main_page_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static String HOME_SCREEN_RIUTE = '/3';
-
   @override
   State<StatefulWidget> createState() {
     return HomeScreenState();

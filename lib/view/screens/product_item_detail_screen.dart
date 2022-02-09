@@ -422,7 +422,7 @@ class ProductItemDetailScreen extends StatelessWidget {
         child: Container(
          // padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: Cons.blueColor
+            color: Cons.blueColor,
           ),
           child: Stack(
             children: [
@@ -444,14 +444,7 @@ class ProductItemDetailScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     buildTypeStatusProduct(context),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(
-                        product.desc,
-                        style: Cons.accentFont
-                        //TextStyle(fontSize: 13,),
-                      ),
-                    ),
+
                     SizedBox(height: 10,),
                     buildContainerProductImages(product,context),
                     SizedBox(height: 20,),
@@ -474,35 +467,51 @@ class ProductItemDetailScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton:
-             FloatingActionButton(
-          child: Icon(Icons.email_rounded,color: Colors.white,),
-          onPressed: ()=>_authController.visitorFlag?Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE):
-              Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE,arguments: product.creator_id),
-        )
+      // floatingActionButton:
+      //        FloatingActionButton(
+      //     child: Icon(Icons.email_rounded,color: Colors.white,),
+      //     onPressed: ()=>_authController.visitorFlag?Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE):
+      //         Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE,arguments: product.creator_id),
+      //   )
     );
   }
 
   buildTypeStatusProduct(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 25),
-      child: Row(
+      child: Column(
         children: [
-          Expanded(child: Row(
+          Container(child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('category'.tr,style:Theme.of(context).textTheme.headline6,),
               Text(product.cat==0?'watch'.tr:'braclete'.tr,style: Cons.accentFont)
             ],
           )),
-          Expanded(child: Row(
+          Container(child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('status'.tr,style:Theme.of(context).textTheme.headline6,),
               //Cons.blackStyle1,),
               Text(product.status==0?'new'.tr:'old'.tr,style:Cons.accentFont,)
             ],
-          ))
+          )),
+
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(width: 20,),
+              Container(
+                child: Text(
+                  product.desc,
+                  style: Cons.blackStyle1,
+                  overflow: TextOverflow.ellipsis
+                  ,
+                  //TextStyle(fontSize: 13,),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -528,7 +537,7 @@ class ProductItemDetailScreen extends StatelessWidget {
     }
 
     , icon: Icon(Icons.add_shopping_cart_outlined,size: 30,
-      color: Colors.black54,
+      color: Colors.black,
     ),),
       ],
     );
@@ -861,7 +870,7 @@ class AddToCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -870,24 +879,17 @@ class AddToCart extends StatelessWidget {
             child: SizedBox(
               height: 50,
               child: FlatButton.icon(
-                icon: Icon( Icons.add_shopping_cart_sharp,color: Colors.white,),
+                icon:
+                Icon( Icons.message_rounded,color: Colors.white,),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18)),
-                color: Cons.blueColor,
-                onPressed: () {
-                  print('id    '+product.id);
-               cart.addCartItem(product.id, double.parse(product.price)*quantity, product.name);
-                  Fluttertoast.showToast(
-                      msg: "Add  to cart Sucessfully",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      backgroundColor: Colors.redAccent,
-                      textColor: Colors.white
-                  );
-                  Navigator.of(context).pushNamed(CartScreen.Cart_Route);
-                },
+                color: Cons.accent_color,
+                //color: Cons.blueColor,
+                onPressed: () =>
+                  StorageController.isGuest?Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE):
+                  Navigator.of(context).pushNamed(SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE,arguments: product.creator_id),
                 label: Text(
-                  "add_to_cart".tr,
+                  "send_message".tr,
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -897,7 +899,6 @@ class AddToCart extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 100,)
         ],
       ),
     );
@@ -915,37 +916,41 @@ class ProductTitleWithImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(height: 10),
-          Text(
-            'trader_name'.tr,
-            style: TextStyle(color: Colors.white,fontSize: 16),
-          ),
-          Text(
-            product.creator_name,
-            style: Theme.of(context)
-                .textTheme
-                .headline1
-                .copyWith(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 22),
-          ),
-          SizedBox(height: height*0.15),
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(text: "Price\n"),
-                TextSpan(
-                  text: "\$${product.price}",
-                  style: Theme.of(context).textTheme.headline1.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.bold,fontSize: 22),
-                ),
-              ],
+     padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        height: height*.25,
+        padding: EdgeInsets.only(right: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(text: "${'trader_name'.tr}\n"),
+                  TextSpan(
+                    text: "${product.creator_name}",
+                    style: Theme.of(context).textTheme.headline1.copyWith(
+                        color: Colors.white, fontWeight: FontWeight.bold,fontSize: 35),
+                  ),
+                ],
+              ),
             ),
-          ),
-          SizedBox(width: 20)
-        ],
+            RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(text: "${'price'.tr}\n"),
+                  TextSpan(
+                    text: "\$${product.price}",
+                    style: Theme.of(context).textTheme.headline1.copyWith(
+                        color: Colors.white, fontWeight: FontWeight.bold,fontSize: 35),
+                  ),
+                ],
+              ),
+            ),
+          //  SizedBox(width: 20)
+          ],
+        ),
       ),
     );
   }
@@ -955,23 +960,32 @@ class ProductTitleWithImage extends StatelessWidget {
 
 buildImage(Product product,double height){
   return   Positioned(
-    left: 1,
+   left: 0,
     child: Container(
-      margin: EdgeInsets.only(top:height *0.22 ),
-      width:150,
-      height: 100,
-      child: ClipRRect(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(30),
-            topRight: Radius.circular(15)),
-        child: Hero(
-            tag: "${product.id}",
-            child: Image.network(product.images[0],  fit: BoxFit.fill,)
-          //child:Image.asset(
-          //  'assets/images/watch_item1.png',
-          //   fit: BoxFit.fill,
-          // width: 50,
-          // height: 100,
-          // ),
+      margin: EdgeInsets.only(top:height *0.1 ),
+      width:250,
+      height: 200,
+      child: Card(
+        elevation: 7,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30.0),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
+          bottomRight:Radius.circular(30),
+            bottomLeft:Radius.circular(30),
+          ),
+          child: Hero(
+              tag: "${product.id}",
+              child: Image.network(product.images[0],  fit: BoxFit.fill,)
+            //child:Image.asset(
+            //  'assets/images/watch_item1.png',
+            //   fit: BoxFit.fill,
+            // width: 50,
+            // height: 100,
+            // ),
+          ),
         ),
       ),
     ),

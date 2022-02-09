@@ -109,25 +109,23 @@ class HomeProductWidget extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-
                             Container(
                               width: 70,
                               height: 25,
-                              child: RaisedButton(
-                                color: Cons.accent_color,
-                                onPressed: (){
-                                  Navigator.of(context).pushNamed(
-                                      ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE,
-                                      arguments: {'prod': product, 'flag': flag});
-                                },
-                                child: Text('view'.tr,style:
-                                TextStyle(color: Colors.white),),
-                                shape:RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)
-                                ),
-                              ),
+                              // RaisedButton(
+                              //   color: Cons.accent_color,
+                              //   onPressed: (){
+                              //     Navigator.of(context).pushNamed(
+                              //         ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE,
+                              //         arguments: {'prod': product, 'flag': flag});
+                              //   },
+                              //   child: Text('view'.tr,style:
+                              //   TextStyle(color: Colors.white),),
+                              //   shape:RoundedRectangleBorder(
+                              //       borderRadius: BorderRadius.circular(20)
+                              //   ),
+                              // ),
                             ),
-
                           ],
                         )
                     ),
