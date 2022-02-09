@@ -137,7 +137,7 @@ class MyApp extends StatelessWidget {
   }
 
   getInitialRoute() {
-    return   !StorageController.isSplashLogged
+    return   !StorageController.isSplashLogged&&StorageController.getString(StorageController.type)==null
         ? SplashScreen():
     StorageController.getString(StorageController.type)=='user'&&expire.isBefore(nowRes)?
     LoginScreen():

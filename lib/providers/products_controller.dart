@@ -8,6 +8,7 @@ import 'dart:convert';
 
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'dart:async';
 import '../cons.dart';
@@ -69,7 +70,7 @@ class ProductsController extends GetxController {
     addsProduct.clear();
     String token = MainPageScreen.token;
     print('-----  '+_authController.visitorFlag.toString());
-    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/$token.json?auth=$token';
+    String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${StorageController.getString(StorageController.userId)}.json?auth=${StorageController.getString(StorageController.apiToken)}';
   String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json';
 
     try {
@@ -332,6 +333,7 @@ print(token);
 
   void fetchHomeProducts()async{
     String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?orderBy="dateTime"&asc';
+    List<Product> _list=[];
     try{
       var response = await http.get(Uri.parse(url));
       if(response.statusCode==200){
@@ -339,8 +341,14 @@ print(token);
        var x=json.decode(response.body) as Map<String,dynamic>;
         x.forEach((key, value) {
           Product product = Product.fromJson(key, value);
-          _homeList.add(product);
+         // _homeList.add(product);
+          print('ooooo  '+_list.length.toString());
+          _list.add(product);
+
         });
+        _homeList=_list.reversed.toList();
+        print('ooooo  33 '+_list.length.toString());
+        update();
       }
     }catch(err){
       print(err);

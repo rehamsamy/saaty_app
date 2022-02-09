@@ -727,9 +727,10 @@ Widget buildCarouselSlider(Product product,BuildContext context) {
                     children: [
                       Flexible(
                         flex: 1,
-                        child: IconButton(onPressed: (){
-                          Navigator.of(context).pop();
-                        }, icon: Icon(Icons.arrow_back,color: Cons.accent_color,size: 25)),
+                        child: SizedBox(width: 1,)
+                        // IconButton(onPressed: (){
+                        //   Navigator.of(context).pop();
+                        // }, icon: Icon(Icons.arrow_back,color: Cons.accent_color,size: 25)),
                       ),
                       Flexible(
                         flex: 1,
@@ -751,11 +752,11 @@ Widget buildCarouselSlider(Product product,BuildContext context) {
                       Padding(
                           padding:EdgeInsets.only(left: 10,right: 10),child: Text(product.name, style: TextStyle(fontSize: 18,color: Colors.black54))),
                       Flexible(
-                          flex:1,child: IconButton(onPressed: (){}, icon: Icon(Icons.delete,color: Cons.accent_color,size: 25))),
+                          flex:1,child: IconButton(onPressed: (){}, icon: Icon(Icons.delete,color: Colors.white,size: 25))),
                       Flexible(
                           flex:1,child: IconButton(onPressed: (){
                         Navigator.of(context).pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE,arguments: product);
-                      }, icon: Icon(Icons.edit,color: Cons.accent_color,size: 25))),
+                      }, icon: Icon(Icons.edit,color: Colors.white,size: 25,))),
 
                     ],
                   ),

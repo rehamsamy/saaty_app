@@ -49,35 +49,76 @@ class StatusProductController extends GetxController {
     String urlFav =
         'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${StorageController.getString(StorageController.userId)}.json?auth=${StorageController.getString(StorageController.apiToken)}';
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json';
     try {
-      var favResponse = await http.get(Uri.parse(urlFav));
-      var response = await http.get(Uri.parse(url));
+      var favResponse;
+      var response;
+      if(!StorageController.isGuest) {
+         favResponse = await http.get(Uri.parse(urlFav));
+         response = await http.get(Uri.parse(url));
+
       if (response.statusCode == 200) {
         Map<String, dynamic> result =
-            json.decode(response.body) as Map<String, dynamic>;
+        json.decode(response.body) as Map<String, dynamic>;
         var favResult = json.decode(favResponse.body) as Map<String, dynamic>;
         if (flag == 'all') {
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
-            print('************* here ' + favResponse.body.toString());
             if (favResponse.statusCode == 200) {
-              if (favResponse.body.toString() == 'null') {
-                product.isFav = 0;
-              } else {
+              if (favResponse.body.isEmpty) {
                 product.isFav = favResult[key];
+              } else {
+                product.isFav = 0;
               }
-              print('************* here ');
             }
-            if (value['id'] == id) {
-              print('bbbb  ' + id + '  ' + value['id']);
-              _allProds.add(product);
-            }
+            print(product.isFav.toString() + "  " + product.id);
+            _allProds.add(product);
           });
         }
-        print('bbbb  ' + id + '  ' + '  ');
-        getFinalProducts();
       }
+    }else {
+        print('here ');
+        var response = await http.get(Uri.parse(url));
+        print(response.statusCode.toString());
+        if (response.statusCode == 200) {
+          Map<String, dynamic> result =
+          json.decode(response.body) as Map<String, dynamic>;
+          result.forEach((key, value) async {
+            Product product = Product.fromJson(key, value);
+            print(product.isFav.toString() + "  " + product.id);
+            _allProds.add(product);
+          });
+        }
+      }
+    getFinalProducts();
+
+
+
+    // if (response.statusCode == 200) {
+      //   Map<String, dynamic> result =
+      //       json.decode(response.body) as Map<String, dynamic>;
+      //   var favResult = json.decode(favResponse.body) as Map<String, dynamic>;
+      //   if (flag == 'all') {
+      //     result.forEach((key, value) async {
+      //       Product product = Product.fromJson(key, value);
+      //       print('************* here ' + favResponse.body.toString());
+      //       if (favResponse.statusCode == 200) {
+      //         if (favResponse.body.toString() == 'null') {
+      //           product.isFav = 0;
+      //         } else {
+      //           product.isFav = favResult[key];
+      //         }
+      //         print('************* here ');
+      //       }
+      //       if (value['id'] == id) {
+      //         print('bbbb  ' + id + '  ' + value['id']);
+      //         _allProds.add(product);
+      //       }
+      //     });
+      //   }
+      //   print('bbbb  ' + id + '  ' + '  ');
+      //   getFinalProducts();
+      // }
     } catch (err) {
       print(err);
     }

@@ -4,6 +4,7 @@ import 'package:saaty_app/model/cart.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
 
@@ -99,8 +100,8 @@ class ProductItemWidget extends StatelessWidget {
                       right: 1,
                       child: IconButton(
                           onPressed: () async {
-                           if(_authController.visitorFlag==true){
-                             Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+                            if(StorageController.isGuest){
+                              Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                            }else{
                              Map<String, dynamic> map = Product().toMap(product);
                              if (product.isFav == 1) {
