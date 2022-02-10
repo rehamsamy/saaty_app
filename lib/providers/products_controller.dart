@@ -87,7 +87,7 @@ class ProductsController extends GetxController {
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
             if (favResponse.statusCode == 200) {
-              if (favResponse.body.isEmpty) {
+              if (!favResponse.body.isEmpty) {
                 product.isFav = favResult[key];
               } else {
                 product.isFav = 0;

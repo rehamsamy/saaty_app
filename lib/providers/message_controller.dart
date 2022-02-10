@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/message_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:http/http.dart' as http;
+import 'package:saaty_app/providers/storage_controller.dart';
 
 class MessageController  extends GetxController{
   bool checkedAllMessage =false;
@@ -41,11 +42,11 @@ class MessageController  extends GetxController{
   }
 
   get sendMessages{
-    return _messagesList.where((element) => element.to==AuthController.userId).toList();
+    return _messagesList.where((element) => element.to==StorageController.getString(StorageController.userId)).toList();
   }
 
   get receivedMessage{
-  return  _messagesList.where((element) => element.from==AuthController.userId).toList();
+  return  _messagesList.where((element) => element.from==StorageController.getString(StorageController.userId)).toList();
   }
 
 
@@ -58,7 +59,7 @@ class MessageController  extends GetxController{
 
   createNewMessage(Map<String,dynamic> map)async{
     print('3330'+map.toString());
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/messages.json?auth=${AuthController.token}';
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/messages.json?auth=${StorageController.getString(StorageController.apiToken)}';
     try{
       print(map['date']);
       map['date']=DateTime.now().toString();
@@ -76,7 +77,8 @@ class MessageController  extends GetxController{
     _messagesList.clear();
     messagesList.clear();
     print(selectedTabIndex.toString()+ 'll ');
-    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/messages.json?auth=${AuthController.token}';
+    String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/messages.json?'
+        'auth=${StorageController.getString(StorageController.apiToken)}';
     try{
       var response=await http.get(Uri.parse(url));
     var res=json.decode(response.body) as Map<String,dynamic>;
@@ -84,7 +86,7 @@ class MessageController  extends GetxController{
       MessageModel model=   MessageModel.fromJson(value,key);
       _messagesList.add(model);
     });
-    print('lengtg '+_messagesList.length.toString());
+    print('lengtg '+StorageController.getString(StorageController.userId));
    getFinalMessagesList();
     }catch(err){
       print(err);
@@ -108,8 +110,8 @@ List<MessageModel> newList=[];
       ids.add(element.id);
     });
     for (int i = 0; i < ids.length; i++) {
-      String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/messages/${ids[i]}.json?auth=${AuthController
-          .token}';
+      String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/messages/${ids[i]}.json?'
+          'auth=${StorageController.getString(StorageController.apiToken)}';
       try {
         var response = await http.delete(Uri.parse(url));
         print(response.statusCode);
@@ -121,8 +123,8 @@ List<MessageModel> newList=[];
   }
 
   deleteSingleMessage(String id)async{
-    String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/messages/$id.json?auth=${AuthController
-        .token}';
+    String url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/messages/$id.json?'
+        'auth=${StorageController.getString(StorageController.apiToken)}';
     try {
       var response = await http.delete(Uri.parse(url));
       print(response.statusCode);

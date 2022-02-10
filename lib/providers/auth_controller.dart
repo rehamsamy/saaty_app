@@ -10,9 +10,6 @@ import 'package:saaty_app/model/user_model.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 
 class AuthController extends GetxController {
-  StorageController _storageController = Get.put(StorageController());
-  static String userId = StorageController.getString(StorageController.userId);
-  static String token = StorageController.getString(StorageController.apiToken);
   static UserModel model;
   bool visitorFlag = false;
   bool visiblePassword = true;
@@ -42,7 +39,7 @@ class AuthController extends GetxController {
         print('step1');
         var res = json.decode(x.body);
         String userId = res['localId'];
-        token = res['idToken'];
+       String token = res['idToken'];
         print(userId);
 
         await StorageController.setString(StorageController.apiToken, token);
@@ -107,8 +104,8 @@ class AuthController extends GetxController {
       if (x.statusCode == 200) {
         print('step1');
         var y = json.decode(x.body);
-        userId = y['localId'];
-        token = y['idToken'];
+      String  userId = y['localId'];
+      String  token = y['idToken'];
         await StorageController.setString(StorageController.apiToken, token);
         await StorageController.setString(StorageController.userId, userId);
         print('mmmmmmm   ' + y['expiresIn'] + 'llll ' + y['refreshToken']);
@@ -142,13 +139,13 @@ class AuthController extends GetxController {
 
   updateUserData(Map<String, String> map) async {
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${StorageController.getString(StorageController.userId)}.json?auth=$token';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${StorageController.getString(StorageController.userId)}.json?auth=${StorageController.getString(StorageController.apiToken)}';
     String url1 =
         'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
 
     Map<String, dynamic> map_new = {
       'email': map['email'],
-      'idToken': token,
+      'idToken': StorageController.getString(StorageController.apiToken),
       'returnSecureToken': true
     };
     try {
@@ -171,17 +168,15 @@ class AuthController extends GetxController {
   }
 
   getUserDate() async {
-    print('tok    ' + userId.toString());
     String url =
         'https://saaty-9ba9f-default-rtdb.firebaseio.com/users.json?auth=${StorageController
         .getString(StorageController.apiToken)}';
     try {
       var response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        print('8888888' + userId);
         var res = json.decode(response.body) as Map<String, dynamic>;
         res.forEach((key, value) async {
-          if (value['localId'] == userId) {
+          if (value['localId'] == StorageController.getString(StorageController.userId)) {
             model = UserModel.fromJson(value, key);
             print('step2');
             print(model.toString());
@@ -218,7 +213,7 @@ class AuthController extends GetxController {
 
     Map<String, dynamic> map_new = {
       'password': map['new'],
-      'idToken': token,
+      'idToken': StorageController.getString(StorageController.apiToken),
       'returnSecureToken': true
     };
     Map<String, dynamic> map_new1 = {

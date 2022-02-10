@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 // import 'package:image_picker_flutter/image_picker_flutter.dart';
 import 'package:image_picker/image_picker.dart' ;
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'dart:io';
 
@@ -425,7 +426,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
 
 
-      map['id']=AuthController.userId;
+      map['id']=StorageController.getString(StorageController.userId);
       map['isFav']=0;
       map['cat']=_radValCat;
       map['status']=_radValType;
@@ -440,8 +441,9 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
           }
           map['images']=newImages;
-          map['id']=AuthController.userId;
-          map['creator_id']=AuthController.userId;
+          map['id']=StorageController.getString(StorageController.userId);
+          map['creator_id']=
+              StorageController.getString(StorageController.apiToken);
 
           await controller.createProduct(map,images)
               .then((value) {
@@ -512,13 +514,12 @@ class CreateProductScreenState extends State<CreateProductScreen>{
   Future<List<String> >uploadImagesToFirebase(List images) async{
     List<String> vv=[];
     print('step0');
-    print(AuthController.userId);
 
     print('step1');
     try{
       for (int i=0;i<3;i++){
        var ref= FirebaseStorage.instance.ref().child('user_image').
-       child(AuthController.userId).child(i.toString());
+       child(StorageController.getString(StorageController.userId)).child(i.toString());
         print('step22 ');
         File file=File(images[i].path);
         await ref.putFile(file);

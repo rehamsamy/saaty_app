@@ -21,8 +21,6 @@ class StatusProductController extends GetxController {
 
   int selectedTabIndex = 1;
 
-  String token = AuthController.token;
-  String userId = AuthController.userId;
 
   List<Product> get allProducts {
     return _allProds;
@@ -44,8 +42,6 @@ class StatusProductController extends GetxController {
     print('bbbb  ' + id + '  ');
     allProducts.clear();
     favProducts.clear();
-    String token = AuthController.token;
-    print(AuthController.userId);
     String urlFav =
         'https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${StorageController.getString(StorageController.userId)}.json?auth=${StorageController.getString(StorageController.apiToken)}';
     String url =

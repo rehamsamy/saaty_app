@@ -8,7 +8,6 @@ import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'dart:convert';
 
-import 'auth_controller.dart';
 
 class FavsAdsController extends GetxController{
 
@@ -24,9 +23,6 @@ class FavsAdsController extends GetxController{
   String prodTypeFlag=null;
 
 
-  String token = AuthController.token;
-  String userId = AuthController.userId;
-
   List<Product> get allProducts {
     return _allProds;
   }
@@ -35,8 +31,6 @@ class FavsAdsController extends GetxController{
   Future fetchProducts(String flag) async {
     allProducts.clear();
     _allProds.clear();
-    String token = AuthController.token;
-    print('${AuthController.userId}');
     String urlFav='https://saaty-9ba9f-default-rtdb.firebaseio.com/favorites/${StorageController.getString(StorageController.userId)}.json?auth=${StorageController.getString(StorageController.apiToken)}';
     String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/products.json?auth=${StorageController.getString(StorageController.apiToken)}';
     try {
@@ -61,8 +55,16 @@ class FavsAdsController extends GetxController{
         else if(flag=='ads'){
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
-            product.isFav=favResult[key];
-            if(value['id']==AuthController.userId) {
+
+            if (favResponse.statusCode == 200) {
+              if (!favResponse.body.isEmpty) {
+                product.isFav = favResult[key];
+              } else {
+                product.isFav = 0;
+              }
+            }
+            if(value['id']==StorageController.getString(StorageController.userId)) {
+              print('yes '+StorageController.getString(StorageController.userId));
               _allProds.add(product);
 
             }

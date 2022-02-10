@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/message_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/message_controller.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 
 import '../../cons.dart';
 
@@ -147,7 +148,7 @@ double width,height;
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
    map['date']=DateTime.now().toString();
-   map['from']=AuthController.userId;
+   map['from']=StorageController.getString(StorageController.apiToken);
 
    map['to']=creator_id;
    if(_messageController.isLoading==true){
