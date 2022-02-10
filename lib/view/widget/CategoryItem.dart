@@ -23,13 +23,16 @@ int pos;
                padding: EdgeInsets.all(8),
                child: Card(
                  elevation: 10,
+                 shape: RoundedRectangleBorder(
+                   borderRadius: BorderRadius.circular(20.0)
+                 ),
                  child: ClipRRect(
                     borderRadius: BorderRadius.circular(20.0),
                   child:  Image.network(
                       model.image
                      ,
-                      height: 60.0,
-                      width: 60.0,
+                      height: 70.0,
+                      width: 70.0,
                         fit: BoxFit.cover
                     ),
                   ),

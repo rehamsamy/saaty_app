@@ -30,6 +30,7 @@ class HomeProductWidget extends StatelessWidget {
                   arguments: {'prod': product, 'flag': flag});
             },
             child: Container(
+              height: 200,
               //width: 500,
               child: Padding(
                 padding: const EdgeInsets.all(1.0),
@@ -43,11 +44,6 @@ class HomeProductWidget extends StatelessWidget {
                     child: Stack(
                       // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                           Container(
-                             padding: EdgeInsets.all(5),
-                             child: Align(
-                               alignment: Alignment.topRight,
-                          child: Image.asset('assets/images/new1.jpeg',width: 35,height: 35,),),),
                         Align(
                             alignment: Alignment.center,
                             child:
@@ -71,7 +67,7 @@ class HomeProductWidget extends StatelessWidget {
                           Align(
                               alignment: Alignment.bottomRight,
                             child:  Container(
-                              margin: EdgeInsets.all(10),
+                              margin: EdgeInsets.all(1),
                               width: 80,
                               height: 30,
                               child: Center(
@@ -84,6 +80,11 @@ class HomeProductWidget extends StatelessWidget {
                             ),
 
                           ),
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: Image.asset('assets/images/new1.jpeg',width: 35,height: 35,),),),
                     Align(
                       alignment: Alignment.topLeft,
                       child:

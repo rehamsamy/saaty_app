@@ -85,130 +85,136 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    width = MediaQuery.of(context).size.width;
-    height = MediaQuery.of(context).size.height;
+    WidgetsFlutterBinding.ensureInitialized();
+    width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    height = MediaQuery
+        .of(context)
+        .size
+        .height;
     Cons.buildColors(context);
     CarouselController buttonCarouselController = CarouselController();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'main_page'.tr,
-          style: Cons.greyFont,
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-             // height: height * 0.44,
-              height: 250,
-              child: CarouselSlider(
-                carouselController: buttonCarouselController,
-                options: CarouselOptions(
-                    onPageChanged: (ind, x) {
-                      setState(() {
-                        _index = ind;
-                      });
-                    },
-                    initialPage: 1,
-                    autoPlayAnimationDuration: Duration(milliseconds: 400),
-                    autoPlay: true,
-                    enlargeCenterPage: true,
-                    aspectRatio: 6 / 4,
-                    //viewportFraction: 0.81,
-                    viewportFraction: 1),
-                items: images
-                    .map((e) => Stack(children: [
-                          Center(
-                              child: Image.asset(
-                            e,
-                            fit: BoxFit.fill,
-                          )),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 5,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                buildCircleSlider(0),
-                                buildCircleSlider(1),
-                                buildCircleSlider(2),
-                                buildCircleSlider(3),
-                              ],
-                            ),
-                          ),
-                        ]))
-                    .toList(),
-              ),
+    return
+      Scaffold(
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+           expandedHeight: 50.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text( 'main_page'.tr,style: Cons.greyFont,),
+              centerTitle: true,
             ),
-            SizedBox(
-              height: 5,
-            ),
-            Container(
-              height: 220,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Image.asset(
-                        'assets/images/home_photo.png',
-                        fit: BoxFit.contain,
-                      )),
-                  LayoutBuilder(
-                    builder: (_, cons) => Align(
-                      alignment: Alignment.topCenter,
-                      child: Column(
-                        children: [
-                          ListTile(
-                            leading: Icon(
-                              Icons.drag_indicator_rounded,
-                              color: Cons.accent_color,
-                            ),
-                            title: Text(
-                              'catgory'.tr,
-                              //textDirection: TextDirection.rtl,
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
-                            ),
-                          ),
-                          buildCatList(),
-                         // buildGridProducts(),
-                        ],
+          ),
+          SliverList(delegate: SliverChildListDelegate(
+              [
+                      Container(
+                       // height: height * 0.44,
+                        height: 250,
+                        child: CarouselSlider(
+                          carouselController: buttonCarouselController,
+                          options: CarouselOptions(
+                              onPageChanged: (ind, x) {
+                                setState(() {
+                                  _index = ind;
+                                });
+                              },
+                              initialPage: 1,
+                              autoPlayAnimationDuration: Duration(milliseconds: 400),
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                              aspectRatio: 6 / 4,
+                              //viewportFraction: 0.81,
+                              viewportFraction: 1),
+                          items: images
+                              .map((e) => Stack(children: [
+                                    Center(
+                                        child: Image.asset(
+                                      e,
+                                      fit: BoxFit.fill,
+                                    )),
+                                    Positioned(
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 5,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          buildCircleSlider(0),
+                                          buildCircleSlider(1),
+                                          buildCircleSlider(2),
+                                          buildCircleSlider(3),
+                                        ],
+                                      ),
+                                    ),
+                                  ]))
+                              .toList(),
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 10),
-              leading: Icon(
-                Icons.card_giftcard,
-                color: Cons.accent_color,
-              ),
-              title: Text(
-                'new'.tr,
-                //textDirection: TextDirection.rtl,
-                style: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(2),
-              child: buildHomeProductsGrid(),
-              height: 500,
-            ),
-            SizedBox(height: 20,)
-          ],
-        ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        height: 220,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Image.asset(
+                                  'assets/images/home_photo.png',
+                                  fit: BoxFit.contain,
+                                )),
+                            LayoutBuilder(
+                              builder: (_, cons) => Align(
+                                alignment: Alignment.topCenter,
+                                child: Column(
+                                  children: [
+                                    ListTile(
+                                      leading: Icon(
+                                        Icons.drag_indicator_rounded,
+                                        color: Cons.accent_color,
+                                      ),
+                                      title: Text(
+                                        'catgory'.tr,
+                                        //textDirection: TextDirection.rtl,
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
+                                    ),
+                                    buildCatList(),
+                                   // buildGridProducts(),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      ListTile(
+                        //contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
+                        leading: Icon(
+                          Icons.card_giftcard,
+                          color: Cons.accent_color,
+                        ),
+                        title: Text(
+                          'new'.tr,
+                          //textDirection: TextDirection.rtl,
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        ),
+                      ),
+         ] ),
+          ),
+          buildHomeProductsGrid(),
+        ],
       ),
-      drawer: StorageController.getString(StorageController.type)=='guest' ? VisitorDrawer() : MyDrawer(),
+        drawer: StorageController.getString(StorageController.type)=='guest' ? VisitorDrawer() : MyDrawer(),
     );
   }
 
@@ -298,18 +304,6 @@ class HomeScreenState extends State<HomeScreen> {
                     scrollDirection: Axis.horizontal,
                     itemCount: _productController.filteredList.length,
                   ),
-                  // GridView.builder(
-                  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  //         mainAxisSpacing: 0,
-                  //         crossAxisSpacing: 0,
-                  //         childAspectRatio: 8 / 9,
-                  //         crossAxisCount: 2),
-                  //     itemCount: 7,
-                  //     itemBuilder: (ctx, inx) {
-                  //       return ProductItemWidget(
-                  //           _productController.filteredList[inx]);
-                  //     }
-                  //  ),
                 ),
               );
   }
@@ -323,43 +317,69 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   buildHomeProductsGrid() {
-    return _isLoading == true
-        ? Center(
+    return GetBuilder<ProductsController>(
+      builder:(_)=> _isLoading == true
+          ? SliverList(
+        delegate: SliverChildListDelegate([
+          Center(
             child: CircularProgressIndicator(),
-          )
-        : _productController.homeProducts.isEmpty
-            ? Center(
-                child: Text('empty_data'.tr),
-              )
-            : GetBuilder<ProductsController>(
-                builder: (_) =>  GridView.builder(
-                  scrollDirection: Axis.vertical,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisSpacing: 0,
-                        crossAxisSpacing: 0,
-                        childAspectRatio: 3 / 4,
-                        crossAxisCount: 2,),
-                    itemCount:_productController.homeProducts.length,
-                    itemBuilder: (ctx, inx) {
-                      return HomeProductWidget(
-                          _productController.homeProducts[inx]);
-                    }),
+          ),
+        ])): _productController.homeProducts.isEmpty
+              ? SliverList(
+        delegate: SliverChildListDelegate([
+                Center(
+                    child: Text('empty_data'.tr),
+                  ),
+              ]))
+              : SliverPadding(
+        padding: EdgeInsets.all(6),
+                sliver: SliverGrid(
+                          gridDelegate:  SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200.0,
+                            mainAxisSpacing: 6.0,
+                            crossAxisSpacing: 6.0,
+                            //childAspectRatio: 0.9,
+                          ),
+                          delegate: SliverChildBuilderDelegate(
+                                (BuildContext context, int index) {
+                                      return HomeProductWidget(
+                                          _productController.homeProducts[index]);
+                            },
+                            childCount: _productController.homeProducts.length,
+                          ),
+                        ),
+              ),
 
 
-                    // ListView.builder(
-                    // itemCount: _productController.homeProducts.length,
-                    // scrollDirection: Axis.horizontal,
-                    // itemBuilder: (ctx, inx) {
-                    //   return Container(
-                    //     width: width * 0.8,
-                    //     height: 180,
-                    //     child: HomeProductWidget(
-                    //         _productController.homeProducts[inx]),
-                    //   );
-                    //   // return HomeProductWidget(
-                    //   //     _productController.homeProducts[inx]);
-                    // }),
-              );
+                    //   GridView.builder(
+                    // scrollDirection: Axis.vertical,
+                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    //       mainAxisSpacing: 0,
+                    //       crossAxisSpacing: 0,
+                    //       childAspectRatio: 3 / 4,
+                    //       crossAxisCount: 2,),
+                    //   itemCount:_productController.homeProducts.length,
+                    //   itemBuilder: (ctx, inx) {
+                    //     return HomeProductWidget(
+                    //         _productController.homeProducts[inx]);
+                    //   }),
+
+
+                      // ListView.builder(
+                      // itemCount: _productController.homeProducts.length,
+                      // scrollDirection: Axis.horizontal,
+                      // itemBuilder: (ctx, inx) {
+                      //   return Container(
+                      //     width: width * 0.8,
+                      //     height: 180,
+                      //     child: HomeProductWidget(
+                      //         _productController.homeProducts[inx]),
+                      //   );
+                      //   // return HomeProductWidget(
+                      //   //     _productController.homeProducts[inx]);
+                      // }),
+              //  ),
+    );
   }
 
   void fetchUserData() async {
