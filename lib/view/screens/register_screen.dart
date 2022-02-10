@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/cons.dart';
@@ -31,8 +33,8 @@ class RegisterScreenState extends State<RegisterScreen>  with SingleTickerProvid
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              expandedHeight:250,
-              pinned: true,
+              expandedHeight:height*.45,
+              pinned: false,
               floating: true,
               centerTitle: true,
               snap: false,
@@ -43,123 +45,42 @@ class RegisterScreenState extends State<RegisterScreen>  with SingleTickerProvid
                                     fit: BoxFit.contain,
                                   )),
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(100.0),
+                preferredSize: Size.fromHeight(80.0),
                 child:  Card(
                   elevation: 3,
-                  child: TabBar(
-                    unselectedLabelColor: Colors.grey,
-                    labelColor: Cons.accent_color,
-                    labelStyle: Cons.greyFont,
-                    tabs: [
-                      Tab(
-                        text: 'register_as_user'.tr,
-                      ),
-                      Tab(
-                        text: 'register_as_trader'.tr,
-                      )
-                    ],
-                    controller: _tabController,
-                    indicatorSize: TabBarIndicatorSize.tab,
+                  child: Container(
+                    height: 60,
+                    child: TabBar(
+                      unselectedLabelColor: Colors.grey,
+                      labelColor: Cons.accent_color,
+                      labelStyle: Cons.greyFont,
+                      tabs: [
+                        Tab(
+                          text: 'register_as_user'.tr,
+                        ),
+                        Tab(
+                          text: 'register_as_trader'.tr,
+                        )
+                      ],
+                      controller: _tabController,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                    ),
                   ),
                 ),
               ),
               ),
             SliverList(delegate: SliverChildListDelegate(
               [
-              // Card(
-              //   elevation: 10,
-              //   child: TabBar(
-              //     unselectedLabelColor: Colors.grey,
-              //     labelColor: Cons.accent_color,
-              //     labelStyle: Cons.greyFont,
-              //     tabs: [
-              //       Tab(
-              //         text: 'register_as_user'.tr,
-              //       ),
-              //       Tab(
-              //         text: 'register_as_trader'.tr,
-              //       )
-              //     ],
-              //     controller: _tabController,
-              //     indicatorSize: TabBarIndicatorSize.tab,
-              //   ),
-              // ),
-   Container(
-     height: 400,
-     child: TabBarView(
-                           children: [RegisterWidget(0), RegisterWidget(1)],
-                           controller: _tabController,
-                         ),
-   ),
-            ]
-            ))
-
-
+              Container(
+                height: height * .7,
+                child: TabBarView(
+                  children: [RegisterWidget(0), RegisterWidget(1)],
+                  controller: _tabController,
+                ),
+              ),
+            ]))
           ],
 
-
-          // child: Column(
-          //   children: [
-          //     Expanded(
-          //       flex: 3,
-          //       child: Stack(
-          //         alignment: Alignment.topCenter,
-          //         children: [
-          //           Center(
-          //             child: Container(
-          //               margin: EdgeInsets.only(top: 50),
-          //                // width: width * 0.6,
-          //                 //height: height * 0.3,
-          //                 child: Image.asset(
-          //                   'assets/images/signup_photo_1.png',
-          //                   fit: BoxFit.contain,
-          //                 )),
-          //           ),
-          //           Container(
-          //               width: width * 0.4,
-          //               height: height * 0.1,
-          //               child: Image.asset('assets/images/color.png')),
-          //              ]
-          //         ),
-          //     ),
-          //               Container(
-          //                 height: 60,
-          //                 //flex: 1,
-          //                 child: Card(
-          //                   elevation: 10,
-          //                   child: TabBar(
-          //                     unselectedLabelColor: Colors.grey,
-          //                     labelColor: Cons.accent_color,
-          //                     labelStyle: Cons.greyFont,
-          //                     tabs: [
-          //                       Tab(
-          //                         text:'register_as_user'.tr,
-          //                       ),
-          //                       Tab(
-          //                         text:'register_as_trader'.tr,
-          //                       )
-          //                     ],
-          //                     controller: _tabController,
-          //                     indicatorSize: TabBarIndicatorSize.tab,
-          //                   ),
-          //                 ),
-          //               ),
-          //               Expanded(
-          //                 flex: 6,
-          //                 child: Card(
-          //                   color: Colors.white,
-          //                  // margin: EdgeInsets.only(bottom: 50),
-          //                   child: SizedBox(
-          //                     height: height*0.4,
-          //                     child: TabBarView(
-          //                       children: [RegisterWidget(0), RegisterWidget(1)],
-          //                       controller: _tabController,
-          //                     ),
-          //                   ),
-          //                 ),
-          //               )
-          //   ],
-          // ),
         ),
       ),
     );

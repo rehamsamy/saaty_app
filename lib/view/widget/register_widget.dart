@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/model/http_exception.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
+import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/home_screen.dart';
 import 'package:saaty_app/view/screens/register_screen.dart';
 
@@ -180,6 +181,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         message='EMAIL_EXISTS';
       }if(r.message.contains('INVALID_EMAIL')){
         message='INVALID_EMAIL';
+      }else{
+        message=r.toString();
       }
       _showErrorMessage(context, message);
     } catch(e){

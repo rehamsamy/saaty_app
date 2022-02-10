@@ -141,6 +141,7 @@ class LoginScreenState extends State<LoginScreen> {
                     color: accent,
                     onPressed: (){
                       loginUser();
+
                     },child: Text('login_user'.tr,style: Cons.whiteFont,),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)
@@ -158,9 +159,7 @@ class LoginScreenState extends State<LoginScreen> {
                      borderRadius: BorderRadius.circular(10)
                     ),
                     onPressed: (){
-                   // StorageController.isGuest==true;
                     StorageController.setString(StorageController.type, 'guest');
-                     //print('xxxxxxx  '+_authController.visitorFlag.toString());
                      Navigator.of(context).pushNamed(HomeScreen.HOME_SCREEN_RIUTE);
                     },child: Text('login_as_visitor'.tr,style: Cons.whiteFont,),),
                 ),

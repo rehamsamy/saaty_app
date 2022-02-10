@@ -72,7 +72,10 @@ class StatusProductController extends GetxController {
               }
             }
             print(product.isFav.toString() + "  " + product.id);
-            _allProds.add(product);
+            if (value['id'] == id) {
+              print('bbbb  ' + id + '  ' + value['id']);
+              _allProds.add(product);
+            }
           });
         }
       }
@@ -86,7 +89,13 @@ class StatusProductController extends GetxController {
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
             print(product.isFav.toString() + "  " + product.id);
-            _allProds.add(product);
+
+                  if (value['id'] == id) {
+                    print('bbbb  ' + id + '  ' + value['id']);
+                    _allProds.add(product);
+                  }
+
+           // _allProds.add(product);
           });
         }
       }

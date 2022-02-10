@@ -75,6 +75,7 @@ class MessageController  extends GetxController{
   fetchMessages()async{
     _messagesList.clear();
     messagesList.clear();
+    print(selectedTabIndex.toString()+ 'll ');
     String  url = 'https://saaty-9ba9f-default-rtdb.firebaseio.com/messages.json?auth=${AuthController.token}';
     try{
       var response=await http.get(Uri.parse(url));
@@ -93,7 +94,7 @@ class MessageController  extends GetxController{
 List<MessageModel> newList=[];
   void getFinalMessagesList(){
     newList.clear();
-    if(selectedTabIndex==0){
+    if(selectedTabIndex==1){
       newList= sendMessages;
     }else{
       newList=receivedMessage;

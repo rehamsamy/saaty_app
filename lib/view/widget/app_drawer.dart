@@ -122,7 +122,7 @@ class MyDrawer extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     color: Cons.accent_color,
                   ),
-                  child: Center(child: Text('ss',style: TextStyle(color: Colors.white),)),
+                  child: Center(child: Text(_messageController.receivedMessage.length.toString(),style: TextStyle(color: Colors.white),)),
                 ):null,
               ),
               ListTile(

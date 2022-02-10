@@ -57,8 +57,6 @@ class AuthController extends GetxController {
         Map<String, dynamic> data = {'localId': userId, 'idToken': token};
         await StorageController.setString(
             StorageController.loginDataKey, jsonEncode(data));
-        Map<String, dynamic> loginData = jsonDecode(
-            StorageController.getString(StorageController.loginDataKey));
 
         await StorageController.setString(
             StorageController.type, 'user');
@@ -83,10 +81,15 @@ class AuthController extends GetxController {
       } else {
         print('step3');
       }
-
-      throw HttpError(json.decode(x.body)['error']['message']);
+      dynamic response_data = json.decode(x.body);
+      if (response_data['error'] != null) {
+        throw HttpError(response_data['error']['message']);
+      }
+    //
     } catch (err) {
-      throw err;
+
+      // print('xxxxx  '+err);
+      // throw err;
     }
   }
 

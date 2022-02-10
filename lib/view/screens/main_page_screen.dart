@@ -113,7 +113,7 @@ class _MainPageScreenState extends State<MainPageScreen>
         builder: (_)=>
          Scaffold(
           appBar: PreferredSize(
-            preferredSize: Size.fromHeight(height *0.18),
+            preferredSize: Size.fromHeight(130),
             child: Container(
               child: Column(
                 children: [
@@ -411,7 +411,7 @@ class _MainPageScreenState extends State<MainPageScreen>
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             mainAxisSpacing: 0,
             crossAxisSpacing: 0,
-            childAspectRatio: 8 / 9,
+            childAspectRatio: 1,
             crossAxisCount: 2),
         itemCount:  _productController.allStores.length,
         itemBuilder: (ctx, inx) {
@@ -480,6 +480,7 @@ class _MainPageScreenState extends State<MainPageScreen>
   child: Icon(Icons.add,color: Colors.white,),
   backgroundColor: Cons.accent_color,
   onPressed: () {
+    StorageController.isGuest?Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE):
   Navigator.of(context).pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE);
   },
   );

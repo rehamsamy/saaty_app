@@ -496,22 +496,40 @@ class ProductItemDetailScreen extends StatelessWidget {
               Text(product.status==0?'new'.tr:'old'.tr,style:Cons.accentFont,)
             ],
           )),
+    Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+       // height: 80,
+        child: Center(
+          child: Text(
+                    product.desc,
+                    style: Cons.blackStyle1,
+                  //  overflow: TextOverflow.ellipsis
+                    ),
+        ),
+      ),
+    )
 
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(width: 20,),
-              Container(
-                child: Text(
-                  product.desc,
-                  style: Cons.blackStyle1,
-                  overflow: TextOverflow.ellipsis
-                  ,
-                  //TextStyle(fontSize: 13,),
-                ),
-              ),
-            ],
-          ),
+          // Row(
+          //  // crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //   //  SizedBox(width: 5,),
+          //     Container(
+          //       height: 70,
+          //       width: double.infinity,
+          //       margin: EdgeInsets.all(5),
+          //       child: Center(
+          //         child: Text(
+          //           product.desc,
+          //           style: Cons.blackStyle1,
+          //           overflow: TextOverflow.ellipsis
+          //           ,
+          //           //TextStyle(fontSize: 13,),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );

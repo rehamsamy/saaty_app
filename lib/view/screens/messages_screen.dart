@@ -32,7 +32,8 @@ MessageController _messageController=Get.find();
   }
   @override
   Widget build(BuildContext context) {
-    _messageController.changeVisibleCheckBox(false);
+    Future.delayed(Duration(seconds: 1)).then((value) =>
+        _messageController.changeVisibleCheckBox(false));
     width=MediaQuery.of(context).size.width;
     height=MediaQuery.of(context).size.height;
 

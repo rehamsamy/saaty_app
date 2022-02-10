@@ -317,7 +317,9 @@ class CreateProductScreenState extends State<CreateProductScreen>{
              // SizedBox(width: 10,),
             ],
           ),
+          SizedBox(height: 7,),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Radio(value: 3, groupValue: _radValContact, onChanged: (value){
                 setState(() {

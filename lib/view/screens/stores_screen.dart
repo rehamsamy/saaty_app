@@ -50,7 +50,8 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
            GetBuilder<StatusProductController>(
              builder: (_)=>
               SliverAppBar(
-               expandedHeight: MediaQuery.of(context).size.height*0.4,
+              // expandedHeight: MediaQuery.of(context).size.height*0.4,
+                expandedHeight: 200,
                pinned: true,
                floating: false,
                centerTitle: true,
@@ -60,17 +61,17 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                   Column(
                    children: [
                      Container(
-                       height: cons.maxHeight*0.25,
+                       height: cons.maxHeight*.3,
                        child:  Card(
-                         elevation: 6,
+                         elevation: 4,
                          child: Container(color: Colors.white,
                          child: Center(child: Text(model.name)),),
                        ),
                      ),
                     Container(
-                      height: cons.maxHeight*0.25,
+                      height: cons.maxHeight*.3,
                       child:  Card(
-                        elevation: 4,
+                        elevation: 3,
                         child: Padding(
                           padding: EdgeInsets.all(1),
                           child: TextFormField(
@@ -111,7 +112,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
 
                       ),
                      Container(
-                         height: cons.maxHeight*0.40,
+                         height: cons.maxHeight*0.4,
                          width: cons.maxWidth,
                          child:
                          Center(
@@ -123,7 +124,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                                                   Hero(
                                                     tag: model.userId,
                                                     child: CircleAvatar(
-                                                     radius: 35,
+                                                     radius: 30,
                                                      backgroundImage: AssetImage('assets/images/store${index.toString()}.png'),
                                                  ),
                                                   ),
