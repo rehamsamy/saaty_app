@@ -1,53 +1,58 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/view/widget/register_widget.dart';
 import 'package:get/get.dart';
-class RegisterScreen extends StatefulWidget{
-  static String REGISTER_SCREEN_ROUTE='/2';
+
+class RegisterScreen extends StatefulWidget {
+  static String REGISTER_SCREEN_ROUTE = '/2';
+
   @override
   State createState() => RegisterScreenState();
 }
 
-class RegisterScreenState extends State<RegisterScreen>  with SingleTickerProviderStateMixin {
-   TabController _tabController;
- @override
- void initState() {
-   _tabController = new TabController(length: 2, vsync: this);
-   super.initState();
- }
+class RegisterScreenState extends State<RegisterScreen>
+    with SingleTickerProviderStateMixin {
+  TabController _tabController;
 
- @override
+  @override
+  void initState() {
+    _tabController = new TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-  // FocusScope.of(context).unfocus();
-    var width=MediaQuery.of(context).size.width;
-    var height=MediaQuery.of(context).size.height;
+    // FocusScope.of(context).unfocus();
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     Cons.buildColors(context);
 
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: CustomScrollView(
-          slivers: [
+    return Scaffold(
+      body: NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
             SliverAppBar(
-              expandedHeight:height*.45,
-              pinned: false,
+              expandedHeight: 300,
+              pinned: true,
               floating: true,
               centerTitle: true,
               snap: false,
               flexibleSpace: FlexibleSpaceBar(
-                title: Text('create_new_account'.tr,style: Cons.greyFont,),
-                background: Image.asset(
-                                    'assets/images/signup_photo_1.png',
-                                    fit: BoxFit.contain,
-                                  )),
+                  title: Text(
+                    'create_new_account'.tr,
+                    style: Cons.greyFont,
+                  ),
+                  background: Image.asset(
+                    'assets/images/signup_photo_1.png',
+                    fit: BoxFit.contain,
+                  )),
               bottom: PreferredSize(
-                preferredSize: Size.fromHeight(80.0),
-                child:  Card(
-                  elevation: 3,
+                preferredSize: Size.fromHeight(70.0),
+                child: Card(
+                  color: Colors.white,
+                  elevation: 1,
                   child: Container(
                     height: 60,
                     child: TabBar(
@@ -68,23 +73,18 @@ class RegisterScreenState extends State<RegisterScreen>  with SingleTickerProvid
                   ),
                 ),
               ),
-              ),
-            SliverList(delegate: SliverChildListDelegate(
-              [
-              Container(
-                height: height * .7,
-                child: TabBarView(
-                  children: [RegisterWidget(0), RegisterWidget(1)],
-                  controller: _tabController,
-                ),
-              ),
-            ]))
-          ],
+            ),
 
+          ];
+        },
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            RegisterWidget(0),
+            RegisterWidget(1),
+          ],
         ),
       ),
     );
   }
 }
-
-

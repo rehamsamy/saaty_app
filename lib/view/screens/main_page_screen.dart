@@ -25,16 +25,15 @@ import 'cart_screen.dart';
 
 class MainPageScreen extends StatefulWidget {
   static String MAIN_PRAGE_ROUTE = '/5';
-  StorageController _storageController=Get.find();
+  StorageController _storageController = Get.find();
 
   static String token;
   static String userId;
   static DateTime expire;
 
-
-  buildStorage(){
-    token=StorageController.getString(StorageController.apiToken);
-    userId=StorageController.getString(StorageController.userId);
+  buildStorage() {
+    token = StorageController.getString(StorageController.apiToken);
+    userId = StorageController.getString(StorageController.userId);
   }
 
   @override
@@ -48,48 +47,47 @@ class _MainPageScreenState extends State<MainPageScreen>
   List<Product> allProducts = [];
   List<Product> filteredProducts = [];
   ProductsController _productController = Get.find();
-  Cart _cart=Get.find();
-  AuthController _authController=Get.find();
+  Cart _cart = Get.find();
+  AuthController _authController = Get.find();
   ProductController _prod = Get.find();
   String productsType;
   var _searcController = TextEditingController();
-  var _storageontroller=Get.put(StorageController());
+  var _storageontroller = Get.put(StorageController());
   FocusNode _textFocus = new FocusNode();
   TabController _tabController;
   var hintText;
   int filterRad = 0;
   bool flag = false;
-  Map<String,dynamic>  _userData;
+  Map<String, dynamic> _userData;
   int pos;
-
 
   @override
   void initState() {
     super.initState();
-    if(!StorageController.isGuest) {
+    if (!StorageController.isGuest) {
       _userData = jsonDecode(
           StorageController.getString(StorageController.loginDataKey));
       MainPageScreen.expire = DateTime.parse(
           StorageController.getString(StorageController.expireDate));
-      String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(
-          DateTime.now());
+      String nowFormat =
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
       DateTime nowRes = DateTime.parse(nowFormat);
       if (MainPageScreen.expire != null) {
         if (MainPageScreen.expire.isAfter(nowRes)) {
           MainPageScreen.token = _userData['idToken'];
           MainPageScreen.userId = _userData['localId'];
-          print('88888  ' + MainPageScreen.userId + '      ;fff   ' +
+          print('88888  ' +
+              MainPageScreen.userId +
+              '      ;fff   ' +
               MainPageScreen.token);
         } else {
           Future.delayed(Duration.zero, () {
-            Navigator.of(context).pushReplacementNamed(
-                LoginScreen.LOGIN_SCREEN_ROUTE);
+            Navigator.of(context)
+                .pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
           });
         }
       }
-    }else{
-
-    }
+    } else {}
 
     fetchData();
     _tabController = TabController(length: 3, vsync: this);
@@ -99,10 +97,10 @@ class _MainPageScreenState extends State<MainPageScreen>
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
-    pos=ModalRoute.of(context).settings.arguments as int;
+    pos = ModalRoute.of(context).settings.arguments as int;
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    if(pos !=null){
+    if (pos != null) {
       _productController.changeSelectedTab(pos);
     }
 
@@ -110,102 +108,103 @@ class _MainPageScreenState extends State<MainPageScreen>
     return DefaultTabController(
       length: 3,
       child: GetBuilder<ProductsController>(
-        builder: (_)=>
-         Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(130),
-            child: Container(
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: AppBar(
-                      title: Text('main_page'.tr, style: Cons.greyFont),
-                      elevation: 6,
-                      actions: [
-                        GetBuilder<Cart>(builder: (_)=> Badge (_cart.itemCount.toString(),Colors.red),
-                        ),
-
-                        IconButton(
-                          icon: Icon(
-                            Icons.home,
-                            color: Cons.accent_color,
-                            size: 25,
+        builder: (_) => Scaffold(
+            appBar: PreferredSize(
+              preferredSize: Size.fromHeight(130),
+              child: Container(
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: AppBar(
+                        title: Text('main_page'.tr, style: Cons.greyFont),
+                        elevation: 6,
+                        actions: [
+                          GetBuilder<Cart>(
+                            builder: (_) =>
+                                Badge(_cart.itemCount.toString(), Colors.red),
                           ),
-                          onPressed: () {
-                            Navigator.of(context)
-                                .pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
-                          },
-                        ),
-            ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Card(
-                      margin: EdgeInsets.all(2),
-                      elevation: 5,
-                      child: TextFormField(
-                        controller: _searcController,
-                        focusNode: _textFocus,
-                        onChanged: onTextChange,
-                        decoration: InputDecoration(
-                            hintText: 'search'.tr,
-                            prefixIcon: Icon(
-                              Icons.search,
+                          IconButton(
+                            icon: Icon(
+                              Icons.home,
                               color: Cons.accent_color,
                               size: 25,
                             ),
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                Icons.filter_list_alt,
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Card(
+                        margin: EdgeInsets.all(2),
+                        elevation: 5,
+                        child: TextFormField(
+                          controller: _searcController,
+                          focusNode: _textFocus,
+                          onChanged: onTextChange,
+                          decoration: InputDecoration(
+                              hintText: 'search'.tr,
+                              prefixIcon: Icon(
+                                Icons.search,
                                 color: Cons.accent_color,
                                 size: 25,
                               ),
-                              onPressed: () {
-                                buildFilterDialogWidget(context);
-                              },
-                            ),
-                            // SizedBox(
-                            //     width:10,
-                            //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Cons.accent_color,
-                                width: 1.0,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  Icons.filter_list_alt,
+                                  color: Cons.accent_color,
+                                  size: 25,
+                                ),
+                                onPressed: () {
+                                  buildFilterDialogWidget(context);
+                                },
                               ),
-                            )
-                            //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
-                            ),
+                              // SizedBox(
+                              //     width:10,
+                              //     height:10,child: Image.asset('assets/images/nav_filter.png',width: 15,height: 15,)),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Cons.accent_color,
+                                  width: 1.0,
+                                ),
+                              )
+                              //ثى prefix: Icon(Icons.search,color: Cons.accent_color,)
+                              ),
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 2,
-                  ),
-                ],
+                    SizedBox(
+                      height: 2,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          body:
-          IndexedStack(
-            index: _productController.selectedTabIndex,
-            children:[
-              buildGrid(),
-              buildGrid(),
-              buildGrid(),
-              buildStoreGrid(),
-            ] ,
-          ),
-
-          drawer:  StorageController.getString(StorageController.type)=='guest'?VisitorDrawer():MyDrawer(),
-             bottomNavigationBar:  _bottomNav(),
-             floatingActionButton: _fab(),
-             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked
-        ),
+            body: IndexedStack(
+              index: _productController.selectedTabIndex,
+              children: [
+                buildGrid(),
+                buildGrid(),
+                buildGrid(),
+                buildStoreGrid(),
+              ],
+            ),
+            drawer:
+                StorageController.getString(StorageController.type) == 'guest'
+                    ? VisitorDrawer()
+                    : MyDrawer(),
+            bottomNavigationBar: _bottomNav(),
+            floatingActionButton: _fab(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked),
       ),
     );
   }
@@ -221,19 +220,18 @@ class _MainPageScreenState extends State<MainPageScreen>
                 child: Text('empty_data'.tr),
               )
             : GetBuilder<ProductsController>(
-      builder: (_)=>
-               GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing: 0,
-                      crossAxisSpacing: 0,
-                      childAspectRatio: 8 / 9,
-                      crossAxisCount: 2),
-                  itemCount: _productController.filteredList.length,
-                  itemBuilder: (ctx, inx) {
-                    return ProductItemWidget(
-                        _productController.filteredList[inx]);
-                  }),
-            );
+                builder: (_) => GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisSpacing: 0,
+                        crossAxisSpacing: 0,
+                        childAspectRatio: 8 / 9,
+                        crossAxisCount: 2),
+                    itemCount: _productController.filteredList.length,
+                    itemBuilder: (ctx, inx) {
+                      return ProductItemWidget(
+                          _productController.filteredList[inx]);
+                    }),
+              );
   }
 
   Widget storeGridItem(List<Product> stores, int indx) {
@@ -272,8 +270,9 @@ class _MainPageScreenState extends State<MainPageScreen>
   bool get wantKeepAlive => true;
 
   Future fetchData() async {
-    await _productController.fetchStores().then((value) =>
-        print('length 44444444  => '));
+    await _productController
+        .fetchStores()
+        .then((value) => print('length 44444444  => '));
     await Future.delayed(Duration(milliseconds: 50));
     setState(() {
       _isLoading = true;
@@ -284,7 +283,6 @@ class _MainPageScreenState extends State<MainPageScreen>
         .fetchProducts('all')
         .then((value) => setState(() => _isLoading = false))
         .catchError((err) => print('=>>>>>  $err'));
-
   }
 
   onTextChange(String text) {
@@ -401,95 +399,105 @@ class _MainPageScreenState extends State<MainPageScreen>
   buildStoreGrid() {
     return _isLoading == true
         ? Center(
-      child: CircularProgressIndicator(),
-    )
+            child: CircularProgressIndicator(),
+          )
         : _productController.allStores.isEmpty
-        ? Center(
-      child: Text('empty_data'.tr),
-    )
-        : GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            mainAxisSpacing: 0,
-            crossAxisSpacing: 0,
-            childAspectRatio: 1,
-            crossAxisCount: 2),
-        itemCount:  _productController.allStores.length,
-        itemBuilder: (ctx, inx) {
-          return StoreItemWidget(_productController.allStores[inx],inx);
-        });
+            ? Center(
+                child: Text('empty_data'.tr),
+              )
+            : GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 0,
+                    crossAxisSpacing: 0,
+                    childAspectRatio: 1,
+                    crossAxisCount: 2),
+                itemCount: _productController.allStores.length,
+                itemBuilder: (ctx, inx) {
+                  return StoreItemWidget(
+                      _productController.allStores[inx], inx);
+                });
   }
 
-
-  _bottomNav(){
-  return   GetBuilder<ProductController>(
-    builder: (_)=>
-    Container(
+  _bottomNav() {
+    return GetBuilder<ProductController>(
+      builder: (_) => Container(
         height: 65,
         child: BottomAppBar(
-            color: Cons.primary_color,
-            child: new Theme(
-              data: Theme.of(context).copyWith(
-                  canvasColor: Colors.blueGrey.shade500,
-                  primaryColor: Colors.red,
-                  textTheme: Theme
-                      .of(context)
-                      .textTheme
-                      .copyWith(caption: new TextStyle(color: Colors.yellow))), // sets the inactive color of the `BottomNavigationBar`
-              child: new BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                currentIndex: _productController.selectedTabIndex,
-                selectedItemColor: Cons.primary_color,
-                onTap: (ind){
-                  _productController.changeSelectedTab(ind);
-                  _productController.update();
-                  print('.....   '+_productController.selectedTabIndex.toString());
-                },
-                items: [
-                  new BottomNavigationBarItem(
-                    icon: new Icon(Icons.more_horiz,color: checkBottomColor(0),),
-                    title: new Text('all'.tr,style: TextStyle(color:checkBottomColor(0),))
-                  ),
-                  new BottomNavigationBarItem(
-                    icon: new Icon(Icons.watch_outlined,color: checkBottomColor(1)),
-                    title: new Text('watch'.tr,style: TextStyle(color:checkBottomColor(1))),
-                  ),
-                  new BottomNavigationBarItem(
-                    icon: new Icon(Icons.stream,color: checkBottomColor(2)),
-                    title: new Text('braclete'.tr,style: TextStyle(color:checkBottomColor(2))),
-                  ),
-                  new BottomNavigationBarItem(
-                    icon: new Icon(Icons.shop,color: checkBottomColor(3)),
-                    title: new Text('stores'.tr,style: TextStyle(color:checkBottomColor(3))),
-                  ),
-                ],
-              ),
+          color: Cons.primary_color,
+          child: new Theme(
+            data: Theme.of(context).copyWith(
+                canvasColor: Colors.blueGrey.shade500,
+                primaryColor: Colors.red,
+                textTheme: Theme.of(context)
+                    .textTheme
+                    .copyWith(caption: new TextStyle(color: Colors.yellow))),
+            // sets the inactive color of the `BottomNavigationBar`
+            child: new BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              currentIndex: _productController.selectedTabIndex,
+              selectedItemColor: Cons.primary_color,
+              onTap: (ind) {
+                _productController.changeSelectedTab(ind);
+                _productController.update();
+                print('.....   ' +
+                    _productController.selectedTabIndex.toString());
+              },
+              items: [
+                new BottomNavigationBarItem(
+                    icon: new Icon(
+                      Icons.more_horiz,
+                      color: checkBottomColor(0),
+                    ),
+                    title: new Text('all'.tr,
+                        style: TextStyle(
+                          color: checkBottomColor(0),
+                        ))),
+                new BottomNavigationBarItem(
+                  icon: new Icon(Icons.watch_outlined,
+                      color: checkBottomColor(1)),
+                  title: new Text('watch'.tr,
+                      style: TextStyle(color: checkBottomColor(1))),
+                ),
+                new BottomNavigationBarItem(
+                  icon: new Icon(Icons.stream, color: checkBottomColor(2)),
+                  title: new Text('braclete'.tr,
+                      style: TextStyle(color: checkBottomColor(2))),
+                ),
+                new BottomNavigationBarItem(
+                  icon: new Icon(Icons.shop, color: checkBottomColor(3)),
+                  title: new Text('stores'.tr,
+                      style: TextStyle(color: checkBottomColor(3))),
+                ),
+              ],
             ),
-
-            shape:CircularNotchedRectangle(),
+          ),
+          shape: CircularNotchedRectangle(),
           clipBehavior: Clip.antiAlias,
           notchMargin: 6.0,
         ),
       ),
-  );
+    );
   }
 
-
-
-   _fab() {
-  return FloatingActionButton(
-  child: Icon(Icons.add,color: Colors.white,),
-  backgroundColor: Cons.accent_color,
-  onPressed: () {
-    StorageController.isGuest?Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE):
-  Navigator.of(context).pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE);
-  },
-  );
+  _fab() {
+    return FloatingActionButton(
+      child: Icon(
+        Icons.add,
+        color: Colors.white,
+      ),
+      backgroundColor: Cons.accent_color,
+      onPressed: () {
+        StorageController.isGuest
+            ? Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE)
+            : Navigator.of(context)
+                .pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE);
+      },
+    );
   }
 
-checkBottomColor(int index){
- return _productController.selectedTabIndex==index?Cons.primary_color:Colors.white;
-}
-
-
-
+  checkBottomColor(int index) {
+    return _productController.selectedTabIndex == index
+        ? Cons.primary_color
+        : Colors.white;
+  }
 }

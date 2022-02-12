@@ -11,7 +11,6 @@ import 'dart:convert';
 
 class FavsAdsController extends GetxController{
 
-  StorageController _storageController=Get.find();
   List<Product> _allProds = [];
   List<Product> filteredList = [];
 

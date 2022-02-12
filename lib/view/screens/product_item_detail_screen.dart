@@ -503,7 +503,7 @@ class ProductItemDetailScreen extends StatelessWidget {
         child: Center(
           child: Text(
                     product.desc,
-                    style: Cons.blackStyle1,
+                    style: Cons.blackFont,
                   //  overflow: TextOverflow.ellipsis
                     ),
         ),

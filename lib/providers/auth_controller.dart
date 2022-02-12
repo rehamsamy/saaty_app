@@ -138,8 +138,9 @@ class AuthController extends GetxController {
   }
 
   updateUserData(Map<String, String> map) async {
+    String id=jsonDecode(StorageController.getString(StorageController.loginUserModel))['id'];
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${StorageController.getString(StorageController.userId)}.json?auth=${StorageController.getString(StorageController.apiToken)}';
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/$id.json?auth=${StorageController.getString(StorageController.apiToken)}';
     String url1 =
         'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
 
@@ -205,8 +206,10 @@ class AuthController extends GetxController {
   }
 
   changePassword(Map<String, dynamic> map) async {
+    String id=jsonDecode(StorageController.getString(StorageController.loginUserModel))['id'];
+    print('new iii   '+id);
     String url =
-        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/${StorageController.getString(StorageController.userId)}'
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/users/$id'
         '.json?auth=${StorageController.getString(StorageController.apiToken)}';
     String url1 =
         'https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyB7ObVnKxOeS5ohxXCz952NwCXNmWUgPc0';
@@ -265,7 +268,16 @@ class AuthController extends GetxController {
             backgroundColor: Colors.red,
             textColor: Colors.yellow);
       }
-    } catch (err) {}
+    } catch (err) {
+      Fluttertoast.showToast(
+          msg: 'Token is expired Please login again',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.yellow);
+
+    }
   }
 
   enterNewResetPassword(Map<String, dynamic> map) async {

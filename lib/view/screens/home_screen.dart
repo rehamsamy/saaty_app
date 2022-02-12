@@ -9,6 +9,7 @@ import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/widget/CategoryItem.dart';
 import 'package:saaty_app/view/widget/app_drawer.dart';
+import 'package:saaty_app/view/widget/images_slider_view.dart';
 import 'package:saaty_app/view/widget/new_product_widget.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 import 'package:saaty_app/view/widget/visitor_drawer.dart';
@@ -21,6 +22,7 @@ import 'main_page_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static String HOME_SCREEN_RIUTE = '/3';
+
   @override
   State<StatefulWidget> createState() {
     return HomeScreenState();
@@ -50,13 +52,15 @@ class HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    if(!StorageController.isGuest){
+    if (!StorageController.isGuest) {
       Future.delayed(Duration.zero, () {
         Cons.buildColors(context);
-        _userData =
-            jsonDecode(StorageController.getString(StorageController.loginDataKey));
-        DateTime expire = DateTime.parse(StorageController.getString(StorageController.expireDate));
-        String nowFormat = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+        _userData = jsonDecode(
+            StorageController.getString(StorageController.loginDataKey));
+        DateTime expire = DateTime.parse(
+            StorageController.getString(StorageController.expireDate));
+        String nowFormat =
+            DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
         DateTime nowRes = DateTime.parse(nowFormat);
         print('    expire            ' + expire.toString());
         if (expire != null) {
@@ -76,8 +80,7 @@ class HomeScreenState extends State<HomeScreen> {
 
         fetchData();
       });
-
-    }else{
+    } else {
       _productController.fetchHomeProducts();
       fetchData();
     }
@@ -86,135 +89,160 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     WidgetsFlutterBinding.ensureInitialized();
-    width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
     Cons.buildColors(context);
     CarouselController buttonCarouselController = CarouselController();
-    return
-      Scaffold(
+    return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-           expandedHeight: 50.0,
+            expandedHeight: 50.0,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text( 'main_page'.tr,style: Cons.greyFont,),
+              title: Text(
+                'main_page'.tr,
+                style: Cons.greyFont,
+              ),
               centerTitle: true,
             ),
           ),
-          SliverList(delegate: SliverChildListDelegate(
-              [
-                      Container(
-                       // height: height * 0.44,
-                        height: 250,
-                        child: CarouselSlider(
-                          carouselController: buttonCarouselController,
-                          options: CarouselOptions(
-                              onPageChanged: (ind, x) {
-                                setState(() {
-                                  _index = ind;
-                                });
-                              },
-                              initialPage: 1,
-                              autoPlayAnimationDuration: Duration(milliseconds: 400),
-                              autoPlay: true,
-                              enlargeCenterPage: true,
-                              aspectRatio: 6 / 4,
-                              //viewportFraction: 0.81,
-                              viewportFraction: 1),
-                          items: images
-                              .map((e) => Stack(children: [
-                                    Center(
-                                        child: Image.asset(
-                                      e,
-                                      fit: BoxFit.fill,
-                                    )),
-                                    Positioned(
-                                      left: 0,
-                                      right: 0,
-                                      bottom: 5,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          buildCircleSlider(0),
-                                          buildCircleSlider(1),
-                                          buildCircleSlider(2),
-                                          buildCircleSlider(3),
-                                        ],
-                                      ),
-                                    ),
-                                  ]))
-                              .toList(),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        height: 220,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Image.asset(
-                                  'assets/images/home_photo.png',
-                                  fit: BoxFit.contain,
-                                )),
-                            LayoutBuilder(
-                              builder: (_, cons) => Align(
-                                alignment: Alignment.topCenter,
-                                child: Column(
-                                  children: [
-                                    ListTile(
-                                      leading: Icon(
-                                        Icons.drag_indicator_rounded,
-                                        color: Cons.accent_color,
-                                      ),
-                                      title: Text(
-                                        'catgory'.tr,
-                                        //textDirection: TextDirection.rtl,
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18),
-                                      ),
-                                    ),
-                                    buildCatList(),
-                                   // buildGridProducts(),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      ListTile(
-                        //contentPadding: EdgeInsets.symmetric(vertical: 0,horizontal: 0),
-                        leading: Icon(
-                          Icons.card_giftcard,
-                          color: Cons.accent_color,
-                        ),
-                        title: Text(
-                          'new'.tr,
-                          //textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
-                        ),
-                      ),
-         ] ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              // Container(
+              //   // height: height * 0.44,
+              //   height: 250,
+              //   child: CarouselSlider(
+              //     carouselController: buttonCarouselController,
+              //     options: CarouselOptions(
+              //         onPageChanged: (ind, x) {
+              //           setState(() {
+              //             _index = ind;
+              //           });
+              //         },
+              //         initialPage: 1,
+              //         autoPlayAnimationDuration: Duration(milliseconds: 400),
+              //         autoPlay: true,
+              //         enlargeCenterPage: true,
+              //         aspectRatio: 16/9,
+              //         //viewportFraction: 0.81,
+              //         viewportFraction: 1),
+              //     items: images
+              //         .map((e) => Stack(children: [
+              //               Image.asset(
+              //                 e,
+              //                 width: double.infinity,
+              //                 fit: BoxFit.fill,
+              //               ),
+              //               Positioned(
+              //                 left: 0,
+              //                 right: 0,
+              //                 bottom: 5,
+              //                 child: Row(
+              //                   mainAxisAlignment: MainAxisAlignment.center,
+              //                   children: [
+              //                     buildCircleSlider(0),
+              //                     buildCircleSlider(1),
+              //                     buildCircleSlider(2),
+              //                     buildCircleSlider(3),
+              //                   ],
+              //                 ),
+              //               ),
+              //             ]))
+              //         .toList(),
+              //   ),
+              // ),
+              HomeImagesSlider(sliders: [
+                'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+                'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
+                'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+                'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+                'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+                'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+              ]),
+              SizedBox(
+                height: 5,
+              ),
+              ListTile(
+                horizontalTitleGap: 0,
+                leading: Icon(
+                  Icons.drag_indicator_rounded,
+                  color: Cons.accent_color,
+                ),
+                title: Text(
+                  'catgory'.tr,
+                  //textDirection: TextDirection.rtl,
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ),
+              ),
+              Container(
+                height: 150,
+                child: ListView.builder(
+                  itemBuilder: (_, inx) =>
+                      CategoryItem(Cons.categoriesList[inx], inx),
+                  itemCount: Cons.categoriesList.length,
+                  scrollDirection: Axis.horizontal,
+                ),
+              ),
+              ListTile(
+                horizontalTitleGap: 0,
+                leading: Icon(
+                  Icons.card_giftcard,
+                  color: Cons.accent_color,
+                ),
+                title: Text(
+                  'new'.tr,
+                  //textDirection: TextDirection.rtl,
+                  style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ),
+              ),
+            ]),
           ),
-          buildHomeProductsGrid(),
+          GetBuilder<ProductsController>(
+            builder: (_) => _isLoading == true
+                ? SliverList(
+                    delegate: SliverChildListDelegate([
+                    Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ]))
+                : _productController.homeProducts.isEmpty
+                    ? SliverList(
+                        delegate: SliverChildListDelegate([
+                        Center(
+                          child: Text('empty_data'.tr),
+                        ),
+                      ]))
+                    : SliverPadding(
+                        padding: EdgeInsets.all(6),
+                        sliver: SliverGrid(
+                          gridDelegate:
+                              SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200.0,
+                            mainAxisSpacing: 6.0,
+                            crossAxisSpacing: 6.0,
+                            //childAspectRatio: 0.9,
+                          ),
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              return HomeProductWidget(
+                                  _productController.homeProducts[index]);
+                            },
+                            childCount: _productController.homeProducts.length,
+                          ),
+                        ),
+                      ),
+          ),
         ],
       ),
-        drawer: StorageController.getString(StorageController.type)=='guest' ? VisitorDrawer() : MyDrawer(),
+      drawer: StorageController.getString(StorageController.type) == 'guest'
+          ? VisitorDrawer()
+          : MyDrawer(),
     );
   }
 
@@ -260,17 +288,6 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  buildCatList() {
-    return Container(
-        height: 150,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemBuilder: (_, inx) => CategoryItem(Cons.categoriesList[inx], inx),
-          itemCount: 4,
-          scrollDirection: Axis.horizontal,
-        ));
-  }
-
   buildCarsolSliderProds() {}
 
   buildGridProducts() {
@@ -287,8 +304,7 @@ class HomeScreenState extends State<HomeScreen> {
                   alignment: Alignment.center,
                   height: 70,
                   width: double.infinity - 20,
-                  child:
-                  ListView.builder(
+                  child: ListView.builder(
                     itemBuilder: (_, inx) => Card(
                       elevation: 5,
                       margin: EdgeInsets.all(5),
@@ -316,77 +332,7 @@ class HomeScreenState extends State<HomeScreen> {
         .catchError((err) => print('=>>>>>  $err'));
   }
 
-  buildHomeProductsGrid() {
-    return GetBuilder<ProductsController>(
-      builder:(_)=> _isLoading == true
-          ? SliverList(
-        delegate: SliverChildListDelegate([
-          Center(
-            child: CircularProgressIndicator(),
-          ),
-        ])): _productController.homeProducts.isEmpty
-              ? SliverList(
-        delegate: SliverChildListDelegate([
-                Center(
-                    child: Text('empty_data'.tr),
-                  ),
-              ]))
-              : SliverPadding(
-        padding: EdgeInsets.all(6),
-                sliver: SliverGrid(
-                          gridDelegate:  SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200.0,
-                            mainAxisSpacing: 6.0,
-                            crossAxisSpacing: 6.0,
-                            //childAspectRatio: 0.9,
-                          ),
-                          delegate: SliverChildBuilderDelegate(
-                                (BuildContext context, int index) {
-                                      return HomeProductWidget(
-                                          _productController.homeProducts[index]);
-                            },
-                            childCount: _productController.homeProducts.length,
-                          ),
-                        ),
-              ),
-
-
-                    //   GridView.builder(
-                    // scrollDirection: Axis.vertical,
-                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //       mainAxisSpacing: 0,
-                    //       crossAxisSpacing: 0,
-                    //       childAspectRatio: 3 / 4,
-                    //       crossAxisCount: 2,),
-                    //   itemCount:_productController.homeProducts.length,
-                    //   itemBuilder: (ctx, inx) {
-                    //     return HomeProductWidget(
-                    //         _productController.homeProducts[inx]);
-                    //   }),
-
-
-                      // ListView.builder(
-                      // itemCount: _productController.homeProducts.length,
-                      // scrollDirection: Axis.horizontal,
-                      // itemBuilder: (ctx, inx) {
-                      //   return Container(
-                      //     width: width * 0.8,
-                      //     height: 180,
-                      //     child: HomeProductWidget(
-                      //         _productController.homeProducts[inx]),
-                      //   );
-                      //   // return HomeProductWidget(
-                      //   //     _productController.homeProducts[inx]);
-                      // }),
-              //  ),
-    );
-  }
-
   void fetchUserData() async {
     await _authController.getUserDate();
   }
-
 }
-
-
-

@@ -22,38 +22,51 @@ import '../../cons.dart';
 import 'package:get/get.dart';
 
 class MyDrawer extends StatelessWidget {
-  MessageController _messageController=Get.find();
+  MessageController _messageController = Get.find();
+
   @override
-  Widget build(BuildContext context){
-    String flag='all';
+  Widget build(BuildContext context) {
+    String flag = 'all';
     return Drawer(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
         child: SingleChildScrollView(
           child: Column(
             children: [
-          Align(
-            alignment: Alignment.topLeft,
-            child: IconButton(
-            icon:  Icon(Icons.arrow_back,color: Cons.accent_color,),
-            onPressed: () { Navigator.pop(context); }),
-          ),
-              SizedBox(height: 20,),
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: Cons.accent_color,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               ListTile(
-                leading: Image.asset('assets/images/sidemenu_photo.png',fit: BoxFit.cover,),
-                title: Text(jsonDecode(StorageController.getString(StorageController.loginUserModel))['name']),
+                leading: Image.asset(
+                  'assets/images/sidemenu_photo.png',
+                  fit: BoxFit.cover,
+                ),
+                title: Text(jsonDecode(StorageController.getString(
+                    StorageController.loginUserModel))['name']),
               ),
               SizedBox(height: 15),
               SizedBox(
-                width: double.infinity-20,
+                width: double.infinity - 20,
                 height: 45,
                 child: RaisedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE);
+                    Navigator.of(context)
+                        .pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE);
                   },
                   child: Text(
                     'add_ads'.tr,
-                    style: TextStyle(color: Colors.white,fontSize: 16),
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   color: Cons.accent_color,
                   shape: RoundedRectangleBorder(
@@ -67,8 +80,9 @@ class MyDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('orders'.tr),
-                onTap: (){
-                  Navigator.of(context).pushNamed(OrderScreen.Order_Screen_Route);
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(OrderScreen.Order_Screen_Route);
                 },
               ),
               ListTile(
@@ -77,24 +91,26 @@ class MyDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('main_page'.tr),
-                onTap: ()=>Navigator.of(context).pushNamed(HomeScreen.HOME_SCREEN_RIUTE),
+                onTap: () => Navigator.of(context)
+                    .pushNamed(HomeScreen.HOME_SCREEN_RIUTE),
               ),
               ListTile(
-                leading: Icon(
-                  Icons.person,
-                  color: Cons.primary_color,
-                ),
-                title: Text('my_account'.tr),
-                  onTap: ()=>Navigator.of(context).pushNamed(AccountScreen.ACCOUNT_SCREEN_ROUTE)
-              ),
+                  leading: Icon(
+                    Icons.person,
+                    color: Cons.primary_color,
+                  ),
+                  title: Text('my_account'.tr),
+                  onTap: () => Navigator.of(context)
+                      .pushNamed(AccountScreen.ACCOUNT_SCREEN_ROUTE)),
               ListTile(
                 leading: Icon(
                   Icons.favorite,
                   color: Cons.primary_color,
                 ),
                 title: Text('favorites'.tr),
-                onTap: (){
-                  Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE,arguments:flag='fav' );
+                onTap: () {
+                  Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE,
+                      arguments: flag = 'fav');
                 },
               ),
               ListTile(
@@ -103,44 +119,51 @@ class MyDrawer extends StatelessWidget {
                   color: Cons.primary_color,
                 ),
                 title: Text('my_ads'.tr),
-                onTap: (){
-                  Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE,arguments:flag='ads' );
+                onTap: () {
+                  Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE,
+                      arguments: flag = 'ads');
                 },
               ),
               ListTile(
-                onTap: ()=>Navigator.of(context).pushNamed(MessageScreen.MESSAGES_SCREEN_ROUTE)
-                ,
+                onTap: () => Navigator.of(context)
+                    .pushNamed(MessageScreen.MESSAGES_SCREEN_ROUTE),
                 leading: Icon(
                   Icons.message_sharp,
                   color: Cons.primary_color,
                 ),
                 title: Text('messages'.tr),
-                trailing:_messageController.receivedMessage.length>0? Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Cons.accent_color,
+                trailing: _messageController.receivedMessage.length > 0
+                    ? Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Cons.accent_color,
+                        ),
+                        child: Center(
+                            child: Text(
+                          _messageController.receivedMessage.length.toString(),
+                          style: TextStyle(color: Colors.white),
+                        )),
+                      )
+                    : null,
+              ),
+              ListTile(
+                  leading: Icon(
+                    Icons.settings,
+                    color: Cons.primary_color,
                   ),
-                  child: Center(child: Text(_messageController.receivedMessage.length.toString(),style: TextStyle(color: Colors.white),)),
-                ):null,
-              ),
+                  title: Text('setting'.tr),
+                  onTap: () => Navigator.of(context)
+                      .pushNamed(SettingScreen.SETTING_SCREEN_ROUTE)),
               ListTile(
-                leading: Icon(
-                  Icons.settings,
-                  color: Cons.primary_color,
-                ),
-                title: Text('setting'.tr),
-                  onTap: ()=>Navigator.of(context).pushNamed(SettingScreen.SETTING_SCREEN_ROUTE)
-              ),
-              ListTile(
-                onTap: ()=>Navigator.of(context).pushNamed(AboutApp.ABOUT_APP_SCREEN_ROUTE),
+                onTap: () => Navigator.of(context)
+                    .pushNamed(AboutApp.ABOUT_APP_SCREEN_ROUTE),
                 leading: Icon(
                   Icons.info,
                   color: Cons.primary_color,
                 ),
                 title: Text('about_app'.tr),
-
               ),
               // ListTile(
               //   onTap: ()=>Navigator.of(context).pushNamed(CallUs.CALL_US_SCREEN_ROUTE),
@@ -151,7 +174,8 @@ class MyDrawer extends StatelessWidget {
               //   title: Text('about_us'.tr),
               // ),
               ListTile(
-                onTap: ()=>Navigator.of(context).pushNamed(CallUs.CALL_US_SCREEN_ROUTE),
+                onTap: () => Navigator.of(context)
+                    .pushNamed(CallUs.CALL_US_SCREEN_ROUTE),
                 leading: Icon(
                   Icons.phone,
                   color: Cons.primary_color,
@@ -159,8 +183,9 @@ class MyDrawer extends StatelessWidget {
                 title: Text('call_us'.tr),
               ),
               ListTile(
-                onTap: (){
-                  Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+                onTap: () {
+                  Navigator.of(context)
+                      .pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                   StorageController.removeStorage();
                 },
                 leading: Icon(

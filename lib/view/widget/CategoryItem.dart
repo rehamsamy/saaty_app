@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/model/category_model.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
+import 'package:saaty_app/view/widget/app_cashed_image.dart';
 
 
 class CategoryItem extends StatelessWidget {
@@ -12,10 +13,11 @@ int pos;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-           GestureDetector(
+    return Column(
+      children: [
+         Flexible(
+           fit: FlexFit.loose,
+           child: GestureDetector(
              onTap: (){
                Navigator.of(context).pushNamed(MainPageScreen.MAIN_PRAGE_ROUTE,arguments: pos as int);
              },
@@ -26,24 +28,15 @@ int pos;
                  shape: RoundedRectangleBorder(
                    borderRadius: BorderRadius.circular(20.0)
                  ),
-                 child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20.0),
-                  child:  Image.network(
-                      model.image
-                     ,
-                      height: 70.0,
-                      width: 70.0,
-                        fit: BoxFit.cover
-                    ),
-                  ),
+                 child:AppCashedImage(imageUrl: model.image,width: 90,height: 90,),
                ),
              ),
            ),
-         // SizedBox(height: 5,),
-          Center(child: Text(model.name,style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600,),))
-        ],
+         ),
+       // SizedBox(height: 5,),
+        Center(child: Text(model.name,style: TextStyle(fontSize: 17,color: Colors.black,fontWeight: FontWeight.w600,),))
+      ],
 
-      ),
     );
   }
 }

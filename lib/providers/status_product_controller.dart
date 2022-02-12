@@ -9,7 +9,6 @@ import '../cons.dart';
 import 'auth_controller.dart';
 
 class StatusProductController extends GetxController {
-  StorageController _storageController = Get.find();
   List<Product> _allProds = [];
   List<Product> _favProducts = [];
   List<Product> filteredList = [];

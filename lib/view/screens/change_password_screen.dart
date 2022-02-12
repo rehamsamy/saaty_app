@@ -140,6 +140,7 @@ class ChangePasswordScreen extends StatelessWidget {
       }else{
         Navigator.of(context).pop();
       }
+      String id=
       _authController.changePassword(map).then( ()
           {
             Navigator.of(context).pushNamed(AccountScreen.ACCOUNT_SCREEN_ROUTE);

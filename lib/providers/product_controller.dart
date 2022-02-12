@@ -20,7 +20,6 @@ import 'package:saaty_app/view/screens/main_page_screen.dart';
 
 class ProductController extends GetxController {
   IconData _icon = Icons.favorite_border;
-  StorageController _storageController = Get.find();
   int fav = 0;
 
   List<String> vv = [];
