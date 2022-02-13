@@ -3,6 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:multi_image_picker2/multi_image_picker2.dart';
+import 'package:saaty_app/create_product/widget/category_name_create_product.dart';
+import 'package:saaty_app/create_product/widget/connection_type_create_product.dart';
+import 'package:saaty_app/create_product/widget/product_type_create_product.dart';
+import 'package:saaty_app/create_product/widget/text_form_create_product.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:get/get.dart';
@@ -29,8 +33,7 @@ class CreateProductScreen extends StatefulWidget {
 
 class CreateProductScreenState extends State<CreateProductScreen>{
   var controller=Get.put(ProductController());
-  var _nameController,_priceController,_phoneController,
-      _emailController,_descController;
+
   var catId, statusId,connType;
 
   bool _isLoading=false;
@@ -46,15 +49,6 @@ class CreateProductScreenState extends State<CreateProductScreen>{
     fontSize: 15,
   );
 
-  Map<String,dynamic> map={
-    'name':'',
-    'email':'',
-    'price':'',
-    'desc':'',
-    'phone':'',
-    'email':'',
-    'images':[]
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -77,15 +71,15 @@ class CreateProductScreenState extends State<CreateProductScreen>{
           padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
           child: Column(
             children: [
-              buildCategoryName(),
-              buildProductType(),
+              CategoryName(),
+              ProductType(),
               SizedBox(height: 15,),
                Column(
                 // mainAxisAlignment: MainAxisAlignment.center,
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
                    Text('prod_name'.tr,style: Cons.blackFont,),
-                      buildTextFormProductData('name', 'prod_name'.tr, Icons.info_sharp, TextInputType.text),
+                   TextFormProductData('name', 'prod_name'.tr, Icons.info_sharp, TextInputType.text),
                  ],
                ),
               SizedBox(height: 15,),
@@ -95,7 +89,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                   Text('prod_price'.tr,style: Cons.blackFont,),
                   Row(
                     children: [
-                      Flexible(child: buildTextFormProductData('price','prod_price'.tr, Icons.monetization_on_rounded, TextInputType.number)),
+                      Flexible(child: TextFormProductData('price','prod_price'.tr, Icons.monetization_on_rounded, TextInputType.number)),
                       Text('EGYPT',style: Cons.greenFont,)
                     ],
                   ),
@@ -106,7 +100,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('phone_conn'.tr,style: Cons.blackFont,),
-                  buildTextFormProductData('phone', 'phone_conn'.tr, Icons.phone_android_sharp,  TextInputType.number),
+                  TextFormProductData('phone', 'phone_conn'.tr, Icons.phone_android_sharp,  TextInputType.number),
                 ],
               ),
               SizedBox(height: 15,),
@@ -114,7 +108,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('email_conn'.tr,style: Cons.blackFont,),
-                  buildTextFormProductData('email', 'email_conn'.tr, Icons.email,  TextInputType.emailAddress),
+                  TextFormProductData('email', 'email_conn'.tr, Icons.email,  TextInputType.emailAddress),
                 ],
               ),
               SizedBox(height: 15,),
@@ -122,7 +116,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('conn_type'.tr,style: Cons.blackFont,),
-                 buildConnectionTypeRadio(),
+                  ConnectionType(),
                 ],
               ),
               Padding(
@@ -134,7 +128,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('prod_desc'.tr,style: Cons.blackFont,),
-                  buildTextFormProductData('desc', 'Enter Description', Icons.comment, TextInputType.text,),
+                  TextFormProductData('desc', 'Enter Description', Icons.comment, TextInputType.text,),
                 ],
               ),
               Column(
@@ -188,96 +182,6 @@ class CreateProductScreenState extends State<CreateProductScreen>{
     );
   }
 
- Widget buildCategoryName() {
-    return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState)=>
-       Row(
-      // mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('category'.tr),
-          SizedBox(width: 30,),
-          Radio(value: 0, groupValue: _radValCat, onChanged: (value){
-            setState(() {
-              print(value);
-              _radValCat=value;
-            });
-          },
-              hoverColor: Cons.primary_color,
-              materialTapTargetSize: MaterialTapTargetSize.padded, activeColor:Cons.primary_color ,),
-          Text('watch'.tr),
-          Radio(value: 1, groupValue: _radValCat, onChanged: (value){
-            setState(() {
-              _radValCat=value;
-            });
-          },
-          materialTapTargetSize: MaterialTapTargetSize.padded, activeColor:Cons.primary_color ,),
-          Text('braclete'.tr),
-
-        ],
-      ),
-    );
-  }
-
-  Widget buildTextFormProductData(String flag, String hint, IconData icon, TextInputType inputType){
-    return TextFormField(
-      controller: buildControllerValues(flag),
-      textAlign: TextAlign.start,
-      maxLines: flag=='desc'?5:1,
-      decoration: InputDecoration(
-          prefixIcon: flag=='desc'? Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 70),
-            child: Icon(icon, color: Cons.primary_color),
-          )
-              : Icon(icon, color: Cons.primary_color),
-          hintText: hint,
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Cons.primary_color,
-              width: 1.0,
-            ),
-          )
-        // hoverColor: Theme.of(context).primaryColor,focusColor: Colors.amber
-      ),
-      validator: (value) {
-        if (value.isEmpty&&flag=='name') {
-          return 'enter name';
-        } if (value.isEmpty&&flag=='price') {
-          return 'enter price';
-        } if (value.isEmpty&&flag=='desc') {
-          return 'enter description';
-        } if (value.isEmpty&&flag=='phone') {
-          return 'enter phone';
-        } if (value.isEmpty&&flag=='name') {
-          return 'enter name';
-        } if (value.isEmpty&&flag=='email') {
-          return 'enter email';
-        }
-        if (!value.contains('.com') && flag == 'email') {
-          return 'enter valid email';
-        }
-
-      },
-      onSaved: (value) {
-        //loginMap['password'] = value!;
-        if (flag == 'name') {
-          map['name'] = value;
-        }
-        if (flag == 'price') {
-          map['price'] = value;
-        }
-        if (flag == 'phone') {
-          map['phone'] = value;
-        }
-        if (flag == 'email') {
-          map['email'] = value;
-        }
-        if (flag == 'desc') {
-          map['desc'] = value;
-        }
-      },
-      keyboardType: inputType,
-    );
-  }
 
   Widget buildConnectionTypeRadio() {
     return StatefulBuilder(
@@ -383,38 +287,6 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
   }
 
- Widget buildProductType() {
-    return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState)=>
-     Row(
-     // mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text('status'.tr),
-        SizedBox(width: 30,),
-        Radio(value: 0, groupValue: _radValType, onChanged: (value){
-          setState(() {
-            print('vvvvvvvvvvvvvvvv 1  $value');
-            _radValType=value;
-            print('vvvvvvvvvvvvvvvv 1 $_radValType');
-          });
-        },
-            materialTapTargetSize: MaterialTapTargetSize.padded,
-          activeColor:Cons.primary_color ,),
-       Container(width:50,child: Text('old'.tr)),
-        Radio(value: 1, groupValue: _radValType, onChanged: (value){
-          setState(() {
-            print(value);
-            _radValType=value;
-          });
-        },
-          materialTapTargetSize: MaterialTapTargetSize.padded,
-          activeColor:Cons.primary_color ,),
-        Container(width:50,child: Text('new'.tr)),
-
-      ],
-    )
-    );
-  }
 
    saveProductData() async{
 
@@ -423,9 +295,6 @@ class CreateProductScreenState extends State<CreateProductScreen>{
     if(_key.currentState.validate()&& (images.length>0||prodImages.length>0)){
       print('////////////////');
       _key.currentState.save();
-
-
-
       map['id']=StorageController.getString(StorageController.userId);
       map['isFav']=0;
       map['cat']=_radValCat;
@@ -566,22 +435,6 @@ class CreateProductScreenState extends State<CreateProductScreen>{
   }
 
 
-  TextEditingController buildControllerValues(String flag){
-    if(flag=='name'){
-      return _nameController;
-    }  if(flag=='price'){
-      return _priceController;
-    }  if(flag=='email'){
-      return _emailController;
-    }  if(flag=='desc'){
-      return _descController;
-    }  if(flag=='phone'){
-      return _phoneController;
-    } else
-      {
-        return null;
-      }
-  }
 
 
 

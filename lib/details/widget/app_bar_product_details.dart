@@ -4,7 +4,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
-import 'package:saaty_app/view/screens/create_product_screen.dart';
+import 'package:saaty_app/create_product/screen/create_product_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 
 import '../../cons.dart';
@@ -22,7 +22,7 @@ AppBarProduct(this.product, this._prodType);
             onPressed: () => Navigator.of(context).pop(),
           ),
           backgroundColor: Cons.blueColor,
-          elevation: 0.0,
+          elevation: 5.0,
           centerTitle: true,
           automaticallyImplyLeading: false,
           flexibleSpace:  GetBuilder<ProductController>(

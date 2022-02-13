@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/others/about_app.dart';
 import 'package:saaty_app/others/call_us.dart';
-import 'package:saaty_app/view/screens/home_screen.dart';
+import 'package:saaty_app/home_page/screen/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/others/setting_screen.dart';
 

@@ -40,10 +40,12 @@ class ProductItemDetailScreen extends StatelessWidget {
     product=map['prod'];
     String _prodType=map['flag'];
     return Scaffold(
-      appBar: AppBarProduct( product, _prodType),
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: AppBarProduct( product, _prodType)),
       body: SingleChildScrollView(
         child: Container(
-         // padding: EdgeInsets.all(10),
+          padding: EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
             color: Cons.blueColor,
           ),

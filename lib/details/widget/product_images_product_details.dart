@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
+import 'package:saaty_app/view/widget/app_cashed_image.dart';
 
 import '../../cons.dart';
 
@@ -34,9 +35,8 @@ class ContainerProductImages extends StatelessWidget {
                       child: SizedBox(
                           height: 65,
                           width: 55,
-                          child: Image.network(
-                            product.images[indx],
-                            scale: 1,
+                          child: AppCashedImage(
+                            imageUrl: product.images[indx],
                             fit: BoxFit.cover,
                           )));
                 }),

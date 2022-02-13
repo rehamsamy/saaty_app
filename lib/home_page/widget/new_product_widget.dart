@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
-import 'package:saaty_app/view/screens/product_item_detail_screen.dart';
+import 'package:saaty_app/details/screen/product_item_detail_screen.dart';
 import 'package:saaty_app/view/widget/app_cashed_image.dart';
 
 import '../../cons.dart';
@@ -85,46 +85,24 @@ class HomeProductWidget extends StatelessWidget {
                     ),
                     Align(
                         alignment: Alignment.topLeft,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.all(10),
-                              width: 50,
-                              height: 25,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20.0),
-                                    bottomRight: Radius.circular(20.0),
-                                  ),
-                                  border: Border.all(color: Colors.red)),
-                              child: Center(
-                                child: Text(product.price,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                    )),
+                        child: Container(
+                          margin: EdgeInsets.all(10),
+                          width: 50,
+                          height: 25,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15.0),
+                                bottomRight: Radius.circular(15.0),
                               ),
-                            ),
-                            Container(
-                              width: 70,
-                              height: 25,
-                              // RaisedButton(
-                              //   color: Cons.accent_color,
-                              //   onPressed: (){
-                              //     Navigator.of(context).pushNamed(
-                              //         ProductItemDetailScreen.PRODUCT_DETAIL_ROUTE,
-                              //         arguments: {'prod': product, 'flag': flag});
-                              //   },
-                              //   child: Text('view'.tr,style:
-                              //   TextStyle(color: Colors.white),),
-                              //   shape:RoundedRectangleBorder(
-                              //       borderRadius: BorderRadius.circular(20)
-                              //   ),
-                              // ),
-                            ),
-                          ],
+                              border: Border.all(color: Colors.red)),
+                          child: Center(
+                            child: Text(product.price,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 14,
+                                )),
+                          ),
                         )),
                   ],
                 ),
