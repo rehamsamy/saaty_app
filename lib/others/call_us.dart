@@ -6,7 +6,7 @@ import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 
-import '../../cons.dart';
+import '../cons.dart';
 
 class CallUs extends StatelessWidget {
   static String CALL_US_SCREEN_ROUTE='/21';

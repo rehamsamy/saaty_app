@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 
-import '../../cons.dart';
-import 'main_page_screen.dart';
+import '../cons.dart';
+import '../view/screens/main_page_screen.dart';
 
 class AboutApp extends StatelessWidget {
   static String ABOUT_APP_SCREEN_ROUTE='/20';

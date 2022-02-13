@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/providers/lang_controller.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
-import '../../cons.dart';
+import '../cons.dart';
 
 class SettingScreen extends StatelessWidget {
   static String SETTING_SCREEN_ROUTE='/9';
