@@ -8,7 +8,7 @@ class Product{
   String phone;
   String id;
   String creator_id;
-  String creator_name='tr';
+  String creator_name;
   int cat;
   int status;
   int isFav;

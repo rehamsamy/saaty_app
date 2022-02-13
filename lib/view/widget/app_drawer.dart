@@ -14,7 +14,7 @@ import 'package:saaty_app/home_page/screen/home_screen.dart';
 import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'package:saaty_app/view/screens/messages_screen.dart';
-import 'package:saaty_app/view/screens/order_screen.dart';
+import 'package:saaty_app/orders/screen/order_screen.dart';
 import 'package:saaty_app/others/setting_screen.dart';
 import 'package:saaty_app/view/screens/stores_screen.dart';
 

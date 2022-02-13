@@ -27,7 +27,7 @@ import 'package:saaty_app/view/screens/login_screen.dart';
 import 'package:saaty_app/view/screens/main_page_screen.dart';
 import 'package:saaty_app/view/screens/message_detail_screen.dart';
 import 'package:saaty_app/view/screens/messages_screen.dart';
-import 'package:saaty_app/view/screens/order_screen.dart';
+import 'package:saaty_app/orders/screen/order_screen.dart';
 import 'package:saaty_app/details/screen/product_item_detail_screen.dart';
 import 'package:saaty_app/view/screens/reset_password_screen.dart';
 import 'package:saaty_app/view/screens/send_message_screen.dart';

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -27,12 +29,29 @@ class CreateProductScreen extends StatefulWidget {
  static String CREATE_PRODUCT_ROUTE = '/4';
   @override
   State<StatefulWidget> createState() {
+    print('bbbbbbbbbb  '+jsonDecode(
+        StorageController.getString(StorageController.loginUserModel))['name']);
     return CreateProductScreenState();
+
   }
 }
 
 class CreateProductScreenState extends State<CreateProductScreen>{
   var controller=Get.put(ProductController());
+  var _nameController,_priceController,_phoneController,
+      _emailController,_descController;
+
+  Map<String,dynamic> map={
+    'name':'',
+    'email':'',
+    'price':'',
+    'desc':'',
+    'phone':'',
+    'email':'',
+    'creator_name':'',
+    'images':[]
+  };
+
 
   var catId, statusId,connType;
 
@@ -79,7 +98,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: [
                    Text('prod_name'.tr,style: Cons.blackFont,),
-                   TextFormProductData('name', 'prod_name'.tr, Icons.info_sharp, TextInputType.text),
+                   TextFormProductData('name', 'prod_name'.tr, Icons.info_sharp, TextInputType.text,map),
                  ],
                ),
               SizedBox(height: 15,),
@@ -89,7 +108,8 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                   Text('prod_price'.tr,style: Cons.blackFont,),
                   Row(
                     children: [
-                      Flexible(child: TextFormProductData('price','prod_price'.tr, Icons.monetization_on_rounded, TextInputType.number)),
+                      Flexible(child: TextFormProductData('price','prod_price'.tr,
+                          Icons.monetization_on_rounded, TextInputType.number,map)),
                       Text('EGYPT',style: Cons.greenFont,)
                     ],
                   ),
@@ -100,7 +120,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('phone_conn'.tr,style: Cons.blackFont,),
-                  TextFormProductData('phone', 'phone_conn'.tr, Icons.phone_android_sharp,  TextInputType.number),
+                  TextFormProductData('phone', 'phone_conn'.tr, Icons.phone_android_sharp,  TextInputType.number,map),
                 ],
               ),
               SizedBox(height: 15,),
@@ -108,7 +128,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('email_conn'.tr,style: Cons.blackFont,),
-                  TextFormProductData('email', 'email_conn'.tr, Icons.email,  TextInputType.emailAddress),
+                  TextFormProductData('email', 'email_conn'.tr, Icons.email,  TextInputType.emailAddress,map),
                 ],
               ),
               SizedBox(height: 15,),
@@ -128,7 +148,7 @@ class CreateProductScreenState extends State<CreateProductScreen>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('prod_desc'.tr,style: Cons.blackFont,),
-                  TextFormProductData('desc', 'Enter Description', Icons.comment, TextInputType.text,),
+                  TextFormProductData('desc', 'Enter Description', Icons.comment, TextInputType.text,map),
                 ],
               ),
               Column(
@@ -183,68 +203,6 @@ class CreateProductScreenState extends State<CreateProductScreen>{
   }
 
 
-  Widget buildConnectionTypeRadio() {
-    return StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState)=>
-       Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Radio(value: 0, groupValue: _radValContact, onChanged: (value){
-                setState(() {print('nnnnnnnnnnnn');}) ;
-                setState(() {
-                  _radValContact=value;
-                });
-              },
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                activeColor:Cons.primary_color ,),
-              Container(
-                  width: 50,child: Text('phone'.tr)),
-             // SizedBox(width: 10,),
-              Radio(value: 1, groupValue: _radValContact, onChanged: (value){
-                setState(() {
-                  _radValContact=value;
-                });
-              },
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                activeColor:Cons.primary_color ,),
-              Container(width:55,child: Text('email'.tr,)),
-              //SizedBox(width: 10,),
-              Radio(value: 2, groupValue: _radValContact, onChanged: (value){
-                setState(() {
-                  _radValContact=value;
-                });
-              },
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                activeColor:Cons.primary_color ,),
-              Container(width:50,child: Text('private_messages'.tr)),
-             // SizedBox(width: 10,),
-            ],
-          ),
-          SizedBox(height: 7,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Radio(value: 3, groupValue: _radValContact, onChanged: (value){
-                setState(() {
-                  _radValContact=value;
-                });
-              },
-                  materialTapTargetSize: MaterialTapTargetSize.padded,
-              activeColor:Cons.primary_color ,
-              ),
-              Text('all'.tr),
-            ],
-          ),
-
-
-        ],
-      ),
-    );
-
-  }
-  
   Widget buildGridImagePicker(){
     return
       GridView.count(
@@ -289,8 +247,6 @@ class CreateProductScreenState extends State<CreateProductScreen>{
 
 
    saveProductData() async{
-
-
      List<dynamic> newImages=[];
     if(_key.currentState.validate()&& (images.length>0||prodImages.length>0)){
       print('////////////////');
@@ -300,7 +256,10 @@ class CreateProductScreenState extends State<CreateProductScreen>{
       map['cat']=_radValCat;
       map['status']=_radValType;
       map['connType']=_radValContact;
-      print('xx  $_radValCat cc    $_radValType vv    $_radValCat');
+      map['creator_name']=jsonDecode(
+          StorageController.getString(StorageController.loginUserModel))['name'];
+
+      print('xx  $_radValCat cc    $_radValType vv    $_radValCat  ${map['price']}'   );
       try{
         if(prodImages.length==0){
           print('nnnnnnnnnnnnnn');

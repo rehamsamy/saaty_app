@@ -16,12 +16,13 @@ class TextFormProductData extends StatelessWidget {
     'desc':'',
     'phone':'',
     'email':'',
+    'creator_name':'',
     'images':[]
   };
 
 
 
-  TextFormProductData(this.flag, this.hint, this.icon, this.inputType);
+  TextFormProductData(this.flag, this.hint, this.icon, this.inputType,this.map);
 
   @override
   Widget build(BuildContext context) {
