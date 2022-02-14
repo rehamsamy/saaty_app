@@ -6,7 +6,7 @@ import 'package:saaty_app/model/http_exception.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/home_page/screen/home_screen.dart';
-import 'package:saaty_app/view/screens/register_screen.dart';
+import 'package:saaty_app/login_register/screen/register_screen.dart';
 
 class RegisterWidget extends StatefulWidget {
   int userType;

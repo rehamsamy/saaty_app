@@ -19,8 +19,8 @@ import 'package:saaty_app/view/widget/visitor_drawer.dart';
 import '../../cons.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import '../../view/screens/login_screen.dart';
-import '../../view/screens/main_page_screen.dart';
+import '../../login_register/screen/login_screen.dart';
+import '../../main_page/screen/main_page_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static String HOME_SCREEN_RIUTE = '/3';

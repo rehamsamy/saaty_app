@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:saaty_app/model/cart.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
-import 'package:saaty_app/view/screens/login_screen.dart';
-import 'package:saaty_app/view/screens/send_message_screen.dart';
+import 'package:saaty_app/login_register/screen/login_screen.dart';
+import 'package:saaty_app/create_product/screen/send_message_screen.dart';
 import 'package:get/get.dart';
 
 import '../../cons.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
-import 'package:saaty_app/view/screens/account_screen.dart';
+import 'package:saaty_app/account/screen/account_screen.dart';
 
 import '../../cons.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/cons.dart';
-import 'package:saaty_app/view/widget/register_widget.dart';
+import 'package:saaty_app/login_register/widget/register_widget.dart';
 import 'package:get/get.dart';
 
 class RegisterScreen extends StatefulWidget {

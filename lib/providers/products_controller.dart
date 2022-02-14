@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:saaty_app/providers/storage_controller.dart';
-import 'package:saaty_app/view/screens/main_page_screen.dart';
+import 'package:saaty_app/main_page/screen/main_page_screen.dart';
 import 'dart:async';
 import '../cons.dart';
 

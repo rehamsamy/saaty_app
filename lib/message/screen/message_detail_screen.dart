@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/message_model.dart';
 import 'package:saaty_app/providers/message_controller.dart';
-import 'package:saaty_app/view/screens/messages_screen.dart';
-import 'package:saaty_app/view/screens/send_message_screen.dart';
+import 'package:saaty_app/message/screen/messages_screen.dart';
+import 'package:saaty_app/create_product/screen/send_message_screen.dart';
 
 import '../../cons.dart';
 

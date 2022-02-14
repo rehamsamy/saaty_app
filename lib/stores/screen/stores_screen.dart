@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:saaty_app/main_page/widget/filter_dialog_main_page.dart';
 import 'package:saaty_app/model/user_model.dart';
 import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/providers/status_product_controller.dart';
-import 'package:saaty_app/view/screens/send_message_screen.dart';
+import 'package:saaty_app/create_product/screen/send_message_screen.dart';
+import 'package:saaty_app/stores/widget/grid_list_store.dart';
 import 'package:saaty_app/view/widget/product_item_widget.dart';
 
 import '../../cons.dart';
@@ -92,7 +94,8 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                                     size: 25,
                                   ),
                                   onPressed: () {
-                                    buildFilterDialogWidget(context);
+                                    FilterProductDialog.buildFilterDialogWidget(context);
+                                   // buildFilterDialogWidget(context);
                                   },
                                 ),
                                 // SizedBox(
@@ -144,8 +147,9 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                body:   IndexedStack(
                  index: _statusController.selectedTabIndex,
                  children:[
-                   buildGrid(0),
-                   buildGrid(1),
+                   GridListStores(_searcController),
+                   GridListStores(_searcController),
+                   // buildGrid(1),
 
                  ] ,
                ),
@@ -164,116 +168,7 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
   }
 
 
-  void buildFilterDialogWidget(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            content: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) =>
-                  Container(
-                    padding: EdgeInsets.all(15),
-                    // height: MediaQuery.of(context).size.height * 0.7,
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    child: SingleChildScrollView(
-                      child: GetBuilder<StatusProductController>(
-                        builder: (_)=>
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('arrange'.tr),
-                                RadioListTile(
-                                  contentPadding: EdgeInsets.all(0),
-                                  title: Text(
-                                    'from_high'.tr,
-                                    textAlign: TextAlign.start,
-                                  ),
-                                  value: 0,
-                                  groupValue: _statusController.filterRad,
-                                  onChanged: (value) {
-                                    _statusController.filterRad=value;
-                                    _statusController.update();
 
-                                  },
-                                  activeColor: Cons.primary_color,
-                                ),
-                                //SizedBox(width: 10,)
-                                RadioListTile(
-                                  contentPadding: EdgeInsets.all(0),
-                                  value: 1,
-                                  groupValue: _statusController.filterRad,
-                                  onChanged: (value) {
-                                    _statusController.filterRad=value;
-                                    _statusController.update();
-                                  },
-                                  title: Text('from_low'.tr),
-                                  activeColor: Cons.primary_color,
-                                ),
-                                //SizedBox(width: 30,),
-
-                                Divider(
-                                  color: Cons.primary_color,
-                                  thickness: 1.5,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  'filter'.tr,
-                                  textAlign: TextAlign.start,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                CheckboxListTile(
-                                  value: _statusController.statusNewChecked,
-                                  onChanged: (val) {
-                                    _statusController.statusNewChecked=val;
-                                    _statusController.update();
-
-                                  },
-                                  title: Text('new'.tr),
-                                  activeColor: Cons.primary_color,
-                                ),
-                                //  SizedBox(height: 20,),
-                                CheckboxListTile(
-                                  value:   _statusController.statusOldChecked,
-                                  onChanged: (val) {
-                                    _statusController.statusOldChecked=val;
-                                    _statusController.update();
-                                  },
-                                  title: Text('old'.tr),
-                                  activeColor: Cons.primary_color,
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  width: double.infinity,
-                                  child: RaisedButton(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    onPressed: () async{
-                                      _statusController.changeFilterFlag(true);
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text(
-                                      'filter'.tr,
-                                      style: Cons.whiteFont,
-                                    ),
-                                    color: Cons.accent_color,
-                                  ),
-                                )
-                              ],
-                            ),
-                      ),
-                    ),
-                  ),
-            ),
-          );
-        });
-  }
 
   onTextChange(String text){
     String text = _searcController.text;
@@ -281,32 +176,6 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
     _statusController.search(text);
   }
 
- Widget buildGrid(int i) {
-    return GetBuilder<ProductsController>(builder: (ctx) {
-      _statusController.txt=_searcController.text;
-      return _isLoading == true
-          ? Center(
-        child: CircularProgressIndicator(),
-      )
-          : _statusController.filteredList.isEmpty
-          ? Center(
-        child: Text('Empty Data'),
-      )
-          : GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 0,
-              childAspectRatio: 8 / 9,
-              crossAxisCount: 2),
-          itemCount: _statusController.filteredList.length,
-          itemBuilder: (ctx, inx) {
-            return ProductItemWidget(_statusController.filteredList[inx]);
-          });
-
-        }
-    );
-
-  }
 
   Future fetchData() async {
     await Future.delayed(Duration(milliseconds: 200));

@@ -5,11 +5,11 @@ import 'package:get/get.dart';
 import 'package:saaty_app/model/user_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
-import 'package:saaty_app/view/screens/change_password_screen.dart';
-import 'package:saaty_app/view/screens/edit_account_screen.dart';
+import 'package:saaty_app/account/screen/change_password_screen.dart';
+import 'package:saaty_app/account/screen/edit_account_screen.dart';
 
 import '../../cons.dart';
-import 'main_page_screen.dart';
+import '../../main_page/screen/main_page_screen.dart';
 
 class AccountScreen extends StatelessWidget {
   static String ACCOUNT_SCREEN_ROUTE = '/13';

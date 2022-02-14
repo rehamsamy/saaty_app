@@ -37,9 +37,9 @@ class Cons {
 //static Widget getAppbar(String title);
 
 
- static List<Product> selectionAsecSortFilter(List<Product> prodss) {
+ static List<Product> selectionAsecSortFilter(List<Product> prodss){
    List<Product> prods=prodss ;
-   print('&&&&&&&&&&&');
+   //print('&&&&&&&&&&&'+prods[0].);
    print(prods.length);
    for (var i = 0; i < prods.length - 1; i++) {
      var index_min = i;

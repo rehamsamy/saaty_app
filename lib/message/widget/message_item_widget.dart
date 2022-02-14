@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:saaty_app/model/message_model.dart';
 import 'package:saaty_app/providers/message_controller.dart';
-import 'package:saaty_app/view/screens/message_detail_screen.dart';
+import 'package:saaty_app/message/screen/message_detail_screen.dart';
 
 import '../../cons.dart';
 

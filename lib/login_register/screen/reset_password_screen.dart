@@ -8,8 +8,8 @@ import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/model/http_exception.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/home_page/screen/home_screen.dart';
-import 'package:saaty_app/view/screens/login_screen.dart';
-import 'package:saaty_app/view/screens/register_screen.dart';
+import 'package:saaty_app/login_register/screen/login_screen.dart';
+import 'package:saaty_app/login_register/screen/register_screen.dart';
 
 class ResetPasswordScreen extends StatelessWidget {
   static String RESET_PASSWORD_SCREEN_ROUTE = '/17';

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:saaty_app/model/category_model.dart';
-import 'package:saaty_app/view/screens/main_page_screen.dart';
+import 'package:saaty_app/main_page/screen/main_page_screen.dart';
 import 'package:saaty_app/view/widget/app_cashed_image.dart';
 
 

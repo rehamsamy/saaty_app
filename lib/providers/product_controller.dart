@@ -16,7 +16,7 @@ import 'dart:io';
 
 import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
-import 'package:saaty_app/view/screens/main_page_screen.dart';
+import 'package:saaty_app/main_page/screen/main_page_screen.dart';
 
 class ProductController extends GetxController {
   IconData _icon = Icons.favorite_border;

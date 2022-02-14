@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/message_model.dart';
 import 'package:saaty_app/providers/message_controller.dart';
-import 'package:saaty_app/view/screens/main_page_screen.dart';
-import 'package:saaty_app/view/widget/message_item_widget.dart';
+import 'package:saaty_app/main_page/screen/main_page_screen.dart';
+import 'package:saaty_app/message/widget/message_item_widget.dart';
 
 import '../../cons.dart';
 

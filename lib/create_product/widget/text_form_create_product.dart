@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../cons.dart';
 
 class TextFormProductData extends StatelessWidget {

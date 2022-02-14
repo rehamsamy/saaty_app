@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/providers/Orders.dart';
-import 'package:saaty_app/view/widget/order_item_widget.dart';
+import 'package:saaty_app/orders/widget/order_item_widget.dart';
 
 
 class OrderScreen extends StatelessWidget {

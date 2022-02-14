@@ -28,7 +28,8 @@ class AppCashedImage extends StatelessWidget {
         border: borderColor == null
             ? null
             : Border.all(
-            color: borderColor ?? Theme.of(context).primaryColor,
+            color: borderColor ?? Colors.redAccent,
+                //Theme.of(context).primaryColor,
             width: borderWidth ?? 0),
         shape: isCircular ? BoxShape.circle : BoxShape.rectangle,
         borderRadius: isCircular

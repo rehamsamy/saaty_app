@@ -18,7 +18,7 @@ import 'package:flutter_absolute_path/flutter_absolute_path.dart';
 // import 'package:image_picker_flutter/image_picker_flutter.dart';
 import 'package:image_picker/image_picker.dart' ;
 import 'package:saaty_app/providers/storage_controller.dart';
-import 'package:saaty_app/view/screens/main_page_screen.dart';
+import 'package:saaty_app/main_page/screen/main_page_screen.dart';
 import 'dart:io';
 
 import '../../cons.dart';

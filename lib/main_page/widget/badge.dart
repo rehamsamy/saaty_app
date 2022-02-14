@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saaty_app/view/screens/cart_screen.dart';
+import 'package:saaty_app/carts/screen/cart_screen.dart';
 
 class Badge extends StatelessWidget {
   String value;

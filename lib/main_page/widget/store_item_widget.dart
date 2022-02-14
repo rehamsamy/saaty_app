@@ -5,7 +5,7 @@ import 'package:saaty_app/model/user_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/products_controller.dart';
 import 'package:saaty_app/details/screen/product_item_detail_screen.dart';
-import 'package:saaty_app/view/screens/stores_screen.dart';
+import 'package:saaty_app/stores/screen/stores_screen.dart';
 
 import '../../cons.dart';
 

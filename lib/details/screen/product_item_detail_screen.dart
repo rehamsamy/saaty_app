@@ -13,7 +13,7 @@ import 'package:saaty_app/model/cart.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
-import 'package:saaty_app/view/screens/cart_screen.dart';
+import 'package:saaty_app/carts/screen/cart_screen.dart';
 import 'package:saaty_app/view/widget/app_cashed_image.dart';
 
 import '../../cons.dart';

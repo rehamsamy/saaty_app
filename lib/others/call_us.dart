@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:saaty_app/model/splash_model.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
-import 'package:saaty_app/view/screens/login_screen.dart';
-import 'package:saaty_app/view/screens/main_page_screen.dart';
+import 'package:saaty_app/login_register/screen/login_screen.dart';
+import 'package:saaty_app/main_page/screen/main_page_screen.dart';
 
 import '../cons.dart';
 

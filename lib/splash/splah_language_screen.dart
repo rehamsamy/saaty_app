@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:saaty_app/model/splash_model.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
-import 'package:saaty_app/view/screens/login_screen.dart';
+import 'package:saaty_app/login_register/screen/login_screen.dart';
 
-import '../../cons.dart';
+import '../cons.dart';
 
 class SplashLanguageScreen extends StatelessWidget {
   static String SPLASH_LANGUAGE_SCREEN_ROUTE='/19';

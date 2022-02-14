@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/model/splash_model.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
-import 'package:saaty_app/view/screens/splah_language_screen.dart';
+import 'package:saaty_app/splash/splah_language_screen.dart';
 
 
 import '../../cons.dart';
