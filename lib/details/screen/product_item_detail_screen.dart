@@ -39,6 +39,8 @@ class ProductItemDetailScreen extends StatelessWidget {
     Map<String,dynamic> map = ModalRoute.of(context).settings.arguments as  Map<String,dynamic> ;
     product=map['prod'];
     String _prodType=map['flag'];
+    print('********     ');
+    print(' vvvvv  bbb'+product.creator_name.toString());
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
@@ -227,7 +229,7 @@ class ProductTitleWithImage extends StatelessWidget {
                   TextSpan(
                     text: "${product.creator_name}",
                     style: Theme.of(context).textTheme.headline1.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.bold,fontSize: 35),
+                        color: Colors.white, fontWeight: FontWeight.bold,fontSize: 30,),
                   ),
                 ],
               ),

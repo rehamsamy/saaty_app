@@ -98,6 +98,22 @@ int isCart=0;
       print(err);
     }
   }
+  Future deleteProduct(String id)async{
+    String url =
+        'https://saaty-9ba9f-default-rtdb.firebaseio.com/products/$id.json?auth=${StorageController.getString(StorageController.apiToken)}';
+    try{
+      var response=await http.delete(Uri.parse(url));
+      if(response.statusCode==200){
+        print('deleted');
+      }else{
+        print('deleted no');
+      }
+      update();
+    }catch(err){
+      print(err);
+    }
+
+  }
 
   Future<String> getImageUrl(String userId) async {
     var ref = FirebaseStorage.instance

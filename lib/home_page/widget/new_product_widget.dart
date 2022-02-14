@@ -21,6 +21,7 @@ class HomeProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return GetBuilder<ProductController>(

@@ -44,7 +44,7 @@ class AdsScreen extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 1,
-                  child: AppBar(title: Text(flag=='ads'.tr?'My Own Ads':'favorites'.tr, style: Cons.greyFont),
+                  child: AppBar(title: Text(flag=='ads'.tr?'my_ads'.tr:'favorites'.tr, style: Cons.greyFont),
                     elevation: 8,
                     actions: [
                       IconButton(icon: Icon(
@@ -121,7 +121,7 @@ class AdsScreen extends StatelessWidget {
   }
 
   void fetchData(String flag) async{
-    print('step '+flag);
+  //  print('step '+flag);
     _favsAdsController.isLoading=true;
     _favsAdsController.isFiltering=false;
     await _favsAdsController.fetchProducts(flag).then((value) {

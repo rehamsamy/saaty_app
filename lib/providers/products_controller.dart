@@ -86,6 +86,7 @@ class ProductsController extends GetxController {
         if (flag == 'all') {
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
+            print('****  '+value['creator_name']);
             if (favResponse.statusCode == 200) {
               if (!favResponse.body.isEmpty) {
                 product.isFav = favResult[key];

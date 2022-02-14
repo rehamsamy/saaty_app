@@ -36,8 +36,10 @@ class HomeListGrid extends StatelessWidget {
         ),
         delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
+              //  print( 'crete   ---   '+_productController.homeProducts[index].creator_name.toString());
             return HomeProductWidget(
                 _productController.homeProducts[index]);
+
           },
           childCount: _productController.homeProducts.length,
         ),

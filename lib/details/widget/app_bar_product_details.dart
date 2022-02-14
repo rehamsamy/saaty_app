@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:saaty_app/ads_favorite/screen/ads_screen.dart';
 import 'package:saaty_app/model/product_model.dart';
 import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
@@ -84,7 +86,9 @@ AppBarProduct(this.product, this._prodType);
                       Padding(
                           padding:EdgeInsets.only(left: 10,right: 10),child: Text(product.name, style: TextStyle(fontSize: 18,color: Colors.black54))),
                       Flexible(
-                          flex:1,child: IconButton(onPressed: (){}, icon: Icon(Icons.delete,color: Colors.white,size: 25))),
+                          flex:1,child: IconButton(onPressed: (){
+                            _productController.deleteProduct(product.id).then((value) => Navigator.of(context).pushNamed(AdsScreen.ADS_SCREEN_ROUTE));
+                      }, icon: Icon(Icons.delete,color: Colors.white,size: 25))),
                       Flexible(
                           flex:1,child: IconButton(onPressed: (){
                         Navigator.of(context).pushNamed(CreateProductScreen.CREATE_PRODUCT_ROUTE,arguments: product);

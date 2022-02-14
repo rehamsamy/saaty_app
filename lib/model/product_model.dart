@@ -18,7 +18,7 @@ class Product{
 
   Product({@required this.id,@ required this.name,@ required this.price,@ required this.desc, @ required this.email, @ required this.phone, @ required this.cat,
   @ required this.status,@ required  this.isFav, @ required this.images,@required this.connType,@required this.creator_id,
-  @ required this.dateTime,@ required creator_name});
+  @ required this.dateTime,@ required this.creator_name});
 
 
   factory Product.fromJson(String prodId,Map<String,dynamic> map){

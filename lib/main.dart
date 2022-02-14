@@ -72,7 +72,6 @@ class MyApp extends StatelessWidget {
       print(expire.isBefore(nowRes));
     }
 
-
     final List locale = [
       {'name': 'ENGLISH', 'locale': Locale('us')},
       {'name': 'العربية', 'locale': Locale('ar')},
