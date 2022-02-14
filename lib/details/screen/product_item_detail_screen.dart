@@ -229,7 +229,7 @@ class ProductTitleWithImage extends StatelessWidget {
                   TextSpan(
                     text: "${product.creator_name}",
                     style: Theme.of(context).textTheme.headline1.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.bold,fontSize: 30,),
+                        color: Colors.white, fontWeight: FontWeight.bold,fontSize: 27,),
                   ),
                 ],
               ),
@@ -260,9 +260,9 @@ buildImage(Product product,double height){
   return   Positioned(
    left: 0,
     child: Container(
-      margin: EdgeInsets.only(top:height *0.1 ),
-      width:250,
-      height: 200,
+      margin: EdgeInsets.only(top:height *0.14 ),
+      width:200,
+      height: 180,
       child: Card(
         elevation: 7,
         shape: RoundedRectangleBorder(

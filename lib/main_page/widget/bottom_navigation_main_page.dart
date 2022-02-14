@@ -7,9 +7,10 @@ import '../../cons.dart';
 
 class BottomNavigationMain extends StatelessWidget {
   ProductsController _productController = Get.find();
+
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ProductController>(
+    return GetBuilder<ProductsController>(
       builder: (_) => Container(
         height: 65,
         child: BottomAppBar(

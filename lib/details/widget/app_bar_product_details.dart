@@ -36,9 +36,12 @@ AppBarProduct(this.product, this._prodType);
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(onPressed: (){
-                        Navigator.of(context).pop();
-                      }, icon: Icon(Icons.arrow_back,color: Cons.accent_color,size: 30)),
+                      Visibility(
+                        visible: false,
+                        child: IconButton(onPressed: (){
+                          Navigator.of(context).pop();
+                        }, icon: Icon(Icons.arrow_back,color: Colors.white,size: 30)),
+                      ),
                       Text(product.name, style: Cons.whiteFont),
                       IconButton(onPressed: ()async{
                         if(StorageController.isGuest){

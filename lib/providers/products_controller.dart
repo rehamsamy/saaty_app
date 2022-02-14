@@ -86,7 +86,6 @@ class ProductsController extends GetxController {
         if (flag == 'all') {
           result.forEach((key, value) async {
             Product product = Product.fromJson(key, value);
-            print('****  '+value['creator_name']);
             if (favResponse.statusCode == 200) {
               if (!favResponse.body.isEmpty) {
                 product.isFav = favResult[key];
@@ -115,6 +114,7 @@ class ProductsController extends GetxController {
         }
 
       }
+      print('******* '+_allProds.length.toString());
         getFinalProducts();
 
 
@@ -179,7 +179,7 @@ print(token);
   List<Product> filteredList = [];
 
   void getFinalProducts() {
-    print('flag  ' + isFiltering.toString());
+    print('flag  ' + isFiltering.toString()+selectedTabIndex.toString());
     if (txt.isEmpty) {
       if (isFiltering == false) {
         if (selectedTabIndex == 0 ) {
@@ -240,6 +240,7 @@ print(token);
         filteredList.clear();
       }
     }
+    print('flag  ' +filteredList.length.toString()+'         '+selectedTabIndex.toString());
     update();
   }
 

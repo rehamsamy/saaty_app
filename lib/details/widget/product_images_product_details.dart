@@ -139,8 +139,7 @@ class ContainerProductImages extends StatelessWidget {
          builder: (_)=>
              CarouselSlider(
                carouselController:_carouselController,
-               items: product.images.map((e) =>
-                   Image.network(e,fit: BoxFit.fill,)
+               items: product.images.map((e) =>AppCashedImage(imageUrl: e,fit: BoxFit.fill,)
                ).toList(),
                options: CarouselOptions(
                    onPageChanged: (ind,x){

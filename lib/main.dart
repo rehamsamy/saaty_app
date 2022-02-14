@@ -7,6 +7,7 @@ import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/providers/Orders.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/fav_ads_controller.dart';
+import 'package:saaty_app/providers/get_binding.dart';
 import 'package:saaty_app/providers/lang_controller.dart';
 import 'package:saaty_app/providers/message_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
@@ -131,6 +132,118 @@ class MyApp extends StatelessWidget {
         CartScreen.Cart_Route:(_)=> CartScreen(),
         OrderScreen.Order_Screen_Route:(_)=>OrderScreen()
       },
+
+      //
+      // getPages: [
+      //   GetPage(
+      //     name: LoginScreen.LOGIN_SCREEN_ROUTE,
+      //     page: () => LoginScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //
+      //   GetPage(
+      //     name: RegisterScreen.REGISTER_SCREEN_ROUTE,
+      //     page: () => RegisterScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: CreateProductScreen.CREATE_PRODUCT_ROUTE,
+      //     page: () => CreateProductScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: HomeScreen.HOME_SCREEN_RIUTE,
+      //     page: () => HomeScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: SendMessageScreen.SEND_MESSAGE_SCREEN_ROUTE,
+      //     page: () => SendMessageScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: AdsScreen.ADS_SCREEN_ROUTE,
+      //     page: () => AdsScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: SettingScreen.SETTING_SCREEN_ROUTE,
+      //     page: () => SettingScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: StoresScreen.Stores_SCREEN_ROUTE,
+      //     page: () => StoresScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: MessageScreen.MESSAGES_SCREEN_ROUTE,
+      //     page: () => MessageScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: MessageDetailScreen.MESSAGES_Detail_SCREEN_ROUTE,
+      //     page: () => MessageDetailScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: AccountScreen.ACCOUNT_SCREEN_ROUTE,
+      //     page: () => AccountScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: EditAccountScreen.EDIT_ACCOUNT_SCREEN_ROUTE,
+      //     page: () => EditAccountScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: ChangePasswordScreen.CHANGE_PASSWORD_SCREEN_ROUTE,
+      //     page: () => ChangePasswordScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: ForgetPasswordScreen.FORGET_PASSWORD_SCREEN_ROUTE,
+      //     page: () => ForgetPasswordScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: ResetPasswordScreen.RESET_PASSWORD_SCREEN_ROUTE,
+      //     page: () => ResetPasswordScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: SplashScreen.SPLASH_SCREEN_ROUTE,
+      //     page: () => SplashScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //
+      //   GetPage(
+      //     name: SplashLanguageScreen.SPLASH_LANGUAGE_SCREEN_ROUTE,
+      //     page: () => SplashLanguageScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: AboutApp.ABOUT_APP_SCREEN_ROUTE,
+      //     page: () => AboutApp(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: CallUs.CALL_US_SCREEN_ROUTE,
+      //     page: () => CallUs(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: CartScreen.Cart_Route,
+      //     page: () => CartScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //   GetPage(
+      //     name: OrderScreen.Order_Screen_Route,
+      //     page: () => OrderScreen(),
+      //     binding: GetBinding(),
+      //   ),
+      //
+      // ],
     );
   }
 

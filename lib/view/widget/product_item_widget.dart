@@ -7,6 +7,7 @@ import 'package:saaty_app/providers/product_controller.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/login_register/screen/login_screen.dart';
 import 'package:saaty_app/details/screen/product_item_detail_screen.dart';
+import 'package:saaty_app/view/widget/app_cashed_image.dart';
 
 import '../../cons.dart';
 
@@ -48,11 +49,12 @@ class ProductItemWidget extends StatelessWidget {
                       bottom: 25,
                       child: Hero(
                         tag: product.id,
-                        child: FadeInImage(
-                          image: NetworkImage(product.images[0], scale: 1),
-                          placeholder:
-                              AssetImage('assets/images/watch_item1.png'),
+                        child:
+                        AppCashedImage(
+                          imageUrl:product.images[0] ,
+                          fit: BoxFit.contain,
                         ),
+
                       )),
                   SizedBox(
                     height: 10,
