@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:saaty_app/model/cart.dart';
 import 'package:saaty_app/providers/auth_controller.dart';

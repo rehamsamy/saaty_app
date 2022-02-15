@@ -204,6 +204,9 @@ class _MainPageScreenState extends State<MainPageScreen>
   bool get wantKeepAlive => true;
 
   Future fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
     await _productController
         .fetchStores()
         .then((value) => print('length 44444444  => '));

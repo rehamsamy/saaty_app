@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:saaty_app/carts/widget/cart_item_widget.dart';
 import 'package:saaty_app/model/cart.dart';
 import 'package:saaty_app/providers/Orders.dart';
+import 'package:saaty_app/providers/get_binding.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/login_register/screen/login_screen.dart';
 
@@ -91,19 +93,32 @@ class OrderButtonState extends State<OrderButton>{
       _isLoading?CircularProgressIndicator():
       FlatButton(
           onPressed:
-          widget.cart.cartsList.isEmpty||StorageController.getString(StorageController.type)=='guest'?null:()async{
-            setState(() {
-              _isLoading=true;
-            });
-            await  _orders.addOrder(widget.cart.cartsList.values.toList(), widget.cart.getTotal)
-                .then((value) {
+          widget.cart.cartsList.isEmpty?null:()async{
+            if(StorageController.getString(StorageController.type)=='guest'){
+              Get.to(LoginScreen(), binding: GetBinding());
+            //  Navigator.of(context).pushNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
+              Fluttertoast.showToast(
+                  msg: "من فضلك سجل بياناتك لطلب المنتج",
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0
+              );
+            }else{
               setState(() {
-                _isLoading=false;
+                _isLoading=true;
               });
-              widget.cart.clearAll();
-            });
+              await  _orders.addOrder(widget.cart.cartsList.values.toList(), widget.cart.getTotal)
+                  .then((value) {
+                setState(() {
+                  _isLoading=false;
+                });
+                widget.cart.clearAll();
+              });
 
-
+            }
           }, child: Text('order_now'.tr,style: TextStyle(color: Theme.of(context).primaryColor,
         fontSize: 15),));
   }

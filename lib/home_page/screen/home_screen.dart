@@ -162,7 +162,7 @@ class HomeScreenState extends State<HomeScreen> {
               ),
             ]),
           ),
-          HomeListGrid()
+          HomeListGrid(_isLoading)
         ],
       ),
       drawer: StorageController.getString(StorageController.type) == 'guest'
@@ -173,6 +173,9 @@ class HomeScreenState extends State<HomeScreen> {
 
 
   Future fetchData() async {
+    setState(() {
+      _isLoading=true;
+    });
     await Future.delayed(Duration(milliseconds: 20));
     _productController
         .fetchProducts('all')

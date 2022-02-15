@@ -7,6 +7,10 @@ import 'package:saaty_app/providers/products_controller.dart';
 class HomeListGrid extends StatelessWidget {
   ProductsController _productController = Get.find();
   bool _isLoading = false;
+
+
+  HomeListGrid(this._isLoading);
+
   @override
   Widget build(BuildContext context) {
   return  GetBuilder<ProductsController>(
