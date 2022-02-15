@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:saaty_app/providers/get_binding.dart';
 import 'package:saaty_app/providers/storage_controller.dart';
 import 'package:saaty_app/others/about_app.dart';
 import 'package:saaty_app/others/call_us.dart';
@@ -39,7 +40,8 @@ class VisitorDrawer extends StatelessWidget {
                     color: Cons.primary_color,
                   ),
                   title: Text('main_page'.tr),
-                  onTap: ()=>Navigator.of(context).pushNamed(HomeScreen.HOME_SCREEN_RIUTE),
+                  onTap: ()=> Get.to(HomeScreen(), binding: GetBinding())
+                      //Navigator.of(context).pushNamed(HomeScreen.HOME_SCREEN_RIUTE),
                 ),
 
                 ListTile(

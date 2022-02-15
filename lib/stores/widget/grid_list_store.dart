@@ -11,7 +11,7 @@ class GridListStores extends StatelessWidget {
   var _searcController = TextEditingController();
   bool _isLoading = false;
 
-  GridListStores(this._searcController);
+  GridListStores(this._searcController,this._isLoading);
   @override
   Widget build(BuildContext context) {
          return GetBuilder<ProductsController>(builder: (ctx) {

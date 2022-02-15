@@ -18,7 +18,7 @@ class CartScreen extends StatelessWidget {
     WidgetsFlutterBinding.ensureInitialized();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Cart'),
+        title: Text('cart'.tr),
         centerTitle: true,
       ),
       body: GetBuilder<Cart>(

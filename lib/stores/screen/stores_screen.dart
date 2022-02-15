@@ -147,8 +147,8 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                body:   IndexedStack(
                  index: _statusController.selectedTabIndex,
                  children:[
-                   GridListStores(_searcController),
-                   GridListStores(_searcController),
+                   GridListStores(_searcController,_isLoading),
+                   GridListStores(_searcController,_isLoading),
                    // buildGrid(1),
 
                  ] ,

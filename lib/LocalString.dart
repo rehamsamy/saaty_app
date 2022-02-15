@@ -108,7 +108,8 @@ class LocaleString extends Translations{
        'total':'Total:',
       'orders':'Orders',
       'price':'Price',
-      'quantity':'Quantity'
+      'quantity':'Quantity',
+      'cart':'My Cart',
     },
 
 
@@ -122,6 +123,7 @@ class LocaleString extends Translations{
       'ok':'تم',
   'are_you_sure_delete':'هل انت متاكد من حذف هذا العنصر',
       'add_to_cart':'اضافه للعربة',
+      'cart':'السلة',
       'name':'الاسم',
       'new_password':'كلمه المرور الجديده',
   'old_password':'كلمه المرور القديمة',

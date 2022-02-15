@@ -227,7 +227,7 @@ class ProductTitleWithImage extends StatelessWidget {
                 children: [
                   TextSpan(text: "${'trader_name'.tr}\n"),
                   TextSpan(
-                    text: "${product.creator_name}",
+                    text: "${product.creator_name==null?'store':product.creator_name}",
                     style: Theme.of(context).textTheme.headline1.copyWith(
                         color: Colors.white, fontWeight: FontWeight.bold,fontSize: 27,),
                   ),

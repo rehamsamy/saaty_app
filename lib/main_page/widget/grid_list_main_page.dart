@@ -9,7 +9,7 @@ class GrisListProductsMain extends StatelessWidget {
   var _searcController = TextEditingController();
   bool _isLoading = false;
 
-  GrisListProductsMain(this._searcController);
+  GrisListProductsMain(this._searcController,this._isLoading);
 
   @override
   Widget build(BuildContext context) {

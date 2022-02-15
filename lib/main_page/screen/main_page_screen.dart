@@ -181,9 +181,9 @@ class _MainPageScreenState extends State<MainPageScreen>
             body: IndexedStack(
               index: _productController.selectedTabIndex,
               children: [
-                GrisListProductsMain(_searcController),
-                GrisListProductsMain(_searcController),
-                GrisListProductsMain(_searcController),
+                GrisListProductsMain(_searcController,_isLoading),
+                GrisListProductsMain(_searcController,_isLoading),
+                GrisListProductsMain(_searcController,_isLoading),
                 GridListStoresMain()
               ],
             ),
