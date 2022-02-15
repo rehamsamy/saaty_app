@@ -4,7 +4,6 @@ import '../../cons.dart';
 import 'CategoryItem.dart';
 
 class CategoryListView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return   Stack(
