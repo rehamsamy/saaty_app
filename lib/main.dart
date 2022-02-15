@@ -7,7 +7,6 @@ import 'package:saaty_app/cons.dart';
 import 'package:saaty_app/providers/Orders.dart';
 import 'package:saaty_app/providers/auth_controller.dart';
 import 'package:saaty_app/providers/fav_ads_controller.dart';
-import 'package:saaty_app/providers/get_binding.dart';
 import 'package:saaty_app/providers/lang_controller.dart';
 import 'package:saaty_app/providers/message_controller.dart';
 import 'package:saaty_app/providers/product_controller.dart';
