@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:saaty_app/ads_favorite/screen/ads_screen.dart';
@@ -45,6 +46,15 @@ AppBarProduct(this.product, this._prodType);
                       Text(product.name, style: Cons.whiteFont),
                       IconButton(onPressed: ()async{
                         if(StorageController.isGuest){
+                          Fluttertoast.showToast(
+                              msg: "من فضلك سجل بياناتك",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
                           Navigator.of(context).pushReplacementNamed(LoginScreen.LOGIN_SCREEN_ROUTE);
                         }else{
                           print('pppp');
