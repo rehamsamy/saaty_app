@@ -39,25 +39,29 @@ class BottomNavigationMain extends StatelessWidget {
                       Icons.more_horiz,
                       color: checkBottomColor(0),
                     ),
-                    title: new Text('all'.tr,
-                        style: TextStyle(
-                          color: checkBottomColor(0),
-                        ))),
+                    label: 'all'.tr,
+                    // title: new Text('all'.tr,
+                    //     style: TextStyle(
+                    //       color: checkBottomColor(0),
+                    //     )
+                 //   )
+        ),
                 new BottomNavigationBarItem(
                   icon: new Icon(Icons.watch_outlined,
                       color: checkBottomColor(1)),
-                  title: new Text('watch'.tr,
-                      style: TextStyle(color: checkBottomColor(1))),
+                 // title: new Text('watch'.tr,
+                   //   style: TextStyle(color: checkBottomColor(1))),
                 ),
                 new BottomNavigationBarItem(
                   icon: new Icon(Icons.stream, color: checkBottomColor(2)),
-                  title: new Text('braclete'.tr,
-                      style: TextStyle(color: checkBottomColor(2))),
+                  label: 'braclete'.tr,
+                  // title: new Text('braclete'.tr,
+                  //     style: TextStyle(color: checkBottomColor(2))),
                 ),
                 new BottomNavigationBarItem(
                   icon: new Icon(Icons.shop, color: checkBottomColor(3)),
-                  title: new Text('stores'.tr,
-                      style: TextStyle(color: checkBottomColor(3))),
+                  //title: new Text('stores'.tr,
+                   //   style: TextStyle(color: checkBottomColor(3))),
                 ),
               ],
             ),

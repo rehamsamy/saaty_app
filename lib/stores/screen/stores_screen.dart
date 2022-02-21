@@ -219,11 +219,11 @@ class StoresScreenState extends State<StoresScreen>  with SingleTickerProviderSt
                   items: [
                     new BottomNavigationBarItem(
                         icon: new Icon(Icons.home,color: checkBottomColor(0),),
-                        title: new Text('old'.tr,style: TextStyle(color:checkBottomColor(0),))
+                       // title: new Text('old'.tr,style: TextStyle(color:checkBottomColor(0),)),
                     ),
                     new BottomNavigationBarItem(
                       icon: new Icon(Icons.face,color: checkBottomColor(1)),
-                      title: new Text('new'.tr,style: TextStyle(color:checkBottomColor(1))),
+                   //   title: new Text('new'.tr,style: TextStyle(color:checkBottomColor(1))),
                     ),
 
                   ],
